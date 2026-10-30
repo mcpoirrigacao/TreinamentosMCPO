@@ -817,9 +817,9 @@ function abrirTurma(tid){
     modal(tid?'Turma — '+nomeCurso(t.cursoId):'Nova turma',html,[
       tid?{t:'Excluir',cls:'danger',admin:true,left:true,fn:()=>{if(!confirm('Excluir esta turma? O histórico já gerado é mantido.'))return;delRec('turmas',tid);save();invalidate();fecharModal();renderAll();}}:null,
       {t:'✉ Convites e confirmações',cls:'ghost',fn:()=>{lerForm();if(!valida())return;if(!Object.keys(t.inscritos).length){toast('Inscreva os participantes primeiro.');return;}Object.values(t.inscritos).forEach(r=>{if(!r.token)r.token=novoToken();});const id=gravar();abrirConvites(id);}},
-      t.status!=='Cancelada'?{t:'Cancelar turma',cls:'ghost',fn:()=>{if(!confirm('Marcar a turma como cancelada?'))return;lerForm();t.status='Cancelada';gravar();fecharModal();renderAll();}}:null,
+      t.status!=='Cancelada'?{t:'Cancelar turma',cls:'ghost',fn:async()=>{if(!confirm('Marcar a turma como cancelada?'+(t.eventoId?' O compromisso no Outlook também será cancelado para os participantes.':'')))return;lerForm();t.status='Cancelada';const id=gravar();fecharModal();renderAll();if(t.eventoId)await cancelarEvento(id);}}:null,
       {t:t.status==='Concluída'?'Atualizar histórico':'✔ Concluir turma',cls:'ghost',fn:()=>{lerForm();if(!valida())return;concluirTurma(t,gravar);}},
-      {t:'Salvar',cls:'primary',fn:()=>{lerForm();if(!valida())return;if(t.status==='Cancelada'&&confirm('Reabrir a turma como Agendada?'))t.status='Agendada';gravar();fecharModal();renderAll();toast('Turma salva.');}}
+      {t:'Salvar',cls:'primary',fn:async()=>{lerForm();if(!valida())return;if(t.status==='Cancelada'&&confirm('Reabrir a turma como Agendada?'))t.status='Agendada';const mudouAgenda=orig&&t.eventoId&&['inicio','fim','hora','local','cursoId'].some(k=>(orig[k]||'')!==(t[k]||''));const id=gravar();fecharModal();renderAll();toast('Turma salva.');if(mudouAgenda&&t.status==='Agendada'&&confirm('Data, horário ou local mudaram. Atualizar o compromisso no Outlook dos participantes?'))await atualizarEvento(id);}}
     ]);
     const inscrever=pids=>{lerForm();let add=0;pids.forEach(pid=>{if(!t.inscritos[pid]){t.inscritos[pid]={presente:true,situacao:'APROVADO',token:novoToken()};add++;}});if(n(t.vagas)&&Object.keys(t.inscritos).length>n(t.vagas))toast('Atenção: inscritos acima do limite de vagas.');else toast(add+' inscrito(s).');desenha();};
     $('tu-add-b').onclick=()=>{const nm=chave($('tu-add').value);const p=I.pessoas.find(x=>chave(x.nome)===nm);if(!p){toast('Pessoa não encontrada — cadastre em Pessoas.');return;}inscrever([p.id]);};
@@ -846,13 +846,15 @@ function abrirConvites(tid){
   const ins=Object.keys(t.inscritos||{}).filter(pid=>I.P[pid]).sort((a,b)=>I.P[a].nome.localeCompare(I.P[b].nome,'pt-BR'));
   const conf=ins.filter(pid=>t.inscritos[pid].resposta==='confirmado').length,rec=ins.filter(pid=>t.inscritos[pid].resposta==='recusado').length,env=ins.filter(pid=>t.inscritos[pid].convidadoEm).length;
   const html=`<div class="totals-strip" style="grid-template-columns:repeat(4,minmax(0,1fr));">${tbox('Inscritos',ins.length)}${tbox('Convites enviados',env)}${tbox('Confirmaram',conf)}${tbox('Não vão',rec,'',{accent:rec>0})}</div>
-  <div class="note">Cada participante recebe um <b>link pessoal</b> para confirmar ou recusar. Ao clicar, ele entra com a conta Microsoft da MAQCAMPO e a resposta fica gravada aqui automaticamente (atualiza a cada minuto, ou em ⟳).</div>
+  ${t.eventoId?`<div class="note">📅 Compromisso no Outlook criado por <b>${esc(t.eventoDono||'')}</b> em ${fmtD((t.eventoEm||'').slice(0,10))}. Respostas Aceitar/Recusar dadas no próprio convite da agenda também são gravadas aqui.</div>`:''}<div class="note">Cada participante recebe um <b>link pessoal</b> para confirmar ou recusar. Ao clicar, ele entra com a conta Microsoft da MAQCAMPO e a resposta fica gravada aqui automaticamente (atualiza a cada minuto, ou em ⟳).</div>
   <div class="tablewrap" style="max-height:420px;"><table class="dt"><thead><tr><th>Participante</th><th>Contato</th><th>Resposta</th><th>Convite</th><th>Enviar</th></tr></thead><tbody>${ins.map(pid=>{const p=I.P[pid],r=t.inscritos[pid];return `<tr><td><b>${esc(p.nome)}</b><div class="muted">${esc(p.departamento||p.empresa||'')}</div></td><td class="muted">${esc(p.email||'sem e-mail')}<br>${esc(p.telefone||'sem telefone')}</td><td>${respBadge(r)||'<span class="muted">—</span>'}</td><td class="nw muted">${r.convidadoEm?fmtD(r.convidadoEm.slice(0,10))+(r.convidadoVia?' · '+esc(r.convidadoVia):''):'não enviado'}</td><td class="nw"><button class="btn ghost tiny" data-cv="email" data-pid="${pid}" type="button"${p.email?'':' disabled title="sem e-mail"'}>✉ E-mail</button> <button class="btn ghost tiny" data-cv="whatsapp" data-pid="${pid}" type="button"${p.telefone?'':' disabled title="sem telefone"'}>📱 WhatsApp</button> <button class="btn ghost tiny" data-cv="copiar" data-pid="${pid}" type="button">🔗 Copiar</button></td></tr>`;}).join('')}</tbody></table></div>
   <div class="muted" style="margin-top:8px;">Sem e-mail/telefone? Use 🔗 Copiar e envie pelo canal que preferir — ou cadastre o contato em Pessoas.</div>`;
   modal('Convites — '+(c.nome||''),html,[
     {t:'← Voltar à turma',cls:'ghost',left:true,fn:()=>abrirTurma(tid)},
+    {t:'⬇ Agenda (.ics)',cls:'ghost',fn:()=>baixarIcs(tid)},
+    {t:'📅 Enviar convites + agenda (Outlook)',cls:'primary',fn:()=>enviarConvitesAgenda(tid)},
     {t:'⟳ Atualizar respostas',cls:'ghost',fn:async()=>{if(!msAccount){toast('Entre com o Microsoft para buscar as respostas.');return;}const k=await puxarConfirmacoes(true);toast(k?k+' resposta(s) nova(s).':'Nenhuma resposta nova.');abrirConvites(tid);}},
-    {t:'Fechar',cls:'primary',fn:fecharModal}
+    {t:'Fechar',cls:'ghost',fn:fecharModal}
   ]);
   $('modal-b').querySelectorAll('[data-cv]').forEach(b=>b.onclick=async()=>{
     const pid=b.dataset.pid,p=I.P[pid],cv=b.dataset.cv;const txt=textoConvite(t,tid,pid);const assunto='Convocação: '+(c.nome||'treinamento')+' — '+fmtD(t.inicio);
@@ -872,7 +874,7 @@ async function puxarConfirmacoes(forcar){
   try{
     const tk=await getGraphToken();if(!tk)return 0;const base=await spDriveUrl(`/${SP_BIBLIOTECA}/${SP_PASTA}/${CONF_DIR}`);if(!base)return 0;
     let url=base+':/children?$select=name,eTag&$top=500';const itens=[];
-    while(url){const r=await fetch(url,{headers:{Authorization:'Bearer '+tk}});if(r.status===404)return 0;if(!r.ok)return 0;const j=await r.json();itens.push(...(j.value||[]));url=j['@odata.nextLink']||null;}
+    while(url){const r=await fetch(url,{headers:{Authorization:'Bearer '+tk}});if(!r.ok)break;const j=await r.json();itens.push(...(j.value||[]));url=j['@odata.nextLink']||null;}
     for(const it of itens){
       const m=/^([\w-]+)__([\w-]+)\.json$/.exec(it.name||'');if(!m)continue;const tid=m[1],pid=m[2];
       const tr=getRec('turmas',tid);if(!tr||!tr.inscritos||!tr.inscritos[pid])continue;
@@ -887,6 +889,7 @@ async function puxarConfirmacoes(forcar){
       putRec('turmas',tid,nt);mud++;
     }
     try{localStorage.setItem(STORE_KEY+'-conf',JSON.stringify(_confCache));}catch(e){}
+    mud+=await puxarRespostasOutlook(forcar);
     if(mud){save();renderRemoto();}
   }catch(e){}finally{_puxandoConf=false;}
   return mud;
@@ -932,6 +935,124 @@ async function enviarResposta(resp){
   if(!r.ok&&(r.status===404||r.status===409||r.status===400)){await ensureConfFolder();r=await graphPutEtag(caminho,corpo,null);}
   if(r.ok){telaConf(resp==='confirmado'?'sim':'nao');return;}
   telaConf('erro',r.status===403||r.status===401?'Sua conta não tem permissão na pasta de Treinamentos do SharePoint.':r.status===0?'Sem conexão com o SharePoint.':'Erro '+r.status+'.');
+}
+/* ==================== AGENDA (Outlook via Microsoft Graph) ==================== */
+const SCOPES_AGENDA=['Calendars.ReadWrite','Mail.Send'];
+const TZ_WIN='E. South America Standard Time';
+async function tokenAgenda(soSilencioso){
+  if(!msalInstance||!msAccount)return null;
+  try{return (await msalInstance.acquireTokenSilent({scopes:SCOPES_AGENDA,account:msAccount})).accessToken;}
+  catch(e){if(soSilencioso)return null;try{return (await msalInstance.acquireTokenPopup({scopes:SCOPES_AGENDA,account:msAccount})).accessToken;}catch(e2){return null;}}
+}
+async function gApi(method,path,body,soSilencioso){
+  const tk=await tokenAgenda(soSilencioso);if(!tk)return {ok:false,status:-1};
+  try{const r=await fetch('https://graph.microsoft.com/v1.0'+path,{method,headers:{Authorization:'Bearer '+tk,'Content-Type':'application/json'},body:body?JSON.stringify(body):undefined});let d=null;try{d=await r.json();}catch(e){}return {ok:r.ok,status:r.status,data:d};}
+  catch(e){return {ok:false,status:0};}
+}
+function horasTurma(t){
+  const m=String(t.hora||'').match(/(\d{1,2})\s*(?:[:h]\s*(\d{2}))?/g)||[];
+  const hh=m.map(x=>{const k=/(\d{1,2})\s*(?:[:h]\s*(\d{2}))?/.exec(x);const H=+k[1],M=+(k[2]||0);return H<24&&M<60?pad(H)+':'+pad(M):null;}).filter(Boolean);
+  let ini=hh[0]||'08:00',fim=hh[1]||'17:00';if(!hh[1]&&ini>='17:00')fim=pad(Math.min(23,+ini.slice(0,2)+2))+':'+ini.slice(3);
+  return [ini,fim];
+}
+function infoTurmaHtml(t){
+  const c=getRec('cursos',t.cursoId)||{};const [hi,hf]=horasTurma(t);
+  const L=[['Treinamento',c.nome||''],['Data',fmtD(t.inicio)+(t.fim&&t.fim!==t.inicio?' a '+fmtD(t.fim):'')],['Horário',t.hora||hi+' às '+hf],['Local / link',t.local||'a definir'],['Instrutor',t.instrutor||''],['Carga horária',(t.horas||c.cargaHoraria)?(t.horas||c.cargaHoraria)+' h':'']].filter(x=>x[1]);
+  return `<table style="border-collapse:collapse;font-family:Segoe UI,Arial,sans-serif;font-size:14px;">${L.map(([k,v])=>`<tr><td style="padding:3px 14px 3px 0;color:#5f6e62;">${esc(k)}</td><td style="padding:3px 0;"><b>${/^https?:\/\//.test(v)?`<a href="${esc(v)}">${esc(v)}</a>`:esc(v)}</b></td></tr>`).join('')}</table>${t.obs?`<p style="font-family:Segoe UI,Arial,sans-serif;font-size:13px;color:#5f6e62;">${esc(t.obs)}</p>`:''}`;
+}
+function eventoPayload(t,pids){
+  const c=getRec('cursos',t.cursoId)||{};const [hi,hf]=horasTurma(t);
+  const ev={subject:'Treinamento: '+(c.nome||''),
+    body:{contentType:'HTML',content:`<div style="font-family:Segoe UI,Arial,sans-serif;font-size:14px;color:#1e2b22;"><p>Você está convocado(a) para o treinamento abaixo.</p>${infoTurmaHtml(t)}<p>Por favor, <b>responda a este convite (Aceitar / Recusar)</b> ou use o link pessoal de confirmação enviado por e-mail.</p><p style="color:#5f6e62;">${esc(state.config.notif.assinatura||'')}</p></div>`},
+    start:{dateTime:`${t.inicio}T${hi}:00`,timeZone:TZ_WIN},end:{dateTime:`${t.fim||t.inicio}T${hf}:00`,timeZone:TZ_WIN},
+    location:{displayName:t.local||''},isReminderOn:true,reminderMinutesBeforeStart:1440,responseRequested:true,allowNewTimeProposals:false,showAs:'busy',categories:['Treinamento']};
+  if(pids)ev.attendees=pids.map(pid=>{const p=getRec('pessoas',pid);return {emailAddress:{address:p.email,name:p.nome},type:'required'};});
+  return ev;
+}
+function emailConviteHtml(t,tid,pid){
+  const p=getRec('pessoas',pid)||{nome:''};const c=getRec('cursos',t.cursoId)||{};
+  const btn=(href,txt,cor)=>`<a href="${esc(href)}" style="display:inline-block;background:${cor};color:#ffffff;text-decoration:none;font-weight:bold;padding:12px 20px;border-radius:6px;margin:4px 8px 4px 0;font-family:Segoe UI,Arial,sans-serif;">${txt}</a>`;
+  return `<div style="font-family:Segoe UI,Arial,sans-serif;font-size:14px;color:#1e2b22;max-width:600px;">
+<div style="background:#03590f;color:#fff;padding:14px 18px;border-radius:6px 6px 0 0;font-size:16px;"><b>MAQCAMPO Irrigação</b> · Convocação para treinamento</div>
+<div style="border:1px solid #d9d0bf;border-top:none;padding:18px;border-radius:0 0 6px 6px;">
+<p>Olá, <b>${esc((p.nome||'').split(' ')[0])}</b>!</p><p>Você está convocado(a) para o treinamento <b>${esc(c.nome||'')}</b>. O compromisso também foi enviado para a sua agenda.</p>
+${infoTurmaHtml(t)}
+<p style="margin-top:18px;"><b>Confirme sua presença:</b></p>
+<p>${btn(linkConf(t,tid,pid,'sim'),'✅ Confirmar presença','#1f8c33')}${btn(linkConf(t,tid,pid,'nao'),'❌ Não poderei comparecer','#a3312a')}</p>
+<p style="font-size:12px;color:#5f6e62;">Ao clicar, entre com sua conta Microsoft da MAQCAMPO. Sem conta MAQCAMPO? Basta responder ao convite da agenda (Aceitar / Recusar).</p>
+<p style="color:#5f6e62;">${esc(state.config.notif.assinatura||'')}</p></div></div>`;
+}
+function erroGraphTxt(r){return r.status===-1?'permissão de agenda/e-mail não concedida (verifique se o pop-up foi bloqueado ou se o administrador precisa liberar Calendars.ReadWrite e Mail.Send no Azure)':r.status===0?'sem conexão':'erro '+r.status+(r.data&&r.data.error?': '+r.data.error.message:'');}
+async function enviarConvitesAgenda(tid){
+  if(!msAccount){toast('Entre com o Microsoft para enviar pela sua conta.');return;}
+  const t=clone(getRec('turmas',tid));if(!t)return;const I=idx();
+  Object.values(t.inscritos).forEach(r=>{if(!r.token)r.token=novoToken();});
+  const pids=Object.keys(t.inscritos).filter(pid=>I.P[pid]);
+  const comEmail=pids.filter(pid=>/@/.test(I.P[pid].email||''));const semEmail=pids.length-comEmail.length;
+  if(!comEmail.length){toast('Nenhum inscrito tem e-mail cadastrado.');return;}
+  const ja=comEmail.filter(pid=>/agenda/.test(t.inscritos[pid].convidadoVia||''));
+  let alvo=comEmail;
+  if(ja.length){alvo=confirm(`${ja.length} participante(s) já receberam o convite. Reenviar o e-mail também para eles?\n\nOK = reenviar para todos · Cancelar = só para quem ainda não recebeu`)?comEmail:comEmail.filter(pid=>!ja.includes(pid));}
+  if(!confirm(`Pela sua conta (${emailAtual()}):\n\n• ${t.eventoId?'Atualizar':'Criar'} o compromisso no Outlook com ${comEmail.length} participante(s) — cada um recebe o convite da agenda;\n• Enviar ${alvo.length} e-mail(s) com o link pessoal de confirmação.${semEmail?`\n\n${semEmail} inscrito(s) sem e-mail ficarão de fora.`:''}\n\nContinuar?`))return;
+  modal('Enviando convites…',`<div class="note" id="ag-prog">⏳ Criando o compromisso na agenda…</div>`,[]);
+  const prog=m=>{const el=$('ag-prog');if(el)el.innerHTML=m;};
+  // 1) agenda
+  let r,atualizou=false;const ev=eventoPayload(t,comEmail);
+  if(t.eventoId&&t.eventoDono===emailAtual()){r=await gApi('PATCH','/me/events/'+encodeURIComponent(t.eventoId),ev);if(r.status===404)r={ok:false,status:404};else if(r.ok)atualizou=true;}
+  if(!r||(!r.ok&&r.status===404)){
+    if(t.eventoId&&t.eventoDono&&t.eventoDono!==emailAtual()&&!confirm(`O compromisso desta turma foi criado por ${t.eventoDono}. Criar outro compromisso pela sua conta? (os participantes podem receber dois convites)`)){fecharModal();abrirConvites(tid);return;}
+    r=await gApi('POST','/me/events',ev);
+    if(r.ok){t.eventoId=r.data.id;t.eventoDono=emailAtual();t.eventoLink=r.data.webLink||'';}
+  }
+  if(!r.ok){putRec('turmas',tid,t);save();invalidate();prog(`<b>Não foi possível criar a agenda:</b> ${esc(erroGraphTxt(r))}.<br><br>Você pode baixar o arquivo da agenda (.ics) e enviar os convites pelos botões ✉ de cada participante.`);
+    $('modal-f').innerHTML='';[['⬇ Baixar .ics',()=>baixarIcs(tid)],['← Voltar',()=>abrirConvites(tid)]].forEach(([tx,fn])=>{const b=document.createElement('button');b.type='button';b.className='btn ghost';b.textContent=tx;b.onclick=fn;$('modal-f').appendChild(b);});return;}
+  t.eventoEm=new Date().toISOString();
+  // 2) e-mails com link pessoal
+  const c=I.C[t.cursoId]||{};let ok=0;const falhas=[];
+  for(let i=0;i<alvo.length;i++){const pid=alvo[i],p=I.P[pid];prog(`✔ Compromisso ${atualizou?'atualizado':'criado'} na agenda.<br>⏳ Enviando e-mails… ${i+1} de ${alvo.length}`);
+    const rr=await gApi('POST','/me/sendMail',{message:{subject:'Convocação: '+(c.nome||'treinamento')+' — '+fmtD(t.inicio),body:{contentType:'HTML',content:emailConviteHtml(t,tid,pid)},toRecipients:[{emailAddress:{address:p.email,name:p.nome}}]},saveToSentItems:true});
+    if(rr.ok){ok++;t.inscritos[pid].convidadoEm=new Date().toISOString();t.inscritos[pid].convidadoVia='e-mail + agenda';}else falhas.push(p.nome+' ('+erroGraphTxt(rr)+')');}
+  comEmail.filter(pid=>!alvo.includes(pid)).forEach(pid=>{if(!/agenda/.test(t.inscritos[pid].convidadoVia||'')){t.inscritos[pid].convidadoVia='agenda';t.inscritos[pid].convidadoEm=t.inscritos[pid].convidadoEm||new Date().toISOString();}});
+  putRec('turmas',tid,t);save();invalidate();
+  toast(`Agenda enviada a ${comEmail.length} · ${ok} e-mail(s) com link${falhas.length?' · '+falhas.length+' falha(s)':''}.`);
+  if(falhas.length){prog(`✔ Compromisso na agenda de ${comEmail.length} participante(s).<br>✔ ${ok} e-mail(s) enviados.<br>⚠ Falharam: ${falhas.map(esc).join('; ')}`);$('modal-f').innerHTML='';const b=document.createElement('button');b.type='button';b.className='btn primary';b.textContent='Continuar';b.onclick=()=>abrirConvites(tid);$('modal-f').appendChild(b);return;}
+  abrirConvites(tid);
+}
+async function atualizarEvento(tid){
+  const t=getRec('turmas',tid);if(!t||!t.eventoId)return;
+  if(t.eventoDono!==emailAtual()){toast('Só '+t.eventoDono+' pode atualizar o compromisso no Outlook.');return;}
+  const pids=Object.keys(t.inscritos||{}).filter(pid=>{const p=getRec('pessoas',pid);return p&&/@/.test(p.email||'');});
+  const r=await gApi('PATCH','/me/events/'+encodeURIComponent(t.eventoId),eventoPayload(t,pids));
+  toast(r.ok?'Compromisso atualizado no Outlook — os participantes recebem a atualização.':'Não foi possível atualizar a agenda: '+erroGraphTxt(r));
+}
+async function cancelarEvento(tid){
+  const t=getRec('turmas',tid);if(!t||!t.eventoId)return;
+  if(t.eventoDono!==emailAtual()){toast('Turma cancelada. Peça para '+t.eventoDono+' cancelar o compromisso no Outlook.');return;}
+  const r=await gApi('POST','/me/events/'+encodeURIComponent(t.eventoId)+'/cancel',{comment:'Treinamento cancelado. Aguarde nova data.'});
+  toast(r.ok?'Turma cancelada e compromisso cancelado no Outlook.':'Turma cancelada, mas o Outlook não foi atualizado: '+erroGraphTxt(r));
+}
+async function puxarRespostasOutlook(forcar){
+  let mud=0;const me=emailAtual();
+  const ts=live('turmas').filter(t=>t.status==='Agendada'&&t.eventoId&&t.eventoDono===me);if(!ts.length)return 0;
+  for(const t of ts){
+    const r=await gApi('GET','/me/events/'+encodeURIComponent(t.eventoId)+'?$select=attendees',null,!forcar);if(!r.ok||!r.data)continue;
+    const porEmail={};Object.keys(t.inscritos||{}).forEach(pid=>{const p=getRec('pessoas',pid);if(p&&p.email)porEmail[p.email.toLowerCase()]=pid;});
+    let nt=null;
+    (r.data.attendees||[]).forEach(a=>{const em=((a.emailAddress||{}).address||'').toLowerCase();const pid=porEmail[em];if(!pid)return;const st=(a.status||{}).response;const resp=st==='accepted'?'confirmado':st==='declined'?'recusado':null;if(!resp)return;
+      const quando=(a.status||{}).time&&!/^0001/.test(a.status.time)?a.status.time:new Date().toISOString();
+      const ins=(nt||t).inscritos[pid];if(ins.resposta===resp)return;if(ins.respostaEm&&ins.respostaEm>quando)return;
+      nt=nt||clone(t);Object.assign(nt.inscritos[pid],{resposta:resp,respostaEm:quando,respostaPor:em+' (agenda)',confirmado:resp==='confirmado'});mud++;});
+    if(nt)putRec('turmas',t.id,Object.assign({},nt,{id:undefined}));
+  }
+  return mud;
+}
+function icsEsc(s){return String(s||'').replace(/\\/g,'\\\\').replace(/;/g,'\;').replace(/,/g,'\\,').replace(/\n/g,'\\n');}
+function baixarIcs(tid){
+  const t=getRec('turmas',tid);if(!t)return;const c=getRec('cursos',t.cursoId)||{};const [hi,hf]=horasTurma(t);
+  const dt=(d,h)=>d.replace(/-/g,'')+'T'+h.replace(':','')+'00';
+  const desc=`Treinamento: ${c.nome||''}\nData: ${fmtD(t.inicio)}${t.fim&&t.fim!==t.inicio?' a '+fmtD(t.fim):''}\nHorário: ${t.hora||hi+' às '+hf}\nLocal: ${t.local||'a definir'}${t.instrutor?'\nInstrutor: '+t.instrutor:''}`;
+  const ics=['BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//MAQCAMPO//Treinamentos MCPO//PT','CALSCALE:GREGORIAN','METHOD:PUBLISH','BEGIN:VEVENT','UID:'+tid+'@treinamentos.mcpo','DTSTAMP:'+new Date().toISOString().replace(/[-:]/g,'').replace(/\.\d+/,''),'DTSTART;TZID=America/Sao_Paulo:'+dt(t.inicio,hi),'DTEND;TZID=America/Sao_Paulo:'+dt(t.fim||t.inicio,hf),'SUMMARY:'+icsEsc('Treinamento: '+(c.nome||'')),'LOCATION:'+icsEsc(t.local||''),'DESCRIPTION:'+icsEsc(desc),'BEGIN:VALARM','TRIGGER:-P1D','ACTION:DISPLAY','DESCRIPTION:Lembrete de treinamento','END:VALARM','END:VEVENT','END:VCALENDAR'].join('\r\n');
+  const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([ics],{type:'text/calendar;charset=utf-8'}));a.download='Treinamento_'+slug(c.nome||'turma')+'_'+t.inicio+'.ics';document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove();},500);
 }
 function concluirTurma(t,gravar){
   const I=idx();const pres=Object.keys(t.inscritos||{}).filter(pid=>I.P[pid]&&t.inscritos[pid].presente!==false);

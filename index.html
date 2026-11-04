@@ -142,6 +142,12 @@ table.dt td.nw{white-space:nowrap;}
 .chk.on{background:#e4f1e6;border-color:var(--azul-claro);}
 .matrix-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:6px;max-height:420px;overflow:auto;}
 body:not(.is-admin) .somente-admin{display:none !important;}
+.mod-switch{display:inline-flex;gap:2px;margin-top:12px;background:rgba(0,0,0,.18);border-radius:20px;padding:3px;}
+.mod-switch button{background:transparent;border:none;color:#cfe6d3;font-weight:700;font-size:.8rem;padding:6px 14px;border-radius:17px;cursor:pointer;white-space:nowrap;}
+.mod-switch button.on{background:#fff;color:var(--azul-escuro);}
+.mod-switch button:not(.on):hover{color:#fff;}
+body[data-mod="cli"] .so-int{display:none !important;}
+body:not([data-mod="cli"]) .so-cli{display:none !important;}
 .ms-btn{background:rgba(255,255,255,.15);color:#fff;border:1px solid rgba(255,255,255,.3);border-radius:4px;font-size:.75rem;padding:6px 12px;cursor:pointer;font-weight:600;}
 .ms-btn:hover{background:rgba(255,255,255,.28);}
 .ms-info{display:none;font-size:.68rem;color:#a9cfb2;margin-top:3px;text-align:right;word-break:break-all;}
@@ -184,11 +190,13 @@ body:not(.is-admin) .somente-admin{display:none !important;}
       </div>
     </div>
   </div>
+  <div class="mod-switch" id="mod-switch"><button type="button" data-mod="int">🏢 Treinamentos internos</button><button type="button" data-mod="cli">🌱 Capacitação de clientes</button></div>
   <nav class="tabs" id="tabs">
     <button data-tab="painel" class="active">Painel</button>
+    <button data-tab="painelcli">Painel</button>
     <button data-tab="alertas">Alertas <span class="badge" id="badge-alertas" style="display:none"></span></button>
-    <button data-tab="pessoas">Pessoas</button>
     <button data-tab="clientes">Clientes</button>
+    <button data-tab="pessoas">Pessoas</button>
     <button data-tab="cursos">Treinamentos &amp; Matriz</button>
     <button data-tab="turmas">Turmas</button>
     <button data-tab="historico">Histórico</button>
@@ -218,9 +226,29 @@ body:not(.is-admin) .somente-admin{display:none !important;}
     </div>
     <div class="cols2" style="margin-bottom:16px;">
       <div class="card"><h3>Horas por aplicador / fornecedor <span class="h3-side" id="pn-forn-side"></span></h3><div id="pn-forn"></div></div>
-      <div class="card"><h3>Clientes capacitados <span class="h3-side" id="pn-cli-side"></span></h3><div id="pn-cli"></div></div>
+      <div class="card"><h3>Horas por departamento <span class="h3-side" id="pn-cli-side"></span></h3><div id="pn-cli"></div></div>
     </div>
     <div class="card"><h3>Ações prioritárias <span class="h3-side">vencidos e a vencer em até 30 dias</span></h3><div class="tablewrap" style="max-height:420px;"><table class="dt" id="pn-prio"></table></div></div>
+  </section>
+
+  <!-- ============ PAINEL CLIENTES ============ -->
+  <section class="pane" id="pane-painelcli">
+    <h2 class="pane-title">Painel — Capacitação de clientes</h2>
+    <p class="pane-desc">Clientes capacitados, horas aplicadas, satisfação e próximas turmas.</p>
+    <div class="flt"><select id="pc-ano"></select><select id="pc-uf"></select><select id="pc-resp"></select></div>
+    <div class="totals-strip" id="strip-pc"></div>
+    <div class="cols2" style="margin-bottom:16px;">
+      <div class="card"><h3>Horas aplicadas por mês <span class="h3-side">últimos 12 meses</span></h3><div id="pc-mes"></div></div>
+      <div class="card"><h3>Próximas turmas</h3><div id="pc-agenda"></div></div>
+    </div>
+    <div class="cols2" style="margin-bottom:16px;">
+      <div class="card"><h3>Horas por UF</h3><div id="pc-uf-ch"></div></div>
+      <div class="card"><h3>Horas por vendedor / revenda</h3><div id="pc-resp-ch"></div></div>
+    </div>
+    <div class="cols2" style="margin-bottom:16px;">
+      <div class="card"><h3>Clientes capacitados <span class="h3-side" id="pc-cli-side"></span></h3><div id="pc-cli"></div></div>
+      <div class="card"><h3>Satisfação por capacitação</h3><div id="pc-cap"></div></div>
+    </div>
   </section>
 
   <!-- ============ ALERTAS ============ -->
@@ -258,10 +286,11 @@ body:not(.is-admin) .somente-admin{display:none !important;}
     <p class="pane-desc">Funcionários (público interno) e clientes/parceiros (público externo).</p>
     <div class="flt">
       <input type="search" id="ps-busca" placeholder="Buscar nome, empresa, e-mail…">
-      <select id="ps-tipo"><option value="">Todos os tipos</option><option>Interno</option><option>Cliente</option><option>Externo</option></select>
+      <select id="ps-cli" class="so-cli"></select>
+      <select id="ps-tipo" class="so-int"><option value="">Todos os tipos</option><option value="Interno">Funcionários</option><option value="Externo">Terceiros / externos</option></select>
       <select id="ps-status"><option value="">Todos os status</option><option value="ATIVO">Ativo</option><option value="INATIVO">Inativo</option><option value="NI">Não informado</option></select>
-      <select id="ps-dep"></select>
-      <select id="ps-filial"></select>
+      <select id="ps-dep" class="so-int"></select>
+      <select id="ps-filial" class="so-int"></select>
       <button class="btn primary small" id="ps-novo" type="button">+ Nova pessoa</button>
     </div>
     <div class="card">
@@ -295,7 +324,7 @@ body:not(.is-admin) .somente-admin{display:none !important;}
         <button class="btn primary small" id="cs-novo" type="button">+ Novo treinamento</button></span></h3>
       <div class="tablewrap"><table class="dt" id="tbl-cursos"></table></div>
     </div>
-    <div class="card">
+    <div class="card so-int">
       <h3>Matriz de treinamentos obrigatórios <span class="h3-side">por departamento — só administradores editam</span></h3>
       <div class="flt"><label class="muted" for="mx-dep">Departamento:</label><select id="mx-dep"></select><span class="muted" id="mx-info"></span></div>
       <div class="matrix-list" id="mx-list"></div>
@@ -319,10 +348,10 @@ body:not(.is-admin) .somente-admin{display:none !important;}
     <p class="pane-desc">Todas as participações registradas. Clique em 🎓 para gerar o certificado em PDF.</p>
     <div class="flt">
       <input type="search" id="hs-busca" placeholder="Buscar pessoa ou treinamento…">
-      <select id="hs-tipo"><option value="">Interno e externo</option><option>Interno</option><option value="EXT">Clientes / externos</option></select>
-      <select id="hs-cli"></select>
+      <select id="hs-tipo" class="so-int"><option value="">Funcionários e terceiros</option><option value="Interno">Só funcionários</option><option value="EXT">Só terceiros / externos</option></select>
+      <select id="hs-cli" class="so-cli"></select>
       <select id="hs-curso"></select>
-      <select id="hs-dep"></select>
+      <select id="hs-dep" class="so-int"></select>
       <select id="hs-forn"></select>
       <select id="hs-per"><option value="">Todo o período</option><option value="sem0">Esta semana</option><option value="sem1">Semana passada</option><option value="sem4">Últimas 4 semanas</option><option value="mes">Este mês</option><option value="semx">Escolher semana…</option></select>
       <input type="week" id="hs-sem" style="display:none;border:1px solid var(--borda);border-radius:4px;padding:7px 9px;font-size:.9rem;background:#fffdf9;">
@@ -488,6 +517,35 @@ function opts(list,sel,vazio){return (vazio!=null?`<option value="">${esc(vazio)
 function uniq(a){return Array.from(new Set(a.filter(x=>x!=null&&String(x).trim()!==''))).sort((x,y)=>String(x).localeCompare(String(y),'pt-BR'));}
 function setSel(id,list,vazio){const el=$(id);if(!el)return;const cur=el.value;el.innerHTML=opts(list,cur,vazio);if(cur&&!list.some(v=>String(typeof v==='object'?v.v:v)===cur))el.value='';}
 
+/* ============================ MÓDULOS (Interno × Clientes) ============================ */
+let MOD=(()=>{try{return localStorage.getItem('maqcampo-treinamentos-mod')==='cli'?'cli':'int';}catch(e){return 'int';}})();
+function pessoaNoMod(p,m){m=m||MOD;return m==='cli'?p.tipo==='Cliente':p.tipo!=='Cliente';}
+function cursoNoMod(c,m){m=m||MOD;const pub=c.publico||'Interno';return m==='cli'?pub!=='Interno':pub!=='Cliente';}
+function turmaMod(t){if(t.modulo)return t.modulo;const c=getRec('cursos',t.cursoId);if(c&&c.publico==='Cliente')return 'cli';const ps=Object.keys(t.inscritos||{}).map(pid=>getRec('pessoas',pid)).filter(Boolean);if(ps.length&&ps.some(p=>p.tipo==='Cliente'))return 'cli';return 'int';}
+function turmasMod(){return live('turmas').filter(t=>turmaMod(t)===MOD);}
+const MOD_TABS={int:['painel','alertas','pessoas','cursos','turmas','historico','parametros'],cli:['painelcli','clientes','pessoas','cursos','turmas','historico','parametros']};
+const MOD_TXT={
+  int:{pessoas:['Funcionários','Funcionários','Colaboradores da MCPO (e terceiros que fazem treinamentos internos).'],cursos:['Treinamentos & Matriz','Treinamentos & Matriz de obrigatórios','Catálogo de treinamentos internos (vigência em meses: 0 = sem vencimento) e quais são obrigatórios por departamento.'],turmas:'Turmas de treinamentos internos: agende, inscreva funcionários, convide, registre presença e resultado.',historico:'Treinamentos internos realizados. Clique em 🎓 para gerar o certificado em PDF.'},
+  cli:{pessoas:['Participantes','Participantes de clientes','Pessoas dos clientes (fazendas/empresas) que participam das capacitações.'],cursos:['Capacitações','Catálogo de capacitações','Capacitações oferecidas a clientes — produto, operação, plataformas.'],turmas:'Turmas de capacitação de clientes: agende, inscreva participantes, convide, registre presença, resultado e satisfação.',historico:'Capacitações de clientes realizadas. Clique em 🎓 para gerar o certificado em PDF.'}
+};
+function modulosPermitidos(){const nv=nivelAcesso();if(nv==='admin'||nv==='local'||nv==='deslogado')return ['int','cli'];const m=(acesso.modulos||{})[emailAtual()];return m&&m.length?m:['int','cli'];}
+function applyModule(){
+  const perm=modulosPermitidos();if(!perm.includes(MOD))MOD=perm[0];
+  $('mod-switch').style.display=perm.length>1?'':'none';
+  $('mod-switch').querySelectorAll('[data-mod]').forEach(b=>b.classList.toggle('on',b.dataset.mod===MOD));
+  document.body.dataset.mod=MOD;
+  const tx=MOD_TXT[MOD];
+  document.querySelector('#tabs button[data-tab="pessoas"]').textContent=tx.pessoas[0];
+  document.querySelector('#tabs button[data-tab="cursos"]').textContent=tx.cursos[0];
+  $('pane-pessoas').querySelector('.pane-title').textContent=tx.pessoas[1];$('pane-pessoas').querySelector('.pane-desc').textContent=tx.pessoas[2];
+  $('pane-cursos').querySelector('.pane-title').textContent=tx.cursos[1];$('pane-cursos').querySelector('.pane-desc').textContent=tx.cursos[2];
+  $('pane-turmas').querySelector('.pane-desc').textContent=tx.turmas;$('pane-historico').querySelector('.pane-desc').textContent=tx.historico;
+  document.querySelectorAll('#tabs button[data-tab]').forEach(b=>{if(b.dataset.tab==='parametros')return;b.style.display=MOD_TABS[MOD].includes(b.dataset.tab)?'':'none';});
+  if(!MOD_TABS[MOD].includes(abaAtiva())||document.querySelector('#tabs button.active').style.display==='none'){const first=document.querySelector(`#tabs button[data-tab="${MOD_TABS[MOD][0]}"]`);document.querySelectorAll('nav.tabs button').forEach(b=>b.classList.remove('active'));first.classList.add('active');document.querySelectorAll('section.pane').forEach(p=>p.classList.remove('active'));$('pane-'+first.dataset.tab).classList.add('active');}
+}
+function setMod(m){MOD=m;try{localStorage.setItem('maqcampo-treinamentos-mod',m);}catch(e){}['ps-busca','hs-busca','cs-busca'].forEach(id=>{if($(id))$(id).value='';});['ps-dep','ps-filial','ps-tipo','ps-cli','hs-tipo','hs-cli','hs-curso','hs-dep','hs-forn','tm-status'].forEach(id=>{if($(id)&&id!=='tm-status')$(id).value='';});invalidate();applyModule();renderAll();}
+document.addEventListener('click',e=>{const b=e.target.closest&&e.target.closest('#mod-switch [data-mod]');if(b&&b.dataset.mod!==MOD)setMod(b.dataset.mod);});
+
 /* ============================ DOMÍNIO ============================ */
 const UFS=['AC','AL','AP','AM','BA','CE','DF','ES','GO','MA','MT','MS','MG','PA','PB','PR','PE','PI','RJ','RN','RS','RO','RR','SC','SP','SE','TO'];
 const SATISF=[{v:'',l:'—'},{v:'5',l:'5 · Excelente'},{v:'4',l:'4 · Bom'},{v:'3',l:'3 · Regular'},{v:'2',l:'2 · Ruim'},{v:'1',l:'1 · Péssimo'}];
@@ -521,9 +579,11 @@ function validadeAte(h){const c=getRec('cursos',h.cursoId);if(!c||!n(c.validadeM
 
 // Índice derivado (recalculado a cada render)
 function buildIdx(){
-  const pessoas=live('pessoas'),cursos=live('cursos'),hist=live('hist');
+  const todasP=live('pessoas'),todosC=live('cursos');
   const P={},C={},porPessoa={};
-  pessoas.forEach(p=>P[p.id]=p);cursos.forEach(c=>C[c.id]=c);
+  todasP.forEach(p=>P[p.id]=p);todosC.forEach(c=>C[c.id]=c);
+  const pessoas=todasP.filter(p=>pessoaNoMod(p)),cursos=todosC.filter(c=>cursoNoMod(c));
+  const hist=live('hist').filter(h=>P[h.pessoaId]&&pessoaNoMod(P[h.pessoaId]));
   hist.forEach(h=>{if(!P[h.pessoaId])return;(porPessoa[h.pessoaId]=porPessoa[h.pessoaId]||[]).push(h);});
   const cfg=state.config.alertas,hoje=hojeISO(),matriz=state.config.matriz||{};
   const itens=[];
@@ -580,7 +640,7 @@ function renderPainel(){
   const cliAno=histAno.filter(h=>(I.P[h.pessoaId].tipo||'Interno')!=='Interno');
   const cliDist=new Set(cliAno.map(h=>grupoCliente(I.P[h.pessoaId]))).size;
   const hoje=hojeISO();
-  const turmasFut=live('turmas').filter(t=>t.status==='Agendada'&&(t.inicio||'')>=hoje);
+  const turmasFut=turmasMod().filter(t=>t.status==='Agendada'&&(t.inicio||'')>=hoje);
   $('strip-painel').innerHTML=
     tbox('Conformidade global',pctTxt(conf.ok,conf.total),`${int(conf.ok)} de ${int(conf.total)} pessoas sem vencidos/pendentes`)+
     tbox('Vencidos + pendentes',int(cnt.vencido+cnt.pendente),`${int(cnt.vencido)} vencidos · ${int(cnt.pendente)} nunca realizados`,{accent:true})+
@@ -588,7 +648,7 @@ function renderPainel(){
     tbox('Pessoas ativas (interno)',int(ativos),'status diferente de inativo')+
     tbox('Treinamentos realizados '+ano,int(histAno.length),`${int(noMes)} no mês atual`)+
     tbox('Horas de treinamento '+ano,hrs(horasAno),`${int(new Set(histAno.map(h=>h.pessoaId)).size)} pessoas treinadas`)+
-    tbox('Clientes capacitados '+ano,int(cliDist),`${int(cliAno.length)} participações · satisfação ${fmtSat(mediaSat(cliAno))}`)+
+    tbox('Reprovações '+ano,int(I.hist.filter(h=>h.situacao==='REPROVADO'&&(h.data||'').startsWith(ano)&&(!($('pn-filial').value||$('pn-dep').value)||filtroPainel(I.P[h.pessoaId]))).length),'participações reprovadas no ano')+
     tbox('Turmas agendadas',int(turmasFut.length),turmasFut.length?'próxima em '+fmtD(turmasFut.map(t=>t.inicio).sort()[0]):'nenhuma futura');
   const temMatriz=Object.values(state.config.matriz||{}).some(a=>a&&a.length);
   const temVal=I.cursos.some(c=>n(c.validadeMeses)>0);
@@ -615,12 +675,11 @@ function renderPainel(){
   const fl=Object.entries(pf).sort((a,b)=>b[1]-a[1]).slice(0,10);const fm=Math.max(1,...fl.map(x=>x[1]));
   $('pn-forn-side').textContent=ano;
   $('pn-forn').innerHTML=fl.length?`<div class="hbars">${fl.map(([k,v])=>`<div class="hbar"><span class="lb" title="${esc(k)}">${esc(k)}</span><span class="tr"><span style="width:${v/fm*100}%;background:var(--azul-claro)"></span></span><span class="vl">${Math.round(v)}h</span></div>`).join('')}</div>`:`<div class="empty">Nenhum treinamento em ${ano}.</div>`;
-  // clientes
-  const pc={};cliAno.forEach(h=>{const p=I.P[h.pessoaId];const k=grupoCliente(p);pc[k]=pc[k]||{id:p.clienteId,nome:nomeEmpresa(p)||p.nome,uf:cidadeUf(cliOf(p)),h:0,n:0,hs:[]};pc[k].h+=n(h.horas);pc[k].n++;pc[k].hs.push(h);});
-  const cl=Object.values(pc).sort((a,b)=>b.h-a.h);
-  $('pn-cli-side').textContent=ano+' · '+cl.length+' cliente(s)';
-  $('pn-cli').innerHTML=cl.length?`<div class="tablewrap" style="max-height:260px;"><table class="dt"><thead><tr><th>Cliente</th><th>Cidade / UF</th><th class="r">Treinam.</th><th class="r">Horas</th><th class="r">Satisf.</th></tr></thead><tbody>${cl.map(v=>`<tr${v.id?` class="click" data-cli="${esc(v.id)}"`:''}><td>${esc(v.nome)}</td><td>${esc(v.uf)}</td><td class="num">${v.n}</td><td class="num">${(Math.round(v.h*10)/10).toLocaleString('pt-BR')}</td><td class="num">${fmtSat(mediaSat(v.hs))}</td></tr>`).join('')}</tbody></table></div>`:`<div class="empty">Nenhuma capacitação de cliente em ${ano}.</div>`;
-  $('pn-cli').querySelectorAll('[data-cli]').forEach(r=>r.onclick=()=>abrirCliente(r.dataset.cli));
+  // horas por departamento
+  const pd={};histAno.forEach(h=>{const k=I.P[h.pessoaId].departamento||'(sem dep.)';pd[k]=(pd[k]||0)+n(h.horas);});
+  const dl2=Object.entries(pd).sort((a,b)=>b[1]-a[1]).slice(0,12);const dm=Math.max(1,...dl2.map(x=>x[1]));
+  $('pn-cli-side').textContent=ano;
+  $('pn-cli').innerHTML=dl2.length?`<div class="hbars">${dl2.map(([k,v])=>`<div class="hbar"><span class="lb" title="${esc(k)}">${esc(k)}</span><span class="tr"><span style="width:${v/dm*100}%;background:var(--ferrugem)"></span></span><span class="vl">${Math.round(v)}h</span></div>`).join('')}</div>`:`<div class="empty">Nenhum treinamento em ${ano}.</div>`;
   // prioridades
   const pr=itens.filter(i=>i.status==='vencido'||i.status==='urgente'||(i.status==='pendente'&&i.obrig)).sort(ordItens);
   $('pn-prio').innerHTML=`<thead><tr><th>Status</th><th>Pessoa</th><th>Departamento</th><th>Filial</th><th>Treinamento</th><th>Última conclusão</th><th>Vencimento</th><th class="r">Dias</th></tr></thead><tbody>${pr.slice(0,60).map(i=>`<tr class="click" data-pid="${i.pessoaId}"><td>${stBadge(i.status)}</td><td>${esc(i.p.nome)}</td><td>${esc(i.p.departamento||'')}</td><td>${esc(i.p.filial||'')}</td><td>${esc(i.c.nome)}</td><td class="nw">${fmtD(i.ultima)}</td><td class="nw">${fmtD(i.venc)}</td><td class="num">${i.dias==null?'—':i.dias}</td></tr>`).join('')||`<tr><td colspan="8" class="empty">Nenhuma ação prioritária. 👏</td></tr>`}${pr.length>60?`<tr><td colspan="8" class="muted">… e mais ${pr.length-60}. Veja a aba Alertas.</td></tr>`:''}</tbody>`;
@@ -628,6 +687,48 @@ function renderPainel(){
 }
 function ordItens(a,b){return STATUS_ORD[a.status]-STATUS_ORD[b.status]||(a.dias==null?1e9:a.dias)-(b.dias==null?1e9:b.dias)||a.p.nome.localeCompare(b.p.nome,'pt-BR');}
 ['pn-filial','pn-dep','pn-ano'].forEach(id=>$(id).addEventListener('change',renderPainel));
+
+/* ============================ PAINEL CLIENTES ============================ */
+function renderPainelCli(){
+  const I=idx();
+  const anoSel=$('pc-ano');const cur=anoSel.value||String(new Date().getFullYear());anoSel.innerHTML=opts(anosHist(),cur);const ano=anoSel.value;
+  setSel('pc-uf',uniq(live('clientes').map(c=>c.uf)),'Todas as UFs');setSel('pc-resp',uniq([...listaVend(),...live('clientes').map(c=>c.revenda)]),'Todos vendedores / revendas');
+  const uf=$('pc-uf').value,rs=$('pc-resp').value;
+  const okCli=c=>(!uf||(c&&c.uf===uf))&&(!rs||(c&&(c.vendedor===rs||c.revenda===rs)));
+  const histF=I.hist.filter(h=>SIT_VALIDAS.includes(h.situacao)&&okCli(cliOf(I.P[h.pessoaId])));
+  const histAno=histF.filter(h=>(h.data||'').startsWith(ano));
+  const clientes=live('clientes').filter(c=>okCli(c));
+  const cap=new Set(histAno.map(h=>grupoCliente(I.P[h.pessoaId])));
+  const horas=histAno.reduce((t,h)=>t+n(h.horas),0);const mesAtual=hojeISO().slice(0,7);
+  const hoje=hojeISO();const tf=turmasMod().filter(t=>t.status==='Agendada'&&(t.inicio||'')>=hoje).sort((a,b)=>(a.inicio||'').localeCompare(b.inicio||''));
+  const pivos=clientes.filter(c=>cap.has(c.id)).reduce((t,c)=>t+n(c.nPivos),0);
+  $('strip-pc').innerHTML=
+    tbox('Clientes capacitados '+ano,int(cap.size),`de ${int(clientes.length)} clientes cadastrados`)+
+    tbox('Participantes treinados',int(new Set(histAno.map(h=>h.pessoaId)).size),`${int(histAno.length)} participações`)+
+    tbox('Horas aplicadas '+ano,hrs(horas),`${hrs(histF.filter(h=>(h.data||'').startsWith(mesAtual)).reduce((t,h)=>t+n(h.horas),0))} no mês atual`)+
+    tbox('Satisfação média',fmtSat(mediaSat(histAno)),`${int(histAno.filter(h=>n(h.satisfacao)).length)} avaliação(ões)`,{accent:true})+
+    tbox('Pivôs dos clientes capacitados',int(pivos),'conforme cadastro do cliente')+
+    tbox('Capacitações diferentes',int(new Set(histAno.map(h=>h.cursoId)).size),'no ano')+
+    tbox('Clientes sem capacitação '+ano,int(clientes.filter(c=>!cap.has(c.id)).length),'cadastrados e não treinados')+
+    tbox('Turmas agendadas',int(tf.length),tf.length?'próxima em '+fmtD(tf[0].inicio):'nenhuma futura');
+  // mês
+  const meses=[];const d0=new Date();d0.setDate(1);for(let i=11;i>=0;i--){const d=new Date(d0.getFullYear(),d0.getMonth()-i,1);meses.push(d.getFullYear()+'-'+pad(d.getMonth()+1));}
+  const pm=meses.map(m=>histF.filter(h=>(h.data||'').startsWith(m)).reduce((t,h)=>t+n(h.horas),0));const mx=Math.max(1,...pm);
+  $('pc-mes').innerHTML=`<div class="cols-chart">${meses.map((m,i)=>`<div class="col" title="${MESES[+m.slice(5)-1]}/${m.slice(0,4)}: ${hrs(pm[i])}"><b>${pm[i]?Math.round(pm[i]):''}</b><i style="height:${pm[i]/mx*110}px"></i><small>${MESES[+m.slice(5)-1]}${m.slice(5)==='01'?'/'+m.slice(2,4):''}</small></div>`).join('')}</div>`;
+  const barras=(el,obj,cor)=>{const L=Object.entries(obj).sort((a,b)=>b[1]-a[1]).slice(0,12);const m=Math.max(1,...L.map(x=>x[1]));$(el).innerHTML=L.length?`<div class="hbars">${L.map(([k,v])=>`<div class="hbar"><span class="lb" title="${esc(k)}">${esc(k)}</span><span class="tr"><span style="width:${v/m*100}%;background:${cor}"></span></span><span class="vl">${Math.round(v)}h</span></div>`).join('')}</div>`:`<div class="empty">Sem dados em ${ano}.</div>`;};
+  const pu={},pr={},pcap={};histAno.forEach(h=>{const c=cliOf(I.P[h.pessoaId]);const k1=(c&&c.uf)||'(UF não informada)';pu[k1]=(pu[k1]||0)+n(h.horas);const k2=(c&&(c.vendedor||c.revenda))||'(não informado)';pr[k2]=(pr[k2]||0)+n(h.horas);const k3=nomeCurso(h.cursoId);pcap[k3]=pcap[k3]||{h:0,n:0,hs:[]};pcap[k3].h+=n(h.horas);pcap[k3].n++;pcap[k3].hs.push(h);});
+  barras('pc-uf-ch',pu,'var(--azul-claro)');barras('pc-resp-ch',pr,'var(--ferrugem)');
+  const lc=Object.entries(pcap).sort((a,b)=>b[1].h-a[1].h);
+  $('pc-cap').innerHTML=lc.length?`<div class="tablewrap" style="max-height:280px;"><table class="dt"><thead><tr><th>Capacitação</th><th class="r">Particip.</th><th class="r">Horas</th><th class="r">Satisf.</th></tr></thead><tbody>${lc.map(([k,v])=>`<tr><td>${esc(k)}</td><td class="num">${v.n}</td><td class="num">${(Math.round(v.h*10)/10).toLocaleString('pt-BR')}</td><td class="num">${fmtSat(mediaSat(v.hs))}</td></tr>`).join('')}</tbody></table></div>`:`<div class="empty">Sem capacitações em ${ano}.</div>`;
+  const pc={};histAno.forEach(h=>{const p=I.P[h.pessoaId];const k=grupoCliente(p);pc[k]=pc[k]||{id:p.clienteId,nome:nomeEmpresa(p)||p.nome,uf:cidadeUf(cliOf(p)),h:0,n:0,hs:[]};pc[k].h+=n(h.horas);pc[k].n++;pc[k].hs.push(h);});
+  const cl=Object.values(pc).sort((a,b)=>b.h-a.h);
+  $('pc-cli-side').textContent=ano+' · '+cl.length+' cliente(s)';
+  $('pc-cli').innerHTML=cl.length?`<div class="tablewrap" style="max-height:280px;"><table class="dt"><thead><tr><th>Cliente</th><th>Cidade / UF</th><th class="r">Particip.</th><th class="r">Horas</th><th class="r">Satisf.</th></tr></thead><tbody>${cl.map(v=>`<tr${v.id?` class="click" data-cli="${esc(v.id)}"`:''}><td>${esc(v.nome)}</td><td>${esc(v.uf)}</td><td class="num">${v.n}</td><td class="num">${(Math.round(v.h*10)/10).toLocaleString('pt-BR')}</td><td class="num">${fmtSat(mediaSat(v.hs))}</td></tr>`).join('')}</tbody></table></div>`:`<div class="empty">Nenhuma capacitação em ${ano}.</div>`;
+  $('pc-cli').querySelectorAll('[data-cli]').forEach(r=>r.onclick=()=>abrirCliente(r.dataset.cli));
+  $('pc-agenda').innerHTML=tf.length?tf.slice(0,6).map(t=>{const d=dataLocal(t.inicio);const ins=Object.keys(t.inscritos||{}).length;return `<div class="agenda-item"><div class="agenda-date"><b>${pad(d.getDate())}</b><small>${MESES[d.getMonth()]}</small></div><div style="flex:1;min-width:0;"><div style="font-weight:700;">${esc(nomeCurso(t.cursoId))}</div><div class="muted">${esc(t.local||'local a definir')}${t.hora?' · '+esc(t.hora):''}</div><div class="muted">${ins} inscrito(s)</div></div><button class="btn ghost tiny" data-abrir-turma="${t.id}" type="button">Abrir</button></div>`;}).join(''):`<div class="empty">Nenhuma turma agendada.</div>`;
+  $('pc-agenda').querySelectorAll('[data-abrir-turma]').forEach(b=>b.onclick=()=>abrirTurma(b.dataset.abrirTurma));
+}
+['pc-ano','pc-uf','pc-resp'].forEach(id=>$(id).addEventListener('change',renderPainelCli));
 
 /* ============================ ALERTAS ============================ */
 function alertasFiltrados(){
@@ -669,17 +770,22 @@ $('al-excel').onclick=()=>{const L=alertasFiltrados();exportXlsx('Alertas_Treina
 
 /* ============================ PESSOAS ============================ */
 function pessoasFiltradas(){
-  const I=idx();const q=chave($('ps-busca').value),t=$('ps-tipo').value,s=$('ps-status').value,d=$('ps-dep').value,f=$('ps-filial').value;
-  return I.pessoas.filter(p=>(!t||(p.tipo||'Interno')===t)&&(!s||pessoaStatus(p)===s)&&(!d||p.departamento===d)&&(!f||p.filial===f)&&(!q||chave([p.nome,nomeEmpresa(p),p.email,p.cargo,p.cpf].join(' ')).includes(q))).sort((a,b)=>a.nome.localeCompare(b.nome,'pt-BR'));
+  const I=idx();const q=chave($('ps-busca').value),t=MOD==='cli'?'':$('ps-tipo').value,s=$('ps-status').value,d=MOD==='cli'?'':$('ps-dep').value,f=MOD==='cli'?'':$('ps-filial').value,cf=MOD==='cli'?$('ps-cli').value:'';
+  return I.pessoas.filter(p=>(!cf||p.clienteId===cf)&&(!t||(p.tipo||'Interno')===t)&&(!s||pessoaStatus(p)===s)&&(!d||p.departamento===d)&&(!f||p.filial===f)&&(!q||chave([p.nome,nomeEmpresa(p),p.email,p.cargo,p.cpf].join(' ')).includes(q))).sort((a,b)=>a.nome.localeCompare(b.nome,'pt-BR'));
 }
 function renderPessoas(){
   setSel('ps-dep',listaDeps(),'Todos os departamentos');setSel('ps-filial',listaFiliais(),'Todas as filiais');
-  const I=idx();const L=pessoasFiltradas();$('ps-count').textContent=int(L.length)+' pessoa(s)';
+  setSel('ps-cli',clientesOrd().map(c=>({v:c.id,l:c.nome})),'Todos os clientes');
+  const I=idx();const L=pessoasFiltradas();$('ps-count').textContent=int(L.length)+(MOD==='cli'?' participante(s)':' pessoa(s)');
+  if(MOD==='cli'){
+    $('tbl-pessoas').innerHTML=`<thead><tr><th>Nome</th><th>Cliente</th><th>Cidade / UF</th><th>Setor / função</th><th>Contato</th><th>Status</th><th class="r">Capacitações</th><th class="r">Horas</th><th class="r">Satisf.</th></tr></thead><tbody>${L.map(p=>{const hs=(I.porPessoa[p.id]||[]).filter(h=>SIT_VALIDAS.includes(h.situacao));const ps=pessoaStatus(p);return `<tr class="click" data-pid="${p.id}"><td><b>${esc(p.nome)}</b></td><td>${esc(nomeEmpresa(p))||'<span class="muted">sem cliente</span>'}</td><td>${esc(cidadeUf(cliOf(p)))}</td><td>${esc(p.setor||p.cargo||'')}</td><td class="muted">${esc(p.email||'')}${p.email&&p.telefone?'<br>':''}${esc(p.telefone||'')}</td><td><span class="reg ${ps==='ATIVO'?'R1':ps==='INATIVO'?'R2':'R3'}">${ps==='NI'?'NÃO INF.':ps}</span></td><td class="num">${hs.length}</td><td class="num">${(Math.round(hs.reduce((t,h)=>t+n(h.horas),0)*10)/10).toLocaleString('pt-BR')}</td><td class="num">${fmtSat(mediaSat(hs))}</td></tr>`;}).join('')||`<tr><td colspan="9" class="empty">Nenhum participante encontrado.</td></tr>`}</tbody>`;
+    $('tbl-pessoas').querySelectorAll('tr[data-pid]').forEach(r=>r.onclick=()=>abrirPessoa(r.dataset.pid));return;
+  }
   const itensPor={};I.itens.forEach(i=>{(itensPor[i.pessoaId]=itensPor[i.pessoaId]||[]).push(i);});
   $('tbl-pessoas').innerHTML=`<thead><tr><th>Nome</th><th>Tipo</th><th>Departamento / Empresa</th><th>Filial</th><th>Status</th><th class="r">Treinamentos</th><th class="r">Horas</th><th>Situação</th></tr></thead><tbody>${L.map(p=>{const hs=(I.porPessoa[p.id]||[]).filter(h=>SIT_VALIDAS.includes(h.situacao));const its=itensPor[p.id]||[];const ruim=its.filter(i=>i.status==='vencido'||i.status==='pendente').length,av=its.filter(i=>i.status==='urgente'||i.status==='atencao').length;const ps=pessoaStatus(p);return `<tr class="click" data-pid="${p.id}"><td><b>${esc(p.nome)}</b>${p.email?`<div class="muted">${esc(p.email)}</div>`:''}</td><td><span class="reg ${(p.tipo||'Interno')==='Interno'?'R1':'R2'}">${esc(p.tipo||'Interno')}</span></td><td>${esc((p.tipo||'Interno')==='Interno'?(p.departamento||''):(nomeEmpresa(p)||p.departamento||''))}${p.cargo?`<div class="muted">${esc(p.cargo)}</div>`:''}</td><td>${esc(p.filial||'')}</td><td><span class="reg ${ps==='ATIVO'?'R1':ps==='INATIVO'?'R2':'R3'}">${ps==='NI'?'NÃO INF.':ps}</span></td><td class="num">${hs.length}</td><td class="num">${Math.round(hs.reduce((s,h)=>s+n(h.horas),0))}</td><td>${!its.length?'<span class="muted">—</span>':ruim?stBadge(its.some(i=>i.status==='vencido')?'vencido':'pendente')+` <span class="muted">${ruim}</span>`:av?stBadge(its.some(i=>i.status==='urgente')?'urgente':'atencao'):stBadge('emdia')}</td></tr>`;}).join('')||`<tr><td colspan="8" class="empty">Nenhuma pessoa encontrada.</td></tr>`}</tbody>`;
   $('tbl-pessoas').querySelectorAll('tr[data-pid]').forEach(r=>r.onclick=()=>abrirPessoa(r.dataset.pid));
 }
-['ps-busca','ps-tipo','ps-status','ps-dep','ps-filial'].forEach(id=>$(id).addEventListener(id==='ps-busca'?'input':'change',renderPessoas));
+['ps-busca','ps-tipo','ps-status','ps-dep','ps-filial','ps-cli'].forEach(id=>$(id).addEventListener(id==='ps-busca'?'input':'change',renderPessoas));
 $('ps-novo').onclick=()=>abrirPessoa(null);
 $('ps-excel').onclick=()=>{const L=pessoasFiltradas();exportXlsx('Pessoas_'+hojeISO()+'.xlsx','Pessoas',['Nome','Tipo','CPF/CNPJ','E-mail','Telefone','Departamento','Cargo','Filial','Admissão','Gestor','E-mail gestor','Status','Cliente','Cidade / UF','Vendedor','Revenda','Setor / função','Observações'],L.map(p=>{const c=cliOf(p)||{};return [p.nome,p.tipo||'Interno',p.cpf||'',p.email||'',p.telefone||'',p.departamento||'',p.cargo||'',p.filial||'',p.admissao?dataLocal(p.admissao):'',p.gestor||'',p.gestorEmail||'',p.status||'',nomeEmpresa(p),cidadeUf(c),c.vendedor||'',c.revenda||'',p.setor||'',p.obs||''];}));};
 
@@ -696,12 +802,12 @@ function val(id){const el=$(id);return el?normTxt(el.value):'';}
 
 /* ============================ PESSOA (detalhe/edição) ============================ */
 function abrirPessoa(pid,preset){
-  const p=pid?Object.assign({},getRec('pessoas',pid)):Object.assign({tipo:'Interno',status:'ATIVO'},preset||{});
+  const p=pid?Object.assign({},getRec('pessoas',pid)):Object.assign({tipo:MOD==='cli'?'Cliente':'Interno',status:'ATIVO'},preset||{});
   if(pid&&!getRec('pessoas',pid)){toast('Pessoa não encontrada.');return;}
   const I=idx();
   const hs=pid?(I.porPessoa[pid]||[]).slice().sort((a,b)=>(b.data||'').localeCompare(a.data||'')):[];
   const its=pid?I.itens.filter(i=>i.pessoaId===pid).sort(ordItens):[];
-  const tipoOpts=opts(['Interno','Cliente','Externo'],p.tipo||'Interno');
+  const tipoOpts=p.tipo==='Cliente'?opts([{v:'Cliente',l:'Participante de cliente'}],'Cliente'):opts([{v:'Interno',l:'Funcionário (interno)'},{v:'Externo',l:'Terceiro / externo'}],p.tipo||'Interno');
   const stOpts=opts([{v:'ATIVO',l:'Ativo'},{v:'INATIVO',l:'Inativo'},{v:'',l:'Não informado'}],p.status||'');
   let html=`<div class="grid">
     ${fld('pe-nome','Nome completo *',p.nome,{full:true})}
@@ -854,7 +960,7 @@ function renderMatriz(){
 }
 $('mx-dep').addEventListener('change',renderMatriz);
 function abrirCurso(cid){
-  const c=cid?Object.assign({},getRec('cursos',cid)):{ativo:true,publico:'Interno',modalidade:'PRESENCIAL',validadeMeses:0};
+  const c=cid?Object.assign({},getRec('cursos',cid)):{ativo:true,publico:MOD==='cli'?'Cliente':'Interno',modalidade:'PRESENCIAL',validadeMeses:0};
   const nPart=cid?idx().hist.filter(h=>h.cursoId===cid).length:0;
   const html=`<div class="grid">
     ${fld('cu-nome','Nome do treinamento *',c.nome,{full:true})}
@@ -863,7 +969,7 @@ function abrirCurso(cid){
     ${fld('cu-ch','Carga horária (h)',c.cargaHoraria,{type:'number',step:'0.5'})}
     ${fld('cu-val','Vigência (meses) — 0 = sem vencimento',c.validadeMeses||0,{type:'number'})}
     ${fld('cu-mod','Modalidade',null,{type:'select',options:opts(['PRESENCIAL','ONLINE','HÍBRIDO'],c.modalidade||'PRESENCIAL')})}
-    ${fld('cu-pub','Público',null,{type:'select',options:opts(['Interno','Cliente','Ambos'],c.publico||'Interno')})}
+    ${fld('cu-pub','Público (em qual módulo aparece)',null,{type:'select',options:opts([{v:'Interno',l:'Só interno'},{v:'Cliente',l:'Só clientes'},{v:'Ambos',l:'Interno e clientes'}],c.publico||'Interno')})}
     ${fld('cu-preco','Preço para clientes (R$)',c.preco,{type:'number',step:'0.01'})}
     ${fld('cu-ativo','Situação',null,{type:'select',options:opts([{v:'1',l:'Ativo'},{v:'0',l:'Inativo (fora do catálogo)'}],c.ativo===false?'0':'1')})}
     ${fld('cu-cont','Conteúdo programático (sai no verso do certificado)',c.conteudo,{type:'textarea',full:true})}
@@ -885,7 +991,7 @@ function abrirCurso(cid){
 /* ============================ TURMAS ============================ */
 function renderTurmas(){
   const st=$('tm-status').value;const hoje=hojeISO();
-  const L=live('turmas').filter(t=>!st||t.status===st).sort((a,b)=>st==='Agendada'?(a.inicio||'').localeCompare(b.inicio||''):(b.inicio||'').localeCompare(a.inicio||''));
+  const L=turmasMod().filter(t=>!st||t.status===st).sort((a,b)=>st==='Agendada'?(a.inicio||'').localeCompare(b.inicio||''):(b.inicio||'').localeCompare(a.inicio||''));
   $('tm-count').textContent=int(L.length)+' turma(s)';
   $('tbl-turmas').innerHTML=`<thead><tr><th>Início</th><th>Término</th><th>Treinamento</th><th>Local / link</th><th>Instrutor</th><th class="r">Inscritos</th><th>Respostas</th><th>Status</th></tr></thead><tbody>${L.map(t=>{const ins=Object.keys(t.inscritos||{}).length;const nconf=Object.values(t.inscritos||{}).filter(r=>r.resposta==='confirmado').length;const nrec=Object.values(t.inscritos||{}).filter(r=>r.resposta==='recusado').length;const atras=t.status==='Agendada'&&(t.fim||t.inicio)<hoje;return `<tr class="click" data-tid="${t.id}"><td class="nw">${fmtD(t.inicio)}${t.hora?' '+esc(t.hora):''}</td><td class="nw">${fmtD(t.fim||t.inicio)}</td><td><b>${esc(nomeCurso(t.cursoId))}</b></td><td>${esc(t.local||'')}</td><td>${esc(t.instrutor||'')}</td><td class="num">${ins}${n(t.vagas)?' / '+n(t.vagas):''}</td><td class="nw">${nconf?`<span class="reg R1">✔ ${nconf}</span> `:''}${nrec?`<span class="reg R2">✖ ${nrec}</span>`:''}${!nconf&&!nrec?'<span class="muted">—</span>':''}</td><td><span class="reg ${t.status==='Concluída'?'R1':t.status==='Cancelada'?'R3':'R2'}">${esc(t.status)}</span>${atras?' <span class="muted" title="Data já passou — registre a presença e conclua">⚠ concluir</span>':''}</td></tr>`;}).join('')||`<tr><td colspan="8" class="empty">Nenhuma turma.</td></tr>`}</tbody>`;
   $('tbl-turmas').querySelectorAll('tr[data-tid]').forEach(r=>r.onclick=()=>abrirTurma(r.dataset.tid));
@@ -894,7 +1000,7 @@ $('tm-status').addEventListener('change',renderTurmas);
 $('tm-nova').onclick=()=>abrirTurma(null);
 function abrirTurma(tid){
   const orig=tid?getRec('turmas',tid):null;
-  const t=orig?clone(orig):{status:'Agendada',inscritos:{},inicio:hojeISO()};
+  const t=orig?clone(orig):{status:'Agendada',inscritos:{},inicio:hojeISO(),modulo:MOD};if(!t.modulo)t.modulo=turmaMod(t);
   t.inscritos=t.inscritos||{};
   const I=idx();
   const cursos=cursosOrdenados().filter(c=>c.ativo!==false||c.id===t.cursoId);
@@ -916,8 +1022,8 @@ function abrirTurma(tid){
     <div class="flt">
       <input type="text" id="tu-add" list="dl-pessoas" placeholder="Digite o nome para inscrever…" style="flex:1;min-width:200px;">
       <button class="btn ghost small" id="tu-add-b" type="button">+ Inscrever</button>
-      <select id="tu-add-dep">${opts(listaDeps(),'','Inscrever departamento…')}</select>
-      <button class="btn ghost small" id="tu-add-pend" type="button" title="Inscreve quem tem este treinamento vencido, a vencer ou pendente">+ Quem precisa reciclar</button>
+      ${t.modulo==='cli'?`<select id="tu-add-cli">${opts(clientesOrd().map(c=>({v:c.id,l:c.nome})),'','Inscrever participantes do cliente…')}</select>`:`<select id="tu-add-dep">${opts(listaDeps(),'','Inscrever departamento…')}</select>
+      <button class="btn ghost small" id="tu-add-pend" type="button" title="Inscreve quem tem este treinamento vencido, a vencer ou pendente">+ Quem precisa reciclar</button>`}
     </div>
     ${ins.length?`<div class="tablewrap" style="max-height:340px;"><table class="dt"><thead><tr><th>Participante</th><th>Departamento / empresa</th><th>Presença confirmada</th><th class="c">Presente</th><th>Nota</th><th>Resultado</th><th>Satisfação</th><th></th></tr></thead><tbody>${ins.map(pid=>{const p=I.P[pid],r=t.inscritos[pid];return `<tr><td>${esc(p.nome)}${p.email?'':' <span class="muted" title="sem e-mail">✉?</span>'}</td><td>${esc(p.departamento||nomeEmpresa(p)||'')}</td><td class="nw"><input type="checkbox" data-conf="${pid}"${r.confirmado?' checked':''} title="Marcar manualmente"> ${respBadge(r)}</td><td class="c"><input type="checkbox" data-pres="${pid}"${r.presente!==false?' checked':''}></td><td><input type="text" data-nota="${pid}" value="${esc(r.nota||'')}" style="width:60px;border:1px solid var(--borda);border-radius:4px;padding:4px;"></td><td><select data-sit="${pid}" style="border:1px solid var(--borda);border-radius:4px;padding:4px;">${opts(['APROVADO','REPROVADO','EM AVALIAÇÃO'],r.situacao||'APROVADO')}</select></td><td><select data-sat="${pid}" style="border:1px solid var(--borda);border-radius:4px;padding:4px;">${opts(SATISF,r.satisfacao||'')}</select></td><td><button class="btn danger tiny" data-rm="${pid}" type="button">×</button></td></tr>`;}).join('')}</tbody></table></div>`:'<div class="muted">Nenhum inscrito ainda.</div>'}
     <div class="note">Ao <b>Concluir turma</b>, cada participante marcado como presente vira uma participação no Histórico (com certificado). Ausentes não entram.</div>`;
@@ -939,8 +1045,9 @@ function abrirTurma(tid){
     const inscrever=pids=>{lerForm();let add=0;pids.forEach(pid=>{if(!t.inscritos[pid]){t.inscritos[pid]={presente:true,situacao:'APROVADO',token:novoToken()};add++;}});if(n(t.vagas)&&Object.keys(t.inscritos).length>n(t.vagas))toast('Atenção: inscritos acima do limite de vagas.');else toast(add+' inscrito(s).');desenha();};
     $('tu-add-b').onclick=()=>{const nm=chave($('tu-add').value);const p=I.pessoas.find(x=>chave(x.nome)===nm);if(!p){toast('Pessoa não encontrada — cadastre em Pessoas.');return;}inscrever([p.id]);};
     $('tu-add').onkeydown=e=>{if(e.key==='Enter')$('tu-add-b').click();};
-    $('tu-add-dep').onchange=()=>{const d=$('tu-add-dep').value;if(!d)return;inscrever(I.pessoas.filter(p=>p.departamento===d&&pessoaAtivaInterna(p)).map(p=>p.id));};
-    $('tu-add-pend').onclick=()=>{const cid=$('tu-curso').value;if(!cid){toast('Selecione o treinamento primeiro.');return;}const ps=I.itens.filter(i=>i.cursoId===cid&&i.status!=='emdia').map(i=>i.pessoaId);if(!ps.length){toast('Ninguém precisa reciclar este treinamento.');return;}inscrever(ps);};
+    if($('tu-add-cli'))$('tu-add-cli').onchange=()=>{const c=$('tu-add-cli').value;if(!c)return;const ps=I.pessoas.filter(p=>p.clienteId===c&&pessoaStatus(p)!=='INATIVO').map(p=>p.id);if(!ps.length){toast('Esse cliente não tem participantes cadastrados.');$('tu-add-cli').value='';return;}inscrever(ps);};
+    if($('tu-add-dep'))$('tu-add-dep').onchange=()=>{const d=$('tu-add-dep').value;if(!d)return;inscrever(I.pessoas.filter(p=>p.departamento===d&&pessoaAtivaInterna(p)).map(p=>p.id));};
+    if($('tu-add-pend'))$('tu-add-pend').onclick=()=>{const cid=$('tu-curso').value;if(!cid){toast('Selecione o treinamento primeiro.');return;}const ps=I.itens.filter(i=>i.cursoId===cid&&i.status!=='emdia').map(i=>i.pessoaId);if(!ps.length){toast('Ninguém precisa reciclar este treinamento.');return;}inscrever(ps);};
     $('modal-b').querySelectorAll('[data-rm]').forEach(b=>b.onclick=()=>{lerForm();delete t.inscritos[b.dataset.rm];desenha();});
     $('tu-curso').onchange=()=>{const c=I.C[$('tu-curso').value];if(c){if(!val('tu-forn'))$('tu-forn').value=c.fornecedor||'';if($('tu-ch').value==='')$('tu-ch').value=n(c.cargaHoraria)||'';}};
   };
@@ -1129,7 +1236,7 @@ function periodoHist(){
 }
 function histFiltrado(semPeriodo){
   const per=semPeriodo?null:periodoHist();
-  const I=idx();const q=chave($('hs-busca').value),tp=$('hs-tipo').value,clf=$('hs-cli').value,cu=$('hs-curso').value,d=$('hs-dep').value,f=$('hs-forn').value,a=$('hs-ano').value,s=$('hs-sit').value;
+  const I=idx();const q=chave($('hs-busca').value),tp=MOD==='cli'?'':$('hs-tipo').value,clf=MOD==='cli'?$('hs-cli').value:'',cu=$('hs-curso').value,d=MOD==='cli'?'':$('hs-dep').value,f=$('hs-forn').value,a=$('hs-ano').value,s=$('hs-sit').value;
   return I.hist.filter(h=>{const p=I.P[h.pessoaId];if(!p)return false;const t=p.tipo||'Interno';
     if(tp==='Interno'&&t!=='Interno')return false;if(tp==='EXT'&&t==='Interno')return false;
     if(clf&&p.clienteId!==clf)return false;if(cu&&h.cursoId!==cu)return false;if(d&&p.departamento!==d)return false;if(f&&h.aplicadoPor!==f)return false;if(!per&&a&&!(h.data||'').startsWith(a))return false;if(per&&((h.data||'')<per.ini||(h.data||'')>per.fim))return false;if(s&&h.situacao!==s)return false;
@@ -1163,7 +1270,9 @@ function renderSemanas(per){
   $('hs-semanas').querySelectorAll('[data-sem]').forEach(c=>c.onclick=()=>{$('hs-per').value='semx';$('hs-sem').value=semanaInput(c.dataset.sem);renderHistorico();});
 }
 $('hs-novo').onclick=()=>abrirHist(null);
-$('hs-excel').onclick=()=>{const I=idx();const L=histFiltrado();exportXlsx('Historico_Treinamentos_'+hojeISO()+'.xlsx','Histórico',['Data','Nome','Tipo','Departamento','Cliente','Cidade / UF','Vendedor','Revenda','Filial','Status pessoa','Treinamento','Aplicado por','Modalidade','Horas','Situação','Nota','Satisfação (1-5)','Comentário','Válido até'],L.map(h=>{const p=I.P[h.pessoaId];const c=cliOf(p)||{};const va=validadeAte(h);return [dataLocal(h.data),p.nome,p.tipo||'Interno',p.departamento||'',nomeEmpresa(p),cidadeUf(c),c.vendedor||'',c.revenda||'',p.filial||'',p.status||'',nomeCurso(h.cursoId),h.aplicadoPor||'',h.modalidade||'',n(h.horas),h.situacao||'',h.nota||'',n(h.satisfacao)||'',h.comentario||'',va?dataLocal(va):''];}));};
+$('hs-excel').onclick=()=>{const I=idx();const L=histFiltrado();
+  if(MOD==='cli'){exportXlsx('Capacitacoes_Clientes_'+hojeISO()+'.xlsx','Capacitações',['Data','Participante','Cliente','Cidade / UF','Vendedor','Revenda','Setor / função','Capacitação','Aplicado por','Modalidade','Horas','Situação','Satisfação (1-5)','Comentário'],L.map(h=>{const p=I.P[h.pessoaId];const c=cliOf(p)||{};return [dataLocal(h.data),p.nome,nomeEmpresa(p),cidadeUf(c),c.vendedor||'',c.revenda||'',p.setor||'',nomeCurso(h.cursoId),h.aplicadoPor||'',h.modalidade||'',n(h.horas),h.situacao||'',n(h.satisfacao)||'',h.comentario||''];}));return;}
+  exportXlsx('Historico_Treinamentos_Internos_'+hojeISO()+'.xlsx','Histórico',['Data','Nome','Tipo','Departamento','Filial','Status pessoa','Treinamento','Aplicado por','Modalidade','Horas','Situação','Nota','Satisfação (1-5)','Válido até'],L.map(h=>{const p=I.P[h.pessoaId];const va=validadeAte(h);return [dataLocal(h.data),p.nome,p.tipo||'Interno',p.departamento||'',p.filial||'',p.status||'',nomeCurso(h.cursoId),h.aplicadoPor||'',h.modalidade||'',n(h.horas),h.situacao||'',h.nota||'',n(h.satisfacao)||'',va?dataLocal(va):''];}));};
 function abrirHist(hid,pidPre){
   const h=hid?Object.assign({},getRec('hist',hid)):{pessoaId:pidPre||'',data:hojeISO(),situacao:'APROVADO'};
   const I=idx();const p=I.P[h.pessoaId];
@@ -1332,10 +1441,11 @@ $('btn-salvar-params').addEventListener('click',()=>{
 });
 
 /* ============================ RENDER GERAL / ABAS ============================ */
-const RENDER={painel:()=>renderPainel(),alertas:()=>renderAlertas(),pessoas:()=>renderPessoas(),clientes:()=>renderClientes(),cursos:()=>renderCursos(),turmas:()=>renderTurmas(),historico:()=>renderHistorico(),parametros:()=>renderParametros()};
+const RENDER={painel:()=>renderPainel(),painelcli:()=>renderPainelCli(),alertas:()=>renderAlertas(),pessoas:()=>renderPessoas(),clientes:()=>renderClientes(),cursos:()=>renderCursos(),turmas:()=>renderTurmas(),historico:()=>renderHistorico(),parametros:()=>renderParametros()};
 function abaAtiva(){const b=document.querySelector('#tabs button.active');return b?b.dataset.tab:'painel';}
-function updateBadge(){invalidate();const I=idx();const k=I.itens.filter(i=>i.status==='vencido'||i.status==='urgente'||(i.status==='pendente'&&i.obrig)).length;const b=$('badge-alertas');b.textContent=k;b.style.display=k?'':'none';}
+function updateBadge(){invalidate();if(MOD!=='int'){$('badge-alertas').style.display='none';return;}const I=idx();const k=I.itens.filter(i=>i.status==='vencido'||i.status==='urgente'||(i.status==='pendente'&&i.obrig)).length;const b=$('badge-alertas');b.textContent=k;b.style.display=k?'':'none';}
 function renderAll(){invalidate();updateBadge();const a=abaAtiva();(RENDER[a]||renderPainel)();}
+function updateBadgeMod(){}
 document.getElementById('tabs').addEventListener('click',e=>{
   const btn=e.target.closest('button[data-tab]');if(!btn)return;
   document.querySelectorAll('nav.tabs button').forEach(b=>b.classList.remove('active'));btn.classList.add('active');
@@ -1358,7 +1468,7 @@ const DADOS_FILE='treinamentos_dados.json';
 const ACESSO_FILE='treinamentos_acesso.json';
 
 let msalInstance=null,msAccount=null,msalReady=false;
-let acesso={emailsAutorizados:[],emailsComuns:[]};
+let acesso={emailsAutorizados:[],emailsComuns:[],modulos:{}};
 function spEncodePath(p){return p.split('/').map(s=>encodeURIComponent(s)).join('/');}
 function spPath(f){return `/${SP_BIBLIOTECA}/${SP_PASTA}/${f}`;}
 let _siteId=null;
@@ -1387,7 +1497,7 @@ function renderRemoto(){invalidate();updateBadge();const a=abaAtiva();if(a==='pa
 async function sincronizarNuvem(silencioso){
   if(!msAccount)return;
   const ac=await graphGetJsonEtag(spPath(ACESSO_FILE));
-  if(ac.ok&&ac.data&&(ac.data.emailsAutorizados||ac.data.emailsComuns)){acesso={emailsAutorizados:ac.data.emailsAutorizados||[],emailsComuns:ac.data.emailsComuns||[]};acessoEtag=ac.etag;}
+  if(ac.ok&&ac.data&&(ac.data.emailsAutorizados||ac.data.emailsComuns)){acesso={emailsAutorizados:ac.data.emailsAutorizados||[],emailsComuns:ac.data.emailsComuns||[],modulos:ac.data.modulos||{}};acessoEtag=ac.etag;}
   const dd=await graphGetJsonEtag(spPath(DADOS_FILE));
   if(dd.ok&&dd.data&&dd.data.config){state=(dirtyReg.size||dirtyConfig.size)?aplicarLocalSobre(dd.data):normalizeState(dd.data);cloudEtag=dd.etag;try{localStorage.setItem(STORE_KEY,JSON.stringify(state));}catch(e){}}
   else if(dd.ok&&dd.missing){cloudEtag=null;}
@@ -1413,7 +1523,7 @@ let _confTimer=null;
 function startPolling(){clearInterval(_pollTimer);_pollTimer=setInterval(puxarSeMudou,15000);clearInterval(_confTimer);_confTimer=setInterval(()=>{if(!editando()&&!document.hidden)puxarConfirmacoes();},60000);}
 async function puxarSeMudou(){if(!msAccount||salvando||editando())return;if(dirtyReg.size||dirtyConfig.size)return;const a=document.activeElement;if(a&&(a.tagName==='INPUT'||a.tagName==='TEXTAREA'||a.tagName==='SELECT'))return;const dd=await graphGetJsonEtag(spPath(DADOS_FILE));if(dd.ok&&dd.etag&&dd.etag!==cloudEtag&&dd.data&&dd.data.config){state=normalizeState(dd.data);cloudEtag=dd.etag;try{localStorage.setItem(STORE_KEY,JSON.stringify(state));}catch(e){}renderRemoto();setSyncStatus('⟳ atualizado agora','ok');}}
 document.addEventListener('visibilitychange',()=>{if(!document.hidden)puxarSeMudou();});
-async function saveAcesso(){if(!msAccount){toast('Entre com o Microsoft para gerenciar usuários.');return;}await ensureFolder();let ok=false,tent=0;const uni=(a,b)=>Array.from(new Set([...(a||[]),...(b||[])]));while(tent<5&&!ok){tent++;const res=await graphPutEtag(spPath(ACESSO_FILE),new TextEncoder().encode(JSON.stringify(acesso)),acessoEtag);if(res.ok){acessoEtag=res.etag||acessoEtag;ok=true;}else if(res.status===412||res.status===409){const ac=await graphGetJsonEtag(spPath(ACESSO_FILE));if(ac.ok&&ac.data){acesso.emailsAutorizados=uni(ac.data.emailsAutorizados,acesso.emailsAutorizados);acesso.emailsComuns=uni(ac.data.emailsComuns,acesso.emailsComuns).filter(e=>!acesso.emailsAutorizados.includes(e));acessoEtag=ac.etag;renderUsuarios();}else break;}else break;}if(!ok)toast('Não foi possível salvar os usuários.');}
+async function saveAcesso(){if(!msAccount){toast('Entre com o Microsoft para gerenciar usuários.');return;}await ensureFolder();let ok=false,tent=0;const uni=(a,b)=>Array.from(new Set([...(a||[]),...(b||[])]));while(tent<5&&!ok){tent++;const res=await graphPutEtag(spPath(ACESSO_FILE),new TextEncoder().encode(JSON.stringify(acesso)),acessoEtag);if(res.ok){acessoEtag=res.etag||acessoEtag;ok=true;}else if(res.status===412||res.status===409){const ac=await graphGetJsonEtag(spPath(ACESSO_FILE));if(ac.ok&&ac.data){acesso.emailsAutorizados=uni(ac.data.emailsAutorizados,acesso.emailsAutorizados);acesso.emailsComuns=uni(ac.data.emailsComuns,acesso.emailsComuns).filter(e=>!acesso.emailsAutorizados.includes(e));acesso.modulos=Object.assign({},ac.data.modulos||{},acesso.modulos||{});acessoEtag=ac.etag;renderUsuarios();}else break;}else break;}if(!ok)toast('Não foi possível salvar os usuários.');}
 
 /* ==================== CONTROLE DE ACESSO (admin/comum) ==================== */
 function emailAtual(){return msAccount?(msAccount.username||'').toLowerCase():'';}
@@ -1427,7 +1537,8 @@ function applyAccess(){
   const isAdmin=(nivel==='admin'||nivel==='local');
   document.body.classList.toggle('is-admin',isAdmin);
   tabParam.style.display=isAdmin?'':'none';
-  if(!isAdmin&&$('pane-parametros').classList.contains('active'))document.querySelector('#tabs button[data-tab="painel"]').click();
+  if(!isAdmin&&$('pane-parametros').classList.contains('active'))document.querySelector(`#tabs button[data-tab="${MOD_TABS[MOD][0]}"]`).click();
+  applyModule();
   if(abaAtiva()==='cursos')renderMatriz();
 }
 function renderUsuarios(){
@@ -1435,8 +1546,9 @@ function renderUsuarios(){
   la.innerHTML=acesso.emailsAutorizados.length?acesso.emailsAutorizados.map((em,i)=>`<div style="display:flex;align-items:center;gap:8px;padding:6px 0;border-bottom:1px solid var(--areia-escura);"><span style="flex:1;">👤 ${esc(em)} <span class="reg R1">ADMIN</span></span><button class="btn danger small" data-rem-admin="${i}" type="button">remover</button></div>`).join(''):`<div class="muted">Nenhum admin — o primeiro login vira admin.</div>`;
   la.querySelectorAll('[data-rem-admin]').forEach(b=>b.onclick=async()=>{acesso.emailsAutorizados.splice(+b.dataset.remAdmin,1);await saveAcesso();renderUsuarios();applyAccess();});
   const lc=$('lista-comuns');
-  lc.innerHTML=acesso.emailsComuns.length?acesso.emailsComuns.map((em,i)=>`<div style="display:flex;align-items:center;gap:8px;padding:6px 0;border-bottom:1px solid var(--areia-escura);"><span style="flex:1;">👤 ${esc(em)}</span><button class="btn danger small" data-rem-comum="${i}" type="button">remover</button></div>`).join(''):`<div class="muted">Nenhum usuário comum.</div>`;
-  lc.querySelectorAll('[data-rem-comum]').forEach(b=>b.onclick=async()=>{acesso.emailsComuns.splice(+b.dataset.remComum,1);await saveAcesso();renderUsuarios();});
+  lc.innerHTML=acesso.emailsComuns.length?acesso.emailsComuns.map((em,i)=>`<div style="display:flex;align-items:center;gap:8px;padding:6px 0;border-bottom:1px solid var(--areia-escura);"><span style="flex:1;">👤 ${esc(em)}</span>${['int','cli'].map(m=>{const ms=(acesso.modulos||{})[em]||['int','cli'];return `<label class="chk${ms.includes(m)?' on':''}" style="padding:3px 7px;"><input type="checkbox" data-mod-user="${esc(em)}" data-m="${m}"${ms.includes(m)?' checked':''}>${m==='int'?'Interno':'Clientes'}</label>`;}).join('')}<button class="btn danger small" data-rem-comum="${i}" type="button">remover</button></div>`).join(''):`<div class="muted">Nenhum usuário comum.</div>`;
+  lc.querySelectorAll('[data-rem-comum]').forEach(b=>b.onclick=async()=>{const em=acesso.emailsComuns[+b.dataset.remComum];acesso.emailsComuns.splice(+b.dataset.remComum,1);if(acesso.modulos)delete acesso.modulos[em];await saveAcesso();renderUsuarios();});
+  lc.querySelectorAll('[data-mod-user]').forEach(ch=>ch.onchange=async()=>{const em=ch.dataset.modUser;const ms=new Set((acesso.modulos||{})[em]||['int','cli']);ch.checked?ms.add(ch.dataset.m):ms.delete(ch.dataset.m);if(!ms.size){toast('O usuário precisa ter ao menos um módulo.');ch.checked=true;return;}acesso.modulos=acesso.modulos||{};acesso.modulos[em]=Array.from(ms).sort().reverse();await saveAcesso();renderUsuarios();toast('Acesso atualizado.');});
 }
 function renderParametros(){_renderParametros0();renderUsuarios();}
 $('btn-add-admin').addEventListener('click',async()=>{const em=$('inp-novo-admin').value.trim().toLowerCase();if(!em)return;if(!acesso.emailsAutorizados.map(x=>x.toLowerCase()).includes(em))acesso.emailsAutorizados.push(em);acesso.emailsComuns=acesso.emailsComuns.filter(x=>x.toLowerCase()!==em);$('inp-novo-admin').value='';await saveAcesso();renderUsuarios();applyAccess();toast('Admin adicionado.');});
@@ -1462,7 +1574,7 @@ $('btn-ms-login').addEventListener('click',async()=>{
 });
 
 document.body.classList.add('is-admin');
-if(CONF){$('cf-logo').src=LOGO_G;$('overlay-confirm').style.display='flex';telaConf('carregando');}else renderAll();
+if(CONF){$('cf-logo').src=LOGO_G;$('overlay-confirm').style.display='flex';telaConf('carregando');}else{applyModule();renderAll();}
 initAuth();
 
 </script>

@@ -324,11 +324,14 @@ body:not(.is-admin) .somente-admin{display:none !important;}
       <select id="hs-curso"></select>
       <select id="hs-dep"></select>
       <select id="hs-forn"></select>
+      <select id="hs-per"><option value="">Todo o período</option><option value="sem0">Esta semana</option><option value="sem1">Semana passada</option><option value="sem4">Últimas 4 semanas</option><option value="mes">Este mês</option><option value="semx">Escolher semana…</option></select>
+      <input type="week" id="hs-sem" style="display:none;border:1px solid var(--borda);border-radius:4px;padding:7px 9px;font-size:.9rem;background:#fffdf9;">
       <select id="hs-ano"></select>
       <select id="hs-sit"><option value="">Todas situações</option><option>APROVADO</option><option>CONCLUÍDO</option><option>REPROVADO</option><option>EM AVALIAÇÃO</option></select>
       <button class="btn primary small" id="hs-novo" type="button">+ Lançar participação</button>
     </div>
     <div class="totals-strip" id="strip-hist"></div>
+    <div class="card"><h3>Horas aplicadas por semana <span class="h3-side" id="hs-sem-side"></span></h3><div id="hs-semanas"></div></div>
     <div class="card"><h3>Participações <span class="h3-side" id="hs-count"></span><button class="btn ghost small" id="hs-excel" type="button">⬇ Excel</button></h3><div class="tablewrap"><table class="dt" id="tbl-hist"></table></div></div>
   </section>
 
@@ -1109,11 +1112,27 @@ function concluirTurma(t,gravar){
 }
 
 /* ============================ HISTÓRICO ============================ */
-function histFiltrado(){
+/* ---------- Períodos semanais (segunda a domingo) ---------- */
+function segundaDe(iso){const d=dataLocal(iso);if(!d)return null;const w=(d.getDay()+6)%7;d.setDate(d.getDate()-w);return isoOf(d);}
+function addDias(iso,k){const d=dataLocal(iso);d.setDate(d.getDate()+k);return isoOf(d);}
+function semanaInput(iso){const d=dataLocal(iso);const t=new Date(d.getFullYear(),d.getMonth(),d.getDate()+3-((d.getDay()+6)%7));const y=t.getFullYear();const w1=new Date(y,0,4);const wk=1+Math.round(((t-w1)/86400000-3+((w1.getDay()+6)%7))/7);return y+'-W'+pad(wk);}
+function segundaDaSemanaInput(v){const m=/^(\d{4})-W(\d{2})$/.exec(v||'');if(!m)return null;const j4=new Date(+m[1],0,4);const seg=new Date(j4);seg.setDate(j4.getDate()-((j4.getDay()+6)%7)+(+m[2]-1)*7);return isoOf(seg);}
+function fmtCurto(iso){const d=dataLocal(iso);return pad(d.getDate())+'/'+pad(d.getMonth()+1);}
+function periodoHist(){
+  const v=$('hs-per').value,hoje=hojeISO(),seg=segundaDe(hoje);
+  if(v==='sem0')return {ini:seg,fim:addDias(seg,6),lb:'esta semana'};
+  if(v==='sem1'){const a=addDias(seg,-7);return {ini:a,fim:addDias(a,6),lb:'semana passada'};}
+  if(v==='sem4'){const a=addDias(seg,-21);return {ini:a,fim:addDias(seg,6),lb:'últimas 4 semanas'};}
+  if(v==='mes'){const d=dataLocal(hoje);return {ini:isoOf(new Date(d.getFullYear(),d.getMonth(),1)),fim:isoOf(new Date(d.getFullYear(),d.getMonth()+1,0)),lb:'este mês'};}
+  if(v==='semx'){const a=segundaDaSemanaInput($('hs-sem').value);if(a)return {ini:a,fim:addDias(a,6),lb:'semana de '+fmtCurto(a)+' a '+fmtD(addDias(a,6))};}
+  return null;
+}
+function histFiltrado(semPeriodo){
+  const per=semPeriodo?null:periodoHist();
   const I=idx();const q=chave($('hs-busca').value),tp=$('hs-tipo').value,clf=$('hs-cli').value,cu=$('hs-curso').value,d=$('hs-dep').value,f=$('hs-forn').value,a=$('hs-ano').value,s=$('hs-sit').value;
   return I.hist.filter(h=>{const p=I.P[h.pessoaId];if(!p)return false;const t=p.tipo||'Interno';
     if(tp==='Interno'&&t!=='Interno')return false;if(tp==='EXT'&&t==='Interno')return false;
-    if(clf&&p.clienteId!==clf)return false;if(cu&&h.cursoId!==cu)return false;if(d&&p.departamento!==d)return false;if(f&&h.aplicadoPor!==f)return false;if(a&&!(h.data||'').startsWith(a))return false;if(s&&h.situacao!==s)return false;
+    if(clf&&p.clienteId!==clf)return false;if(cu&&h.cursoId!==cu)return false;if(d&&p.departamento!==d)return false;if(f&&h.aplicadoPor!==f)return false;if(!per&&a&&!(h.data||'').startsWith(a))return false;if(per&&((h.data||'')<per.ini||(h.data||'')>per.fim))return false;if(s&&h.situacao!==s)return false;
     if(q&&!chave(p.nome+' '+nomeEmpresa(p)+' '+nomeCurso(h.cursoId)).includes(q))return false;return true;
   }).sort((x,y)=>(y.data||'').localeCompare(x.data||'')||I.P[x.pessoaId].nome.localeCompare(I.P[y.pessoaId].nome,'pt-BR'));
 }
@@ -1121,6 +1140,10 @@ function renderHistorico(){
   setSel('hs-curso',cursosOrdenados().map(c=>({v:c.id,l:c.nome})),'Todos os treinamentos');setSel('hs-cli',clientesOrd().map(c=>({v:c.id,l:c.nome})),'Todos os clientes');setSel('hs-dep',listaDeps(),'Todos os departamentos');setSel('hs-forn',listaForn(),'Todos os aplicadores');setSel('hs-ano',anosHist(),'Todos os anos');
   const I=idx();const L=histFiltrado();const ok=L.filter(h=>SIT_VALIDAS.includes(h.situacao));const rep=L.filter(h=>h.situacao==='REPROVADO').length;
   $('strip-hist').innerHTML=tbox('Participações',int(L.length),`${int(ok.length)} aprovadas/concluídas`)+tbox('Horas (aprovadas)',hrs(ok.reduce((s,h)=>s+n(h.horas),0)))+tbox('Taxa de aprovação',pctTxt(ok.length,ok.length+rep),`${int(rep)} reprovação(ões)`,{accent:rep>0})+tbox('Satisfação média',fmtSat(mediaSat(L)),`${int(L.filter(h=>n(h.satisfacao)).length)} avaliação(ões) · ${int(new Set(L.map(h=>h.pessoaId)).size)} pessoas`);
+  {const per=periodoHist();$('hs-sem').style.display=$('hs-per').value==='semx'?'':'none';$('hs-ano').disabled=!!per;$('hs-ano').title=per?'O período selecionado substitui o filtro de ano':'';
+   const sem=Math.max(1,per?Math.round((difDias(per.ini,per.fim)+1)/7):1);
+   if(per){$('strip-hist').querySelectorAll('.total-box')[1].querySelector('.sub')?.remove();const hb=$('strip-hist').querySelectorAll('.total-box')[1];hb.querySelector('.label').textContent='Horas aplicadas · '+per.lb;hb.insertAdjacentHTML('beforeend',`<div class="sub">${fmtD(per.ini)} a ${fmtD(per.fim)}${sem>1?' · média '+hrs(ok.reduce((t,h)=>t+n(h.horas),0)/sem)+'/semana':''}</div>`);}
+   renderSemanas(per);}
   $('hs-count').textContent=int(L.length)+' registro(s)';
   const lim=800;
   $('tbl-hist').innerHTML=`<thead><tr><th>Data</th><th>Pessoa</th><th>Dep. / empresa</th><th>Filial</th><th>Treinamento</th><th>Aplicado por</th><th>Modalidade</th><th class="r">Horas</th><th>Situação</th><th class="c">Satisf.</th><th>Válido até</th><th></th></tr></thead><tbody>${L.slice(0,lim).map(h=>{const p=I.P[h.pessoaId];const va=validadeAte(h);const vd=va?difDias(hojeISO(),va):null;return `<tr><td class="nw">${fmtD(h.data)}</td><td><a href="#" data-pid="${p.id}">${esc(p.nome)}</a></td><td>${esc((p.tipo||'Interno')==='Interno'?p.departamento||'':nomeEmpresa(p)||p.tipo)}</td><td>${esc(p.filial||'')}</td><td>${esc(nomeCurso(h.cursoId))}</td><td>${esc(h.aplicadoPor||'')}</td><td>${esc(h.modalidade||'')}</td><td class="num">${n(h.horas)}</td><td>${sitBadge(h.situacao)}</td><td class="c nw" title="${esc(h.comentario||'')}">${n(h.satisfacao)?n(h.satisfacao)+' ★':'<span class="muted">—</span>'}</td><td class="nw"${vd!=null&&vd<0?' style="color:var(--vermelho);font-weight:700"':''}>${va?fmtD(va):'<span class="muted">—</span>'}</td><td class="nw">${SIT_VALIDAS.includes(h.situacao)?`<button class="btn ghost tiny" data-cert="${h.id}" title="Certificado PDF" type="button">🎓</button> `:''}<button class="btn ghost tiny" data-edit="${h.id}" title="Editar" type="button">✎</button></td></tr>`;}).join('')||`<tr><td colspan="12" class="empty">Nenhum registro.</td></tr>`}${L.length>lim?`<tr><td colspan="12" class="muted">Mostrando ${lim} de ${L.length}. Use os filtros ou exporte para Excel.</td></tr>`:''}</tbody>`;
@@ -1128,7 +1151,17 @@ function renderHistorico(){
   $('tbl-hist').querySelectorAll('[data-cert]').forEach(b=>b.onclick=()=>certificado(b.dataset.cert));
   $('tbl-hist').querySelectorAll('[data-edit]').forEach(b=>b.onclick=()=>abrirHist(b.dataset.edit));
 }
-['hs-busca','hs-tipo','hs-cli','hs-curso','hs-dep','hs-forn','hs-ano','hs-sit'].forEach(id=>$(id).addEventListener(id==='hs-busca'?'input':'change',renderHistorico));
+['hs-busca','hs-tipo','hs-cli','hs-curso','hs-dep','hs-forn','hs-ano','hs-sit','hs-per','hs-sem'].forEach(id=>$(id).addEventListener(id==='hs-busca'?'input':'change',renderHistorico));
+function renderSemanas(per){
+  const base=histFiltrado(true).filter(h=>SIT_VALIDAS.includes(h.situacao));
+  const N=12;let fimRef=segundaDe(hojeISO());if(per){const sp=segundaDe(per.fim);if(sp>fimRef||sp<addDias(fimRef,-7*(N-1)))fimRef=sp;}const sems=[];
+  for(let i=N-1;i>=0;i--){const ini=addDias(fimRef,-7*i),fim=addDias(ini,6);const hs=base.filter(h=>(h.data||'')>=ini&&(h.data||'')<=fim);sems.push({ini,fim,h:hs.reduce((t,x)=>t+n(x.horas),0),n:hs.length,p:new Set(hs.map(x=>x.pessoaId)).size});}
+  const mx=Math.max(1,...sems.map(x=>x.h));const tot=sems.reduce((t,x)=>t+x.h,0);
+  $('hs-sem-side').textContent=`últimas ${N} semanas até ${fmtD(addDias(fimRef,6))} · ${hrs(tot)} · média ${hrs(tot/N)}/semana — clique numa barra para filtrar`;
+  const sel=per&&per.fim===addDias(per.ini,6)?per.ini:null;
+  $('hs-semanas').innerHTML=`<div class="cols-chart" style="height:170px;">${sems.map(x=>`<div class="col" data-sem="${x.ini}" style="cursor:pointer;" title="${fmtD(x.ini)} a ${fmtD(x.fim)}: ${hrs(x.h)} · ${x.n} participação(ões) · ${x.p} pessoa(s)"><b>${x.h?(Math.round(x.h*10)/10).toLocaleString('pt-BR'):''}</b><i style="height:${x.h/mx*120}px;${sel===x.ini?'background:var(--ferrugem);':''}"></i><small>${fmtCurto(x.ini)}</small></div>`).join('')}</div>`;
+  $('hs-semanas').querySelectorAll('[data-sem]').forEach(c=>c.onclick=()=>{$('hs-per').value='semx';$('hs-sem').value=semanaInput(c.dataset.sem);renderHistorico();});
+}
 $('hs-novo').onclick=()=>abrirHist(null);
 $('hs-excel').onclick=()=>{const I=idx();const L=histFiltrado();exportXlsx('Historico_Treinamentos_'+hojeISO()+'.xlsx','Histórico',['Data','Nome','Tipo','Departamento','Cliente','Cidade / UF','Vendedor','Revenda','Filial','Status pessoa','Treinamento','Aplicado por','Modalidade','Horas','Situação','Nota','Satisfação (1-5)','Comentário','Válido até'],L.map(h=>{const p=I.P[h.pessoaId];const c=cliOf(p)||{};const va=validadeAte(h);return [dataLocal(h.data),p.nome,p.tipo||'Interno',p.departamento||'',nomeEmpresa(p),cidadeUf(c),c.vendedor||'',c.revenda||'',p.filial||'',p.status||'',nomeCurso(h.cursoId),h.aplicadoPor||'',h.modalidade||'',n(h.horas),h.situacao||'',h.nota||'',n(h.satisfacao)||'',h.comentario||'',va?dataLocal(va):''];}));};
 function abrirHist(hid,pidPre){

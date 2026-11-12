@@ -172,6 +172,14 @@ body:not([data-mod="cli"]) .so-cli{display:none !important;}
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
 .lbl-sec{font-size:.72rem;text-transform:uppercase;letter-spacing:.5px;color:var(--texto-suave);font-weight:700;margin:14px 0 6px;}
 /* ---- Avaliações ---- */
+.avl-page{position:fixed;inset:0;z-index:1200;overflow:auto;background:var(--areia);}
+.avl-top{background:linear-gradient(135deg,var(--azul-escuro),var(--azul));color:#fff;padding:14px 18px;display:flex;gap:14px;align-items:center;position:sticky;top:0;z-index:2;box-shadow:0 2px 10px rgba(0,0,0,.2);}
+.avl-top img{height:38px;width:auto;}.avl-top span{font-size:.75rem;text-transform:uppercase;letter-spacing:1.5px;color:#bcdec2;}
+.avl-main{max-width:900px;margin:0 auto;padding:18px 14px 80px;}.avl-main .emoji{font-size:2rem;}
+.ava-v{display:inline-block;min-width:28px;padding:2px 6px;border-radius:5px;font-family:var(--fonte-dado);font-weight:700;font-size:.8rem;}
+.ava-v.good{background:#e4f1e6;color:var(--ok);}.ava-v.warn{background:#fbf2d3;color:#8a6a07;}.ava-v.bad{background:#f7e1df;color:var(--vermelho);}
+table.dt tr.ava-div td{background:#fffbef;}
+table.dt select{border:1px solid var(--borda);border-radius:4px;padding:4px 6px;font-size:.8rem;background:#fffdf9;}
 .cg-resp-row{display:flex;gap:8px;align-items:center;margin-bottom:6px;}.cg-resp-row select{flex:1;min-width:0;border:1px solid var(--borda);border-radius:4px;padding:8px 9px;font-size:.9rem;background:#fffdf9;color:var(--texto);}
 .cg-her{background:var(--areia);border-radius:6px;padding:8px 12px;margin-bottom:8px;font-size:.84rem;}.cg-her ul{margin:4px 0 0;padding-left:18px;color:var(--texto-suave);}
 .ava-b{display:inline-block;font-size:.68rem;font-weight:700;padding:2px 8px;border-radius:10px;white-space:nowrap;}
@@ -497,6 +505,7 @@ body:not([data-mod="cli"]) .so-cli{display:none !important;}
 <div class="overlay" id="overlay-login"><div class="box"><img alt="MAQCAMPO Irrigação" style="height:54px;width:auto;margin:0 auto 14px;display:block;" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAcoAAABsCAYAAADqrvKbAABD+0lEQVR42u2deZhUxbn/v2/VOb3MAgwIiEs0wIAyiTHBLG53GGYQNWq8N+mOWU2MSlRkETUqyunD4nIVmAE0ojFmu7+Y7nuzaRSZgZnRRE0i8UadUWQxbqAgzDBLb+dUvb8/uhsGnBkG9YJLfZ6nHxS6q6ur6rxvvUu9BRgMBoPBYDAYDAaDwWAwGAwGg8FgMBgMBoPBYDAYDAaDwWAwGAwGg8FgMBgMBoPBYDAYDAaDwWAwGAwGg8FgMBgMBoPBYDAYDAaDwWAwGAwGg8FgMBgMBoPBYDAYDAaDwWAwGAwGg8FgMBgMBoPBYDAYDAaDwWAwGAwGg8FgMBgMBoPBYDAYDAaDwWAwGAwGg8FgMBgMBoPBYDAYPtDQh7HPDjtUkaggRICWppa9fkPFpAoGACSASCSiiYjNNBsMBoPBYDAYDAbDx9GidNgRPa3HYuCwoLZOAOFT2ucJAI4RQoRYMzMxgflNEuJlMP8vtHxWlYY2HX3y0Vkkcu1FIlFNBGNlGgwGg+GjoSj3pbZ+wWnMOF4QSpk513/R4w069wcze0JaWwRT45VTbthhptpgMBgMHxlFyQwiAjMz1TYsrLQteXQ2ozQkIEBpsE4xWAESgOq1DUGCFHRQEIWJSTIxCWF5GS/TeM1Udxszk4lfGgwGg+FDpygdxxEAUBGroDfq119k2dYlyveLwQAIBIaAADEPoO/MDIImEDMzS0tAKf4Hhfy5s053X43H4zIajWrAuGINBoPB8CHk9kdvL36/26x7uC648umVthldg8FgMHyoLEqn0bEAYEhWfjsQDvzIy3rMmpmIBPh97CdBMzPbAdvKev7zxVZ42hZ0tscmxZRxxRoMBoPhA6soCyytd0+2gqFhKp3RmsT/Wf8EayYS9k7Le9StctNmKRgMBoPhA6koHccRsViMaxsWVtrBwBleJtOmGVoK7M5g/b+CmVlIMYRZtLWlsivdc90UzNERg8FgMPTA+kBoayJeWr9wqiA+kTRICBKsD8YXA6xJWQH4ZVagHoTnHccRrutqszQMH2ccxxFuzGWzcTQYPiCu16W/c4b4RSXe33b9LT1h+ASq2F5xUB/OhrYG8enRxw4a2fZMezSaUPlxMQLCYDAYDIdOUUbiERmPxHXt6vln2sHAfZ7nCwIE8yHoE7GyA7bMZrw1xUNHfmfLg1uUsSoNH1fub3RCHQgfpttTXbP/3W03I2L4uHPIXK+JSEITEc/5xZzHxoweUSUUfFYsDonmZkCygOKMP+2kaZ5ZFoaPI06jY7lVrt/mi6nDRhT/os3L/gzAzPx5Y2VGyGAU5cF8IB1HuOTqZQ3u6cIKXJHpTidBJA7lQKQzGR2ww6G6hgUbR+181o1GE6YQgeFjiRAyYNtyEBOKzWgY9jEq6OMYtz40yimWH3MSYTtovQ0hupmQPJQvEFIE0a51TzvTYPj4oVmz7ysWTMaKNOwmHo9IEBgMisQjcrfhw44oVFQzFuX7iEuudhody8vghZ2vdT09aNAHYaMEpJNJlsXB4Ftlnx0CJHbAJPUYPqYQETExmZEwFIhGE4qZBRHpBBIqHo9IIIIoffTd8gddUcbjERmNJtQwJU5GQD5cVgYJ5AqhH+rBCAWlClhB28umHwBwocMOueQaRWkwGD62MDNNu2eaNeGTRy6667Hbvr587aIdmZT/o+iXnXoggcWrYouEkOHZZ9x0lVGU7+OuBABm1DiPN3JjWVNT0wdqQCadlkRTLFfqwCWT+WowGD6+OI2ORUT+0vqF3ykbOfiatjfb/kFSlg0ZXrq6tmHBj5SnXx48tPSGzvbu/waAOMflR9HCPOiKcnclnrUL567/y9/PGuJJRYc4kafHzgnPrhEYcppO37FqwfevPvOm1w60AIHjQLRW7LGOE1EMeNFE4tjt90cCSCQG/lk4EJF3+b37awsAJrSAXReM9+KKZlAksXdcPN+ufndrac9YH2g772meIpCI7Pn/3j6711z2wbv+7b2MIwAkItCHPNGCQfFEXOTGKaJ7q5/MzJRIJPp55hNoaZnArusOaL0VXIB90RJp4RhiPJBazo7jiIqKCgISuzf1A5Vruc8BLcNb8mfBE4hE4vrd1pCOxCMygghaIi38XjftDjuiIlFBu4cpgUK7/Y5x4Uw7kf5Wx87ON2adMW/i7Y/eXiy6U/cNHlp6GwB07UpuhQzcCIBa0MLvtV8JJJCIJPQHKWnooLs7C/dA3rHKnRIM2hVeVnmC9HvqB5EgrTURvQ9F74QElNKqtOT+OafMSR20eys/ANlkkTjk/oR3JA55oAJ5wO1GcSCZxr3Fj//vY8rv9zzlld5AFHVBuff33kgcMtECxrtQwIXjIUsa5n9t+MihiR1v7rx31pR5lx7K4yHxeFz2pXAPvK1cAsqBKMCB9K+lpYX720zH4xGZV/z6oK67/KZlf3M3kOsGl62Z/5lkKpu97pyFLxT+bnHDwi/YEhO8rmT9nHNvfuNAZGVuXqOa+vlN7+fcf7gsSs7lCNQ97BxVPLT47fZdyWYbEErIdz0QNgAF8oUUvgKH3o9uBsNhXyZTx8fj8X8SHVjmX03tuGoR1iN1FlA+dzXO3vTHAYp9rqkdXY2AGAkAyPCOhtmbHh2I9QcXXLVy7Ggb+KLOApp129oZmx85oA2Ts0cAn3HnmKN9TccR0yjWbMMWO8jXr/g7j3wuEW32C0J7INaQ40C4+XZrlo8/AoqPV6SOAImQtPRbUNbLDVeuf77w3QNqNy80qmvHfV6GdTkgwUm9qX72hr8OQKAQAK5eOuZkWUSf9DLEQnO2PTz4j+umrfMGMk/VS8dMkjYdqTVpkO7e8nZwVavbmu35turlY88hiUFakd43/p67lFxtkxqvNdDmDQlA5edR92fFum5ujKqXHzeMWU0QwFEaXCQJHdrn1307+Fwi2trVY+NxMJUbAeC7Hr+lTGfxaSsEZHbpF2aePXf77jnJ/1nbsGhkUUl4XLKzm3tukn0AFiwo4Wd11t7R8WRmc0HI9+XZYWaqbZz/BSmsgO/77xBovgeIkNXGyL4ercoVT+ijLQLAd9Q744YMHXJ4947u7M4p3t/6tOQY5MQcKvSvbs2CMaTpOJ/V0QBKiOQ2weqVkF3cEq26+u2ChZg4ACW9eJXzhZKhg8Jd27t3zqF5zx2o584lV0eR69/SRxeeaAdorOfzEQwtLSFfAdSmGY/Ne67wG/pTdDOq5/2z8N9LHnE+N3jYoNLO9u4tM2rm/azwfUSkB9KvWCzGBbla17BogrS53PdwNCsVkLZ4w8v6L1t65z+jZ0cz72bcPvSKMo64iCKq2La+Le3ALRaSWzVBCn73GwY/N7vDg8VBkepObyemd50WlGsKvlb+KMX8dgtaPgmga0A7pbwQYNK3WiH7JE9rBMNA9bLyKWtmbGjoU3A5EIiBq1d8spxJPmpZQgqbkPH0CwAm7F9PAi7AlKIV1lDrTB8apARqFo8+oWHO5ucjEYh+XbgFIeaCp9SNPQM2Xa41TpOShvW8vEUp0tZhW16oWT72l8mkvMv90frO/QhjAnJW5ORl5acLi2ZA879RACNsUVh2AkrpbPWK8mcF0892Bkrvcaet8/aj7AgATrltfCmE+p2wrCMJQEbwlnOcieUP0bpUf5al44BcF8xCzLGLrK+yVrBCEkM6Oy8A8Jv9zdOU5eOO1cSrKShsSxCy3dg5NNQ1FkB2L2WncbdVZB2pshpEva01C9rjrpo7y/8JpmUN01+K99Xv/OZBVdeN/SwJmg7yp5IQRwpJef8rgwiw2PvX5OVj/0ge1SWiGzYfTGUZj+csl2zWOzlcFP6TZVvotju/BeD/OU2OdOH6hT+1VucWDwrdq3wPQu7xwAYBEBG8jIAn/Y6y0+1X6tYs+G3XjuSdc6Pu9r0UXH6NJFpiNpS1tmRQUVE264H2GmxCgDVSXWlPSPuNO5tu+Usqmb776rPdP++rLAv9t8iaGw4FvtuJzk48iMMBJPddjwV54MLluvoFZ5IlZ0HzFwNF9pAiW4KIoJmRTWWR8dOvL2+8ebXXkVxy1VcWtuzP61Gw7pY9uugUq8j6MxRDBKhrRaNTPn2S+xbnrA3uX445gsjVK1eutDPl2y9j5guhcUIgHLRC+fHWvkayK+0vq1z4T2oUP3ls+zP3EpHqS9ZduvJSu6asTb856MRyBPhvvtJS2hKL6+ef0FGjWloTrTQg5e262nVd1K25+TsEvpSZJ9qBYDhUJEEAlNJgnQbzyPXL1iz8TbbbW371ee7bhSTQj4dFuVs2s+pq71KA+tKR7RVvAC2yrW3rAWvLwLhR8vuTYpmlDQtuTnVlLs8mO8ckBxelsL1VHNFW9q7a+1cTskNOwS9IUhWGI5173OgAfht1eSmttKeyJGWQGXMBNExo6f3hiFSAEgSNOutaq0hIP6VSQokAA5379+9DuAQ9pXb0p9hCdabd9wH2rLAMeb64BMAMRCJAItGvkjzHGVWUHlGynKS4KCdfGEISdhemJ0AGhWDFFdKWtxZLfeGkJaMvSUQ3/6VXYZzfqkQSkDvfHHurkHQ1SQLv1S4DRJABEWDNJwmLThqS6fjepKXl05uw4W+5f33nmFU6lbKZmv1wrf4PKySPzHarDDRgF8kjUsM6vgbgF5UOrGYXfr8edlB3bp501icEmfV1E1fitxNaoHpT1IV5UnV8tR0Wtp/UabLIBmGXDPUquHLLhqjXAIcQABFKmOlUaePUybVjT1o7a+O1+1jUlFfsumbZuOsgERMWBVkxhEVgBsC5kRI2wArHCkvM0FJ/s2pp+ZxEdMMvDrZlST756VRWWb6CZOH1HirRnV27undmUtksuIcMot0/Z1C4ODRI2vLT2tefFiS+s3jV/P+Yc+a8f77DGmwFqAwvd3UmD1ee0lTYlhDAYCZGKBAKlAbDgWO10sdq8DeXrp5//ewz5t3mcM7q2kfLpFLJjAL3/vwVFInzR6doWGngLinlhXbAAhGhe1dSA/waAx5AISHpqOLSoqOY+SICzl9aP/+aI9uO+3l/rtoEEgDAivSsgCBOdia9otJwSbIreTEIC2ONMStvfPcZ8yNy9e0POp/KFr99XyAU/IKUAkppdHckOwFsB8AEDAsWhYZYATlR+Wrivx124ldPeeTT0wG81JuyrCmr0dFoVC1d/enLi8JhmexIZYtKwwHfT1/qkntlPB6Rif2H3PTiB2840i4pvse2rbOlLcCakexMdxF4GwDNwNBgODjUDtrjtVLzSNK3Fze4F0drnMZe5+sjqSgLI8nUbtlSKt9a88aQ9ZrIEig7+oCbS3pMS+sXeABGEqEkUFz6TMADU9kJSJUdePdSPlB2Gjw7II/ysv4mTMoLrAOwUAksiCCZKeCnNMsgTapeVl7j9mZVOhCJKHT1HceNI6m+5ae1ZqYAESSB95vg1JrI9UwLeYUVFLaX1CwsYakMM4BvTrlr9MJENLGtDwuNEANVOscEU8MCD9lhWZXtVJ4VFLb2eIvO8qMk+G+KaZcAjgNQIyw6xUspFjYdb4WsNVVLxp2diL60dl93aSQBkWgB7xw69leBUuuCbJfypSRLe7xFefohAXpaMe0i0mMBnCEkVfopjcAgeVJml38HgH+LOSC471SUzWjWjgPxZ/DlrMGCEGQBsAazxmWROP5rQgt08/43a4KIJABbZTRbIXliWab8DNfd8KdIBWQCvczTXeWjoXGhn9GaAVsQJLhH0k4MDLewxDHPS/JQKFa9nUck8CdBVCMsjPe6tRcota6ZvGzcs+6Ml35VWCeRSES4bkJV14693SoWV3vdSrEAtM8p5fFDJPRTmsVWQB9DjNOIMBUsLK1xmF0sfl61dGxxIrrxx4UN1cF4xDVpkhCSAGjsnXvgVrk+ABSV8YOptq4nFdnK8ry93dLhMDirhiS7UuOI6EJpifOsoD1aafWHuoev//yMs2Jvx2IuFWJb0ajrLWleOMVPacvWas96CYehlM+W4FAmlTncy6ovC/BlJMWQopLwrUtXL3h1Nt30617ir4IACeqlGAuDYrEYOX90wmVF8g+hcLDGy/hId6dfB3ilT/wnaamX2zuRPSwcDGuly7u7klEwLho8tHRo+9u7YpvLNv9PLOZ2uLF3PpMFRbBslXMcpDgvncxoELX7nj8Cmi5Z0ejUTq9yu/vyuBTcrUtXzz9e2nKNHbBHaF8h3Z3+Bwh3KVKPhyxsSWVLWHpdI9PIfJGSuDIQsk8ePHxQzY6tO79ORPPj8bhEj/XvOI6IRqOqtmHRSLD6diaZZQjsyqSzhxHwrSWPLLw5etaNW/tyjzuOIwjEtQ2LRgqBNcFQYLzyFVKdmRdZ0HIoXmOF1Bt2KbS3yxqeSWUmZtOZaZZtnSFIjg5a9GjdowvOmUk3rT5UbthDYlEKITbaQRuZZOYBIeRaRdoWJA74xzNrKT3tKUmXEHC+ZsyQ4IwAkZbigCxKrTQJFgztCy+L/2HGNpdc/a4nJre1Fbl4VO9WZaQClAA0bO9aGbRCflJzrw9o37E/PXXlcaP8jPo6azARXtC+3iptMdkOymF+UnwbwJLKWKVsRrO/T8xLJFwoudRaHCiRVdkulbZCIqSyvFJYal795Zu37fuVk+vGfk1Y4k7WfBiBgsLmB2qWjz/Rnb5+K8dAROC8UFbVdeXX2yXygmyXSsuACKks35/15dzHr3px6z7t3lxdN+ZMsuiubJcawZJ/CAJcpxfrO69AnlgyerKwxReYmTWjmQjDWKNC2PTF7VvHnua6G5sHakkxSBBBAMya+XoAD+fnabeLrBKVohnNPnxcaRWJYq9ba0H9Z7WunbHxvv19d+WKCSVSeT+RAfF1ldUa4FmVTuUD8UizisYhE9GEqq4be5FdbF3tdflZGZQBP6MaFFuzm2e9+Py+7U1aWv5FEN8pLJqo0sq3Q+Ku6uVjXnBpU9MhiFn2ybST3CSAV/t5y+sAngfw29qGhYuR9WcXFRcd06VxORG5TqNjAW5hPfNVlTdu3c9XbgLwlyUN7iOS6UGl9CACnPsbnd9FJkUyOQMrsd9+RxIR4bquWvro/MVFJUU12YwH7anmZNb79nVnu6/vu48HsAPAU7X17q9T3Zl5KosbrvvydbtSjiPQi0LJuy+1kvKKwUOKAx07O18UwOxs2vtj0aDwJ9LdqQsA/CSOuCzEHvfIQlAsBqx82ilK7aT/sm1rhJf1oZlvD5eNmNtLDevNADYz44HljYuW7HxzZ0n7FL2wYPm9wwEDaGZ1UemQkrLOts7tJKxvaV89UFJWMrS7LXkRgEWY1EecPZYbOx6ifhYIh8Zn0x601r8KsT192uTrdu3z7lfyr9/WrVlwNRHfLoSwIemXy1ff9tnpU67dGuPYQbcsD6qibGnJpQ5rT7ycSWayJOVRGvpw0hwGtDpwXcRSgTPEohQACegjmayMIi1I6QNSlKSZWChNQkgpZVj5/vMAMGH4hAOLeBIxEUDMSSZSKsODZeCdVmVB0dXUji5nKb6psswg7ALYBoni/SVvNuUWr+9l1PetkCgjApj5FxBcT4LWaY+ZoaedWTf2zlUzm7M9BX+hD5N/XP4FyfTDbJfyZFCEdFbfuubKDdfnXZzWiIpmBoBtLZU0Cc3anbnxvyuXjP+XHeLVrLjUCovhfpdyQbgkGod0HLBLuy2vuV63UjIoQiqj69bM2DALACobK60R25vzPy6CREuC18zctKqqbuwU9vmopjmbWvI75nc8CIWNhpbySmkRCEwe1Fyh6UQZliu0AqSPKwA0D3ABgZiTAHUqj0dZQXlq1YrRZ7nTNz+8W7E4EM2xZjV18HGjfFLf1bl5SjHgEWFIn0I1DrmtpZJGVIzodSI3t20WzdPWdVXffNwVulRVC0mHETAGQ984nAivA9BnLJ4wVJF3q5dWSgZlQGXVw8P+vPG8RAIqd/wkknfT5P5MRDf8tebW0dW6RK4VlvgsM8CalkacCV9MRFo9fHAqTZHjOH0/VzFgUhNEUxN022sb5pYdNeY/QIFjCDjDYWdBDDHlFkz3vFsvFov12V5FRSthwgQZ/ZTz+JL6BfeHQmIWCOM7/NDxRPRMZD/HS3Kxw1yMbFnDwi+AaJqX8Vn5/jM7pX+Oe7bbtXLlpfaWS0epGGJcyFyKJqIiggiiU6J/B3Dubsu6D6vLjbpqySMLRxH4Ap2rpfmHmVNuWlW7ev5fLNuq1BqXOY3OzyKIvOMqwFiTI13X9Zee4v6wqDT0Wd9XUL76yawpN13LYNrSuMVCE3Qs5jIBcGIOVcQqiCiqgLmzd/etx7gWFDAopoY3Di/xvB2XEBFAtGpWzdz6uvoFqwl0AUNfXPews3zmpFgnc2wvt208njtXWVu/8KvBsH2mUhpK+atm1cz7DpDLtN63XwBERUUrR6tvumPpo26JDAWdUHFwRLIz7RDRtHg8ctCPEx5URZlfINQeSr8+OC02BkOB72WzahwY1rtKuWcQSeEDOBaADZaXEFjjXVTeIkGkmRWIjwqVBK3OXfoxYM85ogMzmQEQusF8LwTNJQHa16rMn+HTLOS1MiDC0IBSaiWBzhcWjc9Fa/r+3c0ENeX2kcWK+WJoZj/LKVKUWDNz4+bqurHPioD4tBWU4/ys/jKA3/ZmUXCWLxNhIRggL63+1jhz4/V7jnL0tECb0QwgEp8QSERbn568ZMy1drF1r5/SmgnfqFk+3klE12+ZuHKiDazTUPiuFRLFKqtZZXSLv2PD1XAgIq2gRFXPdhM9LMWNmwBsggPRm5JEzr3LVUvGVJDEmWBmL6M3NM3Y/ETNivEvZ5NqkZA0GETn1tSOLk9EN29EBBL9JDLl/XcZENcS0yIQJClxg+NgFfLzVIhN+rVqphUUQ7ViEPP9AJ0ibPqc9nq/Yjw31v3qaw0GraEXd0yuG7uJbDoMRIOlpqF5i4q17X3VCovhfkqz9tTbftr7QSIBVenASkTh77GCcn9OXDnRbpi2bteUpeU/4ACe0j4HrIA8sX1Y+jQQ1n6ArMrCGck+BAXgAgVvTnrp6vn/lFIeC9BgNCFAVZTu6X7MC+Z+n1On0SHHcYQt6AlmniUtycpXowE8E4lEBmBQ5jYjDH15KBymTMbzAFzpVrldTqNjTatyPUzbo2jyeQ0qgQQcdkShvnVfscmKWAXBBYTN3y8qLTqss727C4LvZ2aqrV+wPJPMTAoE7c8N9cRZRPRg4ShPYSm7Va7vNDoWPPEDZmY/670ZyFjXOo4jYojtdnu77m6FWAgTkOM4lM9EfccYxpoc6YL8Wm9BJFwS/mR3R9ITLO5iZlq+5ua7ujuTkVBx6NhUd+brILo3sY/btmAcgfXlRMR+1u8moum5Oam0eu0XoJmZnMaY1d6kFw45NXO+tMInAPzVu/7i3BQ91d120I7t9RDpB5V4PC7cKtcnIdYyI6VgfV/4agpbJWemYU89kFeKrLNtS01lpgcATpMQ56bRNZUt/4DbUsX+WV4yOJWZ16S6Uikb4s85F2XkwE18DYBpMNvyV8z4KxgsbaqsXlZe47rQE5wJgUQUunr5ceMAfJt9ZpVVW32mFWCU8H6ygCtjkADYDwz+DysoPwkiYuYH11y1YXPuGRUrhSBiZjDzFUD+MHpeySaiUF9afFSYiE5VHkNIIkvgjpz1mEse6V34t3pwIIbx8P/y0+oVEiSsgCgmqFP3koIaNdpjlpYgZv5Jswu/EpV9Zt8WLDennyMSTswBABYWXSYDIgQiEoLuBYEbrly/Bcy/FxbBCokQSFwCgCOR/UhrzSBgkJD0IDQ/AQZkQJz6WFn5ma4LPXHlRDsRhT59yXGjIHCJVswqy9ukz3UgFL+nqJ+TOz/JDGIgnM9kydpMmd3LiDGVFViGBGnNv2y+9pU3+0tUWjdtnReJQ9bP3vC/2ud6KygIAqxJnF3wDOBDxITIhPyDQJLfJ0OY9e7Yf69eiz7WHkWjUbX4idlhMH1JCILy/Gdm1tz0hMOO6KGw+uSIc4+QmNS7vGVmiiKqVzQ6JVD8A5nLTP397Op56xOJqGhvVw9lUpmWUHGQldIz8y6lPTkBeQtrcNo+gYBxQgpizYnLz7m+DZOwv4Ip7LpuX2cVKTYpppxGx2Lm6XbAZuX5zTPPuPGpRCIhZtTMfVz56jE7YDFYX9bY6Fh5eUm7rWTX1betdo5gxkRpSWKtHplZfdOmSDwi3apmv59NLOc3Fr4gcR8ACgQDw7yU/UUA6L9gxUckRgkAUuoHhKDpkr0n2Lay5HXZQRx4BQTPt3xBPAiMMKCfD6KY4RGFMPBrJRkAuiQHizPJUDh8TLI789urpt6wI5dBRu9OHBJbfpo6LFvfArL+kHeNzgWwJnxEOLcDZnWNDIoQCGCfVjTP3PD65Lqx4f3JhEmAHhGH3LFVX8YsGYqJSdyze2zD1gN+yptHEiMhqbL6znGfX0MvPe0whJvb2fKgUPAwpXA0mOFnuFsp+fdC2/3YQewA5M55KjV5WflfhcQxJImVR+MBYN2l6/xT5PhSdKujASKVZQgh/wyARrQ29/+rXGi3b6UiXHL1lLtGj1A+vqEVs/K4DTr4yx7JOfdoj7+by3ak7375rk/fkog+17ZfdyORFNBdCvIWEP6NGEzguWA8UhIrYQAcsNRMGRJDcw3pn6+es2nj5Lryon7tj/4q8ySAhAuVAFC1tPyLlo3jWTED2KYy3pu7vSXLeQxrJgKBpGwGgxCr7NezvK2lksDNRMvxGAjnACBmVABAwZV+6O1JkAOHClbWO2J1Fa1UM7pGTKNpnvOwM4gEPseKNYjb0IRsIWmlp9sSMaDX9mJABSqoJdEiXNf1l9TPrwwKYuUrTSTWA0ALWrgCFf26guEC2DFsqA7y0QBBED0JBhBrEvmtcd9LO9fXPt8Ta4pJVMH3G6yvh0tDo7s7kkoI/Di3W5gg3U+52WX1C+/xs6rOtq3KutXOl2ae4T5VSESKIIIEErAkHSuDluVlfTDRE8xMsabYezBqIoKI1NKGhVPsoPxcJpkBSXkXAGwtedwCoEB6ZSbtVQXCwc8+72XPriL6Y6FfFRW5IyMBssYJQaVaazC40K/9ivqK7a2c05n012za04GQLbJZLt9t4H+UFWU0GlVg0OGJ4596fdALL1i2HC5gTQG8LgDwtT3gh1kjZXmMdAD2DUT4noR/qgLSlrToQNqRAU/qrFJay9mBsD0rlczeAwAViYr3sAMnX1h6cOPbmx6qHlreIgI0Qdo0qapu7JTGS9fVV6XHjmHCN1gxK5+3Z7szP47EJwR2bPHU/gSwG4WaXDemSljiSwBD+frpw0Z9thnOS6ISlWL1Jc07q5eV/1raYhYzpJ9WVwD4XmsUwpkAdgGklLRscFDkNPiugO8lAcDtkbnZuxADgUG0grcRRMHHZBeCxny7F6agCIABZmYt5HYAPGHCuzcJ8sk02vfkdwNhMTRncOv/Xjvr+bci8Yic0JJgd+amJyfXjf2LDIhTRViMTGVSXwdwdyS+n6o3zEpra8iametXVdeV/0ME6LMyKE6pWV5+doPb/PAZd4w5WoEvZZ9ZKe4i1ivOrBsb9Ij7naf9uTi/tPiocFEgdBoBdwIQIkCkU9zQcN3mXWBQZaxSYtiWslxMX4MldoLAI+L9K7sRFc0MAvMy3pobcQaIwnt5FQ55hBKcd7H1s5dIKGZQXYNVJ6UcpZkJmn/nurmbh3p6HlzX1X2u2T1/r2pXzz+bpPyOVprA/M9Ro7IbC8kr+UzP/oWl9EjDEiBAgXbkdq2TALf3jUshi7V29fyzS4eWVHfs7Nop/O13zDx7eaaH65Bik2IKjbDg8eV20NLdnanHr5o670nHcURLIuc9yFre//M71Q2DykpHdrR5VwJ4qiWSc2u2DG8hAPChhoaCQWS6MwBziog4Ho+/6+euJW/Rs9IzQ4OLuKuts7WtXf8JDJqBZdmZvJzam/gPQ1KZF0uHlIzvTGVnAPhjoV8Fd7UlKQgSwvcUSMo3Btqv/PdzRnlJS0iPRDBICocDQEtTC32kFSWQLzwQjapl9QtvDYaDP+/u6L6cSLSDKAz29EAdwsSWCBF5DD6JmQM+W5cjV4wDGKhFqQGdIQLJdjtonb9rR9ez7X/x6/vI/jqQXTMC7FtwoXkZlpOgu8EMIlwPwmqxjKbLgCgmAMrTd/75+lfbzqwbO4hE/99ZiHEy6Eph5YJsTHxPIppQlQ6sSWjWzQB8re6jDKaDyCKB/zjjzjE3Ja7Y9NpuSydr+whks8wIgnhwtsQuyu+e+7XAJrSAEQXzMhrFYBAT7x5sBtF9dgrdKlOI+0rljQLj1dbouy6XSM1us6p0jgkJYJpWzFoxi4C8N9efBBfivQTcTYJOY5+ZNC6buHLifYnIOn9/ViWRlnmr9BYiSoABBdwI4E8qIK6wgqKMCdAZ/Lxx9uZXz1g8YShbWe7F8tj9PdW1Y++ngDhC+6zxjhIYLInoCMoXlCBJUBm9i2zrllzFF5DrNvuTl5XvBHCMsAmcwVAwCIkI+guo5dyrzcREh+e+lQDoXLWeBMRex14OhYoE+Nb6Hw0O+MVHUaCP84CahxKJCXUN+L4VsE4NBG10d3S3ZFOhe5mZCHuqZTEzLXn0ljFC+Dbk3hsBpRVbhJBm+2hJfB6R+K6UIqQ1A4Kvi37KzcbjrXvF1Pr1XmV8kpYFZgZBl+w3h6Eply1KRGeUDCmZ2dnW3V48KLQMwG73epzjgohUXcPCs2RAfjaTypKwxF0AuKKiQkSjURWPx2W0Kvr20tUL/h8zzxZSnle7en75LJq3sec9kJakbuVrkBQgzfZ7mahIPCJdclVtvft5QaJaeYoEyXvcqJN1Gh2LqsjPx0nTS1YtuE8pdbsMyEl1axacMpNuejLe475K5SufBNgOWJTN8lAw6EAUHQlpCxKStQZLbgOAikkVB9U7ckiKkUcR1cxMpZYXT3annysbUXY5BH0ehJFEfBQYRw7kReAjNPQoZpQSiEjwEST4CGBgnwfjSCI6ignDmfmaopLwsUQ813VdnUBC4D1mCLItFQDITPhXfkZtYAYT49Qpy8Z+mxkXsGb2M7o9JAP3ACCVLer3gc2fV+SaO8uPF5LOZsWsMvpNrUoSANAcg3JdaMeBaJ61+XnWvFpYYCsoS5WPHwDAtuG5OJXo7NpOwL9AYCsoi+2MOqVgvfXnMgOAKbefUCyAz7NisAIx8XoAmHjPROuJi9d3MvAaBFgGCBpUDQJvm7Cf+JgDEYm8010ZiUMAYDEs8O8yKMaCAPhobvjh+qfzCT46XyOWUsXyj35av8rMEAF5wqBUxxTQnhhOP0alAoBdocF/8NP8NAhMhC9VLxt3OQPfYM2s0rpTh2gxGJQR3fvfQBGdZReJM6yQONMuFlMDxXLPq8SqscJigrAFZEgAjFe1xrkNl72wATGQu0erbCIBJkFgcCUIvK0lQf1blCNybn3Nk/OxbobC+g9CjNJpdCQABBA+p3hI0T+g6Gkoepb03i8prCdCRcGf2EH7VEGEdDLzNJM+70fn/6izYJEW1mKiJWZL6ddbAesfUPjfvdqB9RzYeiYcth8KhoOXSkuENOtd6bR30awapz53PnAAR7/y3ks7aO0SAtsoVwrjxJzVs/8i4KzR1dXe5TGwPe0V7fX+llj+JADr6aHiINLJzItt3d6fmJmiX88dAdmdECN5ZXdnKllUGiphQZfllSkVznsz8EomldWBkA1mVdHT2nzXMozFjKJBYSvZlXqTPfo1AEJT3u2di5NSqDT0i1RXanu4KCS1wpUAuCUygQv9Vlq/wqyT0pK5cSPwQBRdBSqIGSSYPhUI2ZbWDIA2F8IXH3lFCQInElHx/So3LaS40vd8Dcbzvg5dmiTrigzZPxzIS2l1ua/DlzFoFYgzSKauJE/9sKhsYJ/X2r/CsodcrDKZunBJETrbun47a8q8h+LxyPtzVUy++mf9Nc92M+h2IYkYJDXjpwAPlzYRwD95eHrrmwA4OGh7v4snbzkx+3y5tEVQWERM/P+aZ/+zPVK4fXzP+wCBH+djhQzQ9ypXTChprmpWlU6l1ey+kibgL9ImYsWsBWYVBK3j9L4uIokJtutCKzv5HRkSn2AN7Wd1B5R6bJ9A/FphEamMZhK4uObW0YOb3Wa/j7gdReKQcKETidyxmb1ccC1gOBDEuDK3kydii+8Cchmphec5Eo+IJy5e3wnwL6QtiHKVDK8EwImWxIA2PLlar+I/IYhYQ4H4TjAfSZYgYr6/+bL1/wKBw8IeiKeh3Utq5ae053Wr7my32pVNqg6v2+/0uvw3vZTarLLqMZXh61Wb94W1MzY8XkhmKmxWiPhhEkR+WjNJXDh5cfmRzS78Sqd3T1Au+SihqmvHfd6yaYrKsmZmIkGPfKBilIAlLREgQhHlVrRihmaGBrNSWqtUV0Yzs/Ky3oLghldOuWqKu7mvTEdmhKWgEAh2z7YIrMDIZlJZ+L7ylK+f6kplT5xzxk33OzzwW4FiMZcddsTMs90OVvhfrTVLKU5dXu+Mi8Hl/bptczEKG2DrHVab6/KyhoVfkFJWKV8RCbrfPc9NJpAQhW2667raYUfMrp63npV+hEAMje/UPbxoeL6YeU6PCv9ZZt7CmhlMX3UcR+Qt3n6VpcOOiPSwAB12RCKS0Lc9OL+cBP5dMyBAv5559tzt8Xh8d3ER13V1PB4Xl596zTYG/YaZQYLOu2OVc5wLl1tzMUq6ampsE4M2KqWZmM+te9gZ1BJr4Z7WcK+u16YWIgKT1t8mIvYy2RRx5h97bR4+0ooSuQr+8Xhczpw8t7mzvXtZ2fBBsyVS/ypi9UQQXutAXkJaz1ki/aIgvoQZRSgKP6Nt+UKybWCfl9Ja53k7nw2XFv09m85mLCt4BTNTS8uE93USIhHI4h1d/+Wl9EZpEzGRFBaRn9LtbFMtBpLDlMtW1WfWjR0OwgXaZ/YzOqMgdrsgdyuXSO7oga1R76fViyBAhuQxFntfBcDbsV3k3VYrlKeV9rVvB+Xnq5eV35qIJpTrQlc6sCqdSqvSqbQi8YjMVadpzVbVjZkobFroZ7Rvh4Ugpt+snfXyW5E45Dlb1ikAsOzs/X5adzOgrIA4FiXW3YW4XSQOGYlH8q9c9m4iClW9pHx01dLyf3Nd7HZV5hUoTx5WfqqwcDI02M+ol2Wq8xEwqGfMrfD7bS3v8zO6S3uAkKiuWT7+08hb2fu1eBwINTj9oJ9SL8gACTB8EiT8tOqWWi7FAVQRZoIggiQBm0j8gKX1GWb+nCDxGWZ1YoDx2TUzNlY2TH/p1rVzX36rZ3WjZrdZASDP937np9UbJImlRUMpgJ8Wsl57zk/uBWvdtHXeabd8ogxS38MgKW0ildH/2x4c1FxYPx8ELSlZauUrBkBK6W+CAsels36Fz+kJXpaOZy0qidBp2ZbQWn+2oaxGr3x6pU3U5/B7dijAYPodKHAck18B5R8vNFWw7R+vgd8HgrYN8JhwKFDCzH0mEvXlLy7kKzDxz5WvSdpWsYJ9GxG4paWFc0UQ9l4fW0u3Ujwel9RPx3MhQD0jXByyU93pbehO/hwAFSzN3dZV7vsJglakuzNcVBI6TNn6BwC4IlFB8XhcTq9yuwgcB4ECIfuEslPl7Gg0qlY+vdJy+J1KyWFHxHMuVp2IJhRz7lxdRaKCQOBgmC4pKg0XJztTSS15ZW8WdL7kHkj7K5NdqUxRSahICnk5CBxBBPF4XBARC+A+MJMdDhzJAem4rqsxCaKni3bPc+gI53kn4Fa5/tJV88+3AtYUAMTMa2dNXbjhQK8+/NDGKPcokIiOx+OyZVfLj4h2fWbQ0JKqjp3JuUcd4f1s66tDaedfd3qxWN9B/3vWXWpdOnGlv7R+4SICXRlOvTb20nPvSe0vJtXU1CifTT0rfbHz6GAo/N/SEkinstE5Z859czt3v++T0DJhgmx1W5M1y8r/kyy6h7M6KcOy2O9WP1l75cY3chZec78p5oX4kk/0XRkSh0GDlc+PNs986cV33LhB4EgcMjFzY6a6bty90qbF2mdmzZdF4vhVItLqRSoiMhFNPFNVO/bu0CDrimynSsuQ+FHNneWDRNq+cfWc1p37ZldOXjbufCH5HgBlQpDwUvrNrJIOGJTIJQHpSAQycdkr/6quG7MoUGrfnG/3gprl40q11tcmohtbe/pNJq6caJel2/+dBe6wBMqql485Yw1tespxINwWFNyI00VA5M66Kvpp/TVvdUeO2ftMYMHl7M5e/6/JtWMfliERJSJbZfRlAC5vrdi/kktggtX6/dZ0dW35bULSz1RWZ+ywLPKSOv7o7PX/qjyx0tq3wtGAHjJSrz46/aVXenU3V0QoEUnofUrM5eYv+kr75Nqx19lF4pfZlMpYNp1Bw8v/VLVEX9V41aaWfeenZvn4kxj6bmHRidrXPlnS0sCsddPWeZGGfcryHep8nhyQEq/OmnLdvlV6XqmrX3iVVvq+4kHF55yMF2+cdtI8t79LgYUQxEDH7He2hSWPLLy8uyN5csng4pFdu5IP3LH66i9WVLyaPpCzeNFoVDnsiCcSx/3hVLzYFCwOTbJscX5t/cIVs6bcOL2QXFRQNnkF699zEnHt6vnpvLt29xwnEgmRiCZU3ZoFY8A4n8FgxfHZX7nlrd6uNYtGoypfWOGxwafyX0My+CViffGKuLMiGol2RxIRwcy05KFFS9Ii811py8OkJRfV1S94c9pJ0/6rZ0w3P/6777isrV9woWYeQkR1zCwIpO/4o3MYK/4uETEYf5pdM2/9vtnGuc1vQjmOI2ZNdZ+vXb3gERB9hYi+UduwaFG0JrrNYYeYme55MHZfN+OKUNgeL4S8qm71gq0zq266o5d+FZKzsivWLPg3TeI+EsTZrKdJwgHnsqIPugvkED8szMw6SlG1eJXztUwy/VggKFe+/oY6laxdcshpVlldw/z+3Bq0tH6BEsB4JoST4aN+X1c/X/VfxZwA/LlbS91uWYETi0qCn9nxVttF13x5fuP/1e3cFRWtqtWB8IT9a5ny3OIRgVGpHV6Kg1QLBo2INu/3ZpIEoCvvPyakOzCNPGYIkGasBEC9KYFEIemHvf/y09ZcEA2VtvjizrfGnA7a1LTN2UaOA/HXcZiT3egfFyi1qrOdypNBcZkKZM+bXDf2TyB6EhppCP4EQOdKG6exIpAEmJHkrPjm43Ne3Ors2qOoEwlohyEQ23Tb41x+YmCQjOZryH6ZPZpUXVe+RhP+TsSdpDGW0x2VZMtPs8+wSyyk2/3FkThOb2qpJLjNfq5yEZ2jfTBr1ZWV/POev68X1zSB+G5WHNW5EncXVK6YMD8RbX0L+7EqKypaVcSB+CvxA9mUnlt0WKA83e7DIvpPMGhEYsS78jT4QBAOxMQjINdtgUIs33eCTvQRbClY34noxl9V15V/OlAir812+0ra4gxhi79NXlb+EDM3EVMbBA4DUMOkzxREQe0zWwFpeSl1WdOsjc2RCOQBXQJ+cKM/QcdxxNYjtspRW0YpANh6xFY5c8qNP1262j1LWkVfsyw5t/ZhZ02Uon/ut6Qka8txHHHEEVvllh5tXXXWjVuXNsz/YTqV+V1RSagi2TX4lmg0McPZT4Hx3mKVCTeqTn90wUVe2nvCCliHW0RXLFu7cIJmfUebUGuJKF14+22/v600VL9wMgj/nk5lFBFKQ3aSAGB4PnaoFa4oHhQuTnamMgS5sr+4Z6wpJl3X9ZesXvBj3/NPDoZDY3zhfQ2En0U4AgA059wb31jyqHuRZVu/h6AgQfyirmFhpQVacXn1Dc/13Bjctea28R68ywg0o2RQmOoaFvhEdCcAWKvlhaGS8Mh0V5ol+C4AVNGHgipcWE0SP84kM18JFQcPyyTTFwNYVJGoELFIDO55brK23v2O8lWjtGSxJrp9eeOik1jxkiur5/69Z78Wr7p5rLTURRpiFhGF7aCNZEdyzuypzrp8JvFBX8viUD8mRMQOO2LOme7Ozl2Zs7XSTx/+iRHfFYLOIkYLGE8S6CkwnmSmJ3Ivzr1ATxLoKQa9ASYFpqcY/CQT73kP8xOa8SSDnoLGXwH+C7MeUjZ88EXBkP259u3tl1zz5fn3O42O9X4oScpVwFeMnm5BMGLg5umtXWC+EMw3MtM311624Y2CctmjE3OfR4/PV8YqJQhsdwTPk0FRzgRWWf38W212A7iPowgudCQSkWtnvfwWM/+PDIAhoFjTD4FccXE3Bl519sZMt5c+N5tUP5FBYQOAkOJIKyQvtUPifrtI/NoOydusAJ2mPNaciwH9kzOqZu2c9Y35exL3soZcgN0YWLUd8S2/y18ubbLzc10sQ+I8OyQWWEFZK0NyuhUUnyZBsIIC2Q7/EbLx7ZxLNWctaSEulQERFjYApj88fsWm1yKRiOytMEG+NCANG/W5x5Snn4YgtkJiiK28bwPgnolKBMrNU4/M5kJG8aqZGzOS6Pta841K8TdXz3jpRRA4EUn0sNrzn0efWcq714EgoeFCjy6Dhpu/9HoAlagS0ZyVvGbmhh95Xd4NQpAmSRCCiqygiAbC8q7c/IjlVlB8RQgKCptAktqzKXXR2lkb747ED66SZBYMhg/A5z6qS3Euy8hnZkUK2nVd3VbWpvNXMOlRl45SzEw+6ytS3enXA6GADdu6+/ZHby/u6SLs6b0E4BNIua6ry3q0dc+0ezyn0bFm18z7vZ/17wEBdsC6bGmDe5Zb5frvcEnmrD4/3+bej5TrasdxxIypN73sJVNnKl+12AEbwXCwSpL1pzJfPre0fsGflqxe8Lva+vmrAkWZFmnL34eKgp+xA5YE8PfXthRlHHZEVZXrL35i8VBBiBKRgsYjs6bOfb6/GzLcKlcBIMXtv810ZzZbActXWl/GzNQSa+HCMZerpjoPZlPpbwLoCIYCIlQcvMSD/ltdw4J/LK2f/9DS1Qt+X1s//0kP2XWhouDMYFGA0qnMawzxEgDUPVwX1Ew/kJbwPV/97e0/+48xc58XXhes3Z3CX+tl/aeFFL5WdOH9jfeHotGocikXx501xfm7n86eA+ZXAiEbwXDw6xr8RF3Dgn8sXT3/97X1C35Xu3rBY1L6/wgXh64PhANhMPxkR+ra2VOdJQU38SHZzn0Q9pQu5YLV153nvprc0VGz4822eCAcHEqEo31P/Rqe/xNL0s+kFnGAE5D0G0X6ATD/hsC/ZnArAF8TJwj0a4v1A1D0G6mtuBD6v6WkXxH8nyop7gH0q8Fw8ISujuSbyY7UOVed5f4kHo/IgVTXGJig4GIrKKQQVKRYi57uUAC0dtbG+oe+9cKitTNe+n1OXu8tMIlRagWFBFBc+LtmNOuJKyfaGvoaaRHssBAgWtnqtmbzVXr6dCbm4hp8NzSIBElpi69XLSv/DFxoJ5YT2U/NeT21ZvqGS/wsn82KH9Y+d7FiaJ0rpKd9hvZzWRPCJqk8fe2a2ZuevHTlRLtXIZxTBGh2m/2GGRtnaJ+naF/9STN3c2ELoQFWDJXVae3x48rT32y4csPZay7fsBkxULMLv2b5+CMImEYEAogE0d25vUii34SnRDShIHC3HRaCBBGD5+QTilRTfs0zOGwFhZSSgqLHPBWUfv2Ml/7y8HdeWNQ4Y8Ov941N+ilNBC6xgkISuESle70dpMQKCmkFhYBW79ZzwwWX8pqZm27Rvn8S+3w/M7Zrn6FVThVpxdAegxmvKp+XZ7oxsXHWxvsPSck6oe1wacgKl4QsIhHoYzsZDJeEraLSsPSFtnuTB4lEQlwz1d0G5su00hh6eFmFRemfrXz6UhvY97A6lRWVhC0ilPQqX5py8qW0KHh1qjO9vrSs1BIQ/7P0kfnjXbh7JZUwUXFRSdgCqKyrvYt6VZbsiDnnLvxnV3fH6enu9K3ZVPZ1KyAxaOigsUNHDD572MjB55eNKJs6aGjp0Zo1shmvNbkrOYe8wV91o242f2wEsqt7dtnhZUdqrSWEyFlt/d/ryHGOi2umLu5mi+4PBG1r0LDSL9Q+ujCaT6yRueMkETn7zNhvvC7/S9ms/5tMMtMZLgoFS4aUnBgKh748dOTgr5SNGPKlYDhUnE1lO7Jp76ddXelTZtXMrQcAtjt/MHTk4OOFIAugO13X1bGmWL8JS7GmmMxVXMPdliWtspGDyzv81y8HctnOhWMus89ym9re7jzZy2RrM8n09mA4KIccNvjEoSOHfKVs+ODzh4wYfHpRaVFpJpnJeFl/VdbPnD576rzbHR5ghvJH0fXaq7IkdxeAr9eunv83K2jfUTqs9IJkZwpe1k+SVK1gYigOWrBCAEsm0oJ5OAghyfg9QFqxBCSyGioNbWWY+UhpBz4RCgVQVDIYu97uaOhKZqddf4672Wl0rOj7oSQLCo9obrZbjdKKvaCk14C9DvFzJA65uW2iGF22TvcQYgwAnVvGZa2yN76X6fSL8/ez7bYOh9ftsn3g6mxSFxHroeli+UcgdySkr8PWBSW29spNz9QsHfMVLeUgS7IIWF56d7/yqfZODOTOeOkRAI9ULj3mWFsGKnSWPwnNRcTiFQh9oRUUZ+Ur6c6buHJiY1vDOt1PPJiRy2gVieiGBgANlT8efyz56lPs07EEtgXRv0CypeHKF18quJgR23O9FoMywhLnZ7v9EiIh17ZteBIA97TA3/Gb8wk+6ZSMC6gkMwsNIbSVs0kn5SsPaYjaTKf/kFbwtOJX9pknRCKQm2smipItJdxM+bhkXoS1lZUlh6Tbp2W71SAwdexMl3Tn52n3OGjiy1WXHqRZs7DxfM++HfCzUYj9znr5WQAXTa795Egp7ApWPIaZB0PwDrLES6n2dOufr3+1rdD/g6kkC6UeydItXbu6rxUkBAl+OpcUgJ7HCUBSPNm+fdcN2lMeMnIjAMQjcd0zYhKNRnOxrynzHqp9dP432j3/EyDmnW8OLSFy2/LnKYHWVoXBJ1y74822Ycz8TK4vcb1XXk1u8yMudn/UWfuwE921o+NMIgRY8GEgrIcDKvSfNX654632F0DUVnJ0SabnvO8rq64ntw3A9cvrb76DfT15146Ok4hoBECSBHWz1q+QFE/uoMxf3SluuodlWFhPL+x6u+MG31Nvt9t+IwCORhP9rpEIciXilPDv3vV2R5eQIgyiDmBPJmguUTIio+fMewHABcvrbx6XSadP5258maT88s5tu+ICvIWl1apV9vGrpribAWB36Elja2db1w1eVnUUZ/z/AQB3Uv/uztgkV7kAsuFgYtfbHSV2KFikmf/V87OFOO+N5G4FMHtF43/e5nt6cvvbnZ8F8wgGhJCiXWveYAtrzfRJ17UA+YL0h8Dd+oGGmangWlm8yhm7bO2i+1Y03Zy+6/FbuXb1godr6+d/8/ZHF3xyr2D96vlObf2Cjp5/V/ewM2hpvXvy0tXzb6tbu+itlU/eznVrF/7v8sZFFxTeM5BqHB8nInHIvuJ41XeVj665s7yzenk5T713PE9eVj5t92f2K0T7bregIAfSzscdx4HY3zgVMpTfVfu5zE0saZj/tV8+t4Jr6+ffc6ifk3e6Wd9LW6D3u29xHtjY5MeQDu56cURP1/LS1Qvm/3RdLS9ePf/svd7HjtjfUY33fdwGsKaYmXrL1j0kIcIPqlDomflV++iiT4kAXQzN3ykqDQ9NJdPws+olIryYc7vSyQC+RIwlGnqkIJogSBwXHhQekk178DP+Y6z1vW27VNyNutnCovi/SDGORCARKVx7lCuPfsDKave1SXtbBI4DUUjcOdC29wjYCBKRhO43RuZARCpAhQPqIyq2i0S0NTu5buyPrJC4WXusmdFGyj6pYVbrq+inmHn/7TZz7qaSPj9L+YIDu2OQB7K29/nsXuOVG8sI/V/MUy//fsDt9y9BcgXV94zjCEYigUQc+l3dwtNDUbpVrr+kYf7Xho8cmtjx5s57Z02Zd2lvWZj9CbeCmy42KaZ6P/fY8z2uov30OR6Py8LB+d5CJAUFj0nQ+4thOY4jdhcnb8rFR/dVGgXX6EDDMcxMiURCtAxvoYrtrZzAnuv5Wre3cl/PWzwekS359x1o6IcZFGvKFXDY3++Oc1xufWSrpawOJxS2v2wH7BO6OpLx9tf9C3Es/Hzsk/sYA3VAa5dBTr5frdtbub+7fJmZEkiIlqZ3jttA5tIoyh6LuqKiggoP6eL44rA1LHk6kZikPHU6BMqJMYiECOfcJqwh0AnGFpLi70qrx0naDbOrrv9XbwrYcODC+e1tY47L+eyFTRn71dVzWnf2deO64UNmsb4PitLwwaduzYLHLMs6Pen7x15TfdMrh+Jc4ocN64PcucLkOeyIClRQlKIpAKvzLzAz3bH6jiJLp24h4GJfZ8ZPtK2tVfvszgo7vmg0qs0D/663VJw7h7eppbd/MwNkMHzA9rb5c6JLHlk4Sth8K2t6BqTDgsTnvaz/tlB+JwCKxWLsuq4ZsA+rotytMPMmODMokYiLluEthCboWFNMuFPd7iWr5+8iIr/zyT9vrXKbfWaIRCJOhffli5sbBfm+WPnomSG63wtzDQbDoSGWyw5mtvRhQsgpJOm7gIAQ4jkvo6+ac5a703Hew1WCRlF+QI0aAgN7LEJnkpOrRtGwwGIGHTFxUgDcrABwzxqIhvfTyocZV4PhQ2RgzJky7zkAR9bW33q0HbD4isqrX9vzPBuX60AQH/YfQEScv+oJXekONm5Ag+E9CgUWzLkD90aIfnTgWVOue7WgJD8o2aTGojQYDB9KFGk7XBSShQufDR8JyHEcyluR/EHKKDWK0mAwfGgoHAxPZ+WaTDpT6bP/JgCYMMZHw6J0Xdd424yiNBgM783myIUt5p49dzuA7T2FrBkcw8cZ46c2GAx7mx75yikHs1qLwWAsSoPB8OExLHPVdMxxKoPBWJQGg8FgMHxcFCVBg9nsgA0Gg8FgFGWvepJRJC05uKOtm8yUGgwGg8Eoyjyt21vz9xbiGa3Ub1A2yjdTajAYDAaDwWAwGAyGgeM4jhjoBaoGg8FgMBgMBoPBYDAYDAaDwWAwGAwGg8FgMBgMBoPBYDAYDAaDwWAwGAwGg8FgMBgMBoPBYDAYDAaDwWAwGAwGg8FgMBgMBoPBYDAYDAaDwWAwGAwGg8FgMBgMBoPBYDAYDAaDwWAwGAwGg8FgMBgMBoPBYDAYDAaDwWAwGAwGg8FgMBgMBoPBYDAYDAaDwWAwGAwGg8FgMBgMBoPBYDAYPkL8f4oAnNty8uE1AAAAAElFTkSuQmCC"><h2>Controle de Treinamentos</h2><p>Faça login com sua conta Microsoft para acessar.</p><button onclick="document.getElementById('btn-ms-login').click()" class="btn primary" style="width:100%;padding:12px;" type="button">🔑 Entrar com Microsoft</button></div></div>
 <div class="overlay" id="overlay-negado"><div class="box"><div class="emoji">🔒</div><h2>Acesso Restrito</h2><p>Seu e-mail não está cadastrado. Peça a um administrador para liberar.</p><div id="overlay-email-info" style="background:var(--areia);border-radius:6px;padding:10px 14px;font-size:.82rem;color:var(--texto-suave);margin-bottom:20px;word-break:break-all;"></div><button onclick="document.getElementById('btn-ms-login').click()" class="btn ghost" style="width:100%;" type="button">Entrar com outra conta</button></div></div>
 <div class="overlay" id="overlay-confirm" style="z-index:1100;"><div class="box" style="max-width:460px;"><img id="cf-logo" alt="MAQCAMPO Irrigação" style="height:50px;width:auto;margin:0 auto 12px;display:block;"><h2>Confirmação de presença</h2><div id="cf-body"></div></div></div>
+<div class="avl-page" id="avl-page" hidden><header class="avl-top"><img id="avl-logo" alt="MAQCAMPO Irrigação"><span>Avaliação de cargo</span></header><main class="avl-main" id="avl-body"></main></div>
 <div class="toast" id="toast"></div>
 
 <script>
@@ -1593,7 +1602,7 @@ async function saveAcesso(){if(!msAccount){toast('Entre com o Microsoft para ger
 function emailAtual(){return msAccount?(msAccount.username||'').toLowerCase():'';}
 function nivelAcesso(){if(!msAccount)return msalReady?'deslogado':'local';const e=emailAtual();if(acesso.emailsAutorizados.map(x=>x.toLowerCase()).includes(e))return 'admin';if(acesso.emailsComuns.map(x=>x.toLowerCase()).includes(e))return 'comum';if(!acesso.emailsAutorizados.length&&!acesso.emailsComuns.length)return 'admin';return 'bloqueado';}
 function applyAccess(){
-  if(CONF){$('overlay-login').style.display='none';$('overlay-negado').style.display='none';return;}
+  if(CONF||AVL){$('overlay-login').style.display='none';$('overlay-negado').style.display='none';return;}
   const nivel=nivelAcesso();const ovL=$('overlay-login'),ovN=$('overlay-negado');
   const tabParam=document.querySelector('#tabs button[data-tab="parametros"]');
   if(nivel==='deslogado'){ovL.style.display='flex';ovN.style.display='none';return;}ovL.style.display='none';
@@ -1651,6 +1660,7 @@ function avaNorm(d){
   d.acesso=Object.assign(b.acesso,d.acesso||{});['admins','avaliadores','leitura'].forEach(k=>{if(!Array.isArray(d.acesso[k]))d.acesso[k]=[];});
   d.config=d.config||{};d.config.faixas=Object.assign(clone(AVA_FAIXAS),d.config.faixas||{});if(!Array.isArray(d.config.respLista))d.config.respLista=[];
   ['cargos','processos'].forEach(c=>{if(!d[c]||typeof d[c]!=='object')d[c]={};});
+  Object.values(d.processos).forEach(avaMigrar);
   return d;
 }
 let ava=avaDefault(),avaEtag=null,avaOk=false,avaErro='',avaSalvando=false,avaPend=false,_avaPoll=null;
@@ -1704,6 +1714,7 @@ async function avaCarregar(){
     else{avaOk=false;avaErro='';}
   }else{avaOk=false;avaErro=`Não foi possível ler a pasta ${SP_PASTA} › ${AVA_DIR} no SharePoint. Verifique se você tem permissão nela.`;}
   if(avaOk&&!_avaPoll)_avaPoll=setInterval(avaPuxarSeMudou,20000);
+  if(avaOk)setTimeout(()=>avaPuxarConvites(false),1200);
 }
 function avaAgendar(){
   if(avaLocal()){try{localStorage.setItem(AVA_LS,JSON.stringify(ava));}catch(e){}return;}
@@ -1726,6 +1737,7 @@ async function avaSalvarAgora(){
 }
 async function avaPuxarSeMudou(){
   if(!msAccount||!avaOk||avaSalvando||avaDirty.size||editando()||document.hidden)return;
+  if(MOD==='ava')avaPuxarConvites(false);
   const a=document.activeElement;if(a&&(a.tagName==='INPUT'||a.tagName==='TEXTAREA'||a.tagName==='SELECT'))return;
   const r=await graphGetJsonEtag(avaPath());
   if(r.ok&&r.data&&r.etag&&r.etag!==avaEtag){ava=avaNorm(r.data);avaEtag=r.etag;if(MOD==='ava'){applyModule();RENDER[abaAtiva()]&&RENDER[abaAtiva()]();}}
@@ -1746,9 +1758,8 @@ function avaCargo(id){return avaGet('cargos',id);}
 function avaPut(col,id,rec){delete rec.id;rec.atualizadoEm=new Date().toISOString();rec.atualizadoPor=emailAtual()||'local';ava[col][id]=rec;avaDirty.add(col+'|'+id);avaAgendar();}
 function avaDel(col,id){if(!ava[col][id])return;ava[col][id]={_del:true,atualizadoEm:new Date().toISOString(),atualizadoPor:emailAtual()||'local'};avaDirty.add(col+'|'+id);avaAgendar();}
 function avaMeta(k){avaDirty.add(k);avaAgendar();}
-function avaResp(pr){pr.respostas=pr.respostas||{};const k=pr.responsavel||'local';if(!pr.respostas[k])pr.respostas[k]={};return pr.respostas[k];}
 function avaPodeEditar(pr){if(!pr||pr.status==='concluida')return false;const nv=avaNivel();if(nv==='admin')return true;return nv==='avaliador'&&pr.responsavel===emailAtual();}
-function avaVisiveis(){const nv=avaNivel(),e=emailAtual();return avaLive('processos').filter(pr=>nv==='admin'||(nv==='avaliador'&&(pr.responsavel===e||pr.criadoPor===e))||(nv==='leitura'&&pr.status==='concluida'));}
+function avaVisiveis(){const nv=avaNivel(),e=emailAtual();return avaLive('processos').filter(pr=>nv==='admin'||(nv==='avaliador'&&(pr.responsavel===e||pr.criadoPor===e||avaAvs(pr).some(a=>a.modo==='interno'&&String(a.email||'').toLowerCase()===e)))||(nv==='leitura'&&pr.status==='concluida'));}
 function avaPessoas(){return live('pessoas').filter(p=>(p.tipo||'Interno')!=='Cliente'&&pessoaStatus(p)!=='INATIVO').sort((a,b)=>a.nome.localeCompare(b.nome,'pt-BR'));}
 function avaCursosInternos(){return live('cursos').filter(c=>(c.publico||'Interno')!=='Cliente'&&c.ativo!==false).sort((a,b)=>a.nome.localeCompare(b.nome,'pt-BR'));}
 
@@ -1766,13 +1777,35 @@ function parecerBadge(p,previa){if(!p)return '<span class="muted">—</span>';re
 function avaStatusBadge(pr){return pr.status==='concluida'?'<span class="ava-b good">Concluída</span>':'<span class="ava-b mute">Em andamento</span>';}
 
 /* ---------- regras ---------- */
+/* Etapa 2: cada avaliação tem vários avaliadores (papel, peso, forma de resposta).
+   Fatos (pré-requisitos) e resultado são preenchidos uma vez; notas, conhecimentos,
+   liderança e parecer individual são por avaliador e consolidados por média ponderada. */
+const PAPEIS_AVA=[['Gestor direto',50],['Líder técnico',30],['RH',20],['Outro',20]];
+const MODOS_AVA={interno:'Pelo sistema',link:'Link por e-mail (login Microsoft)',codigo:'Link sem login (código)'};
+const CONV_DIR='convites';
+const SIT_RANK={'Atende':0,'Atende parcialmente':1,'Não atende':2};
+function pesoPadrao(papel){const x=PAPEIS_AVA.find(p=>p[0]===papel);return x?x[1]:20;}
+function avaMigrar(pr){
+  if(!pr||pr._del||Array.isArray(pr.avaliadores))return pr;
+  const old=(pr.respostas||{})[pr.responsavel]||{};
+  pr.avaliadores=[{id:'a0',email:pr.responsavel||'',nome:pr.responsavelNome||pr.responsavel||'',papel:'Gestor direto',peso:50,modo:'interno',status:pr.status==='concluida'?'respondido':'pendente'}];
+  pr.respostas={a0:{notas:old.notas||{},evid:old.evid||{},conh:old.conh||{},lid:old.lid||{},tags:old.tags||[]}};
+  pr.fatos={reqMan:old.reqMan||{},expAnterior:old.expAnterior||0};
+  pr.resultado={parecer:old.parecer||'',justificativa:old.justificativa||'',reavaliarDias:old.reavaliarDias||0,fortes:old.fortes,dev:old.dev,planoCursos:old.planoCursos||[],comentarios:old.comentarios||''};
+  return pr;
+}
+function avaFatos(pr){if(!pr.fatos)pr.fatos={};return pr.fatos;}
+function avaRes(pr){if(!pr.resultado)pr.resultado={};return pr.resultado;}
+function avaRespDe(pr,aid){pr.respostas=pr.respostas||{};if(!pr.respostas[aid])pr.respostas[aid]={};return pr.respostas[aid];}
+function avaAvs(pr){return pr.avaliadores||[];}
+function avaMeuAv(pr){const e=emailAtual()||'local';return avaAvs(pr).find(a=>a.modo==='interno'&&String(a.email||'').toLowerCase()===e);}
 function avaCtx(pr){
   if(pr.status==='concluida'&&pr.snap)return {p:pr.snap.pessoa||{},c:pr.snap.cargo||{},reqs:pr.snap.reqs||[],treinos:pr.snap.treinos||[]};
   const p=getRec('pessoas',pr.colaboradorId)||{nome:'(pessoa removida)'},c=avaCargoEfetivo(pr.cargoId)||{};
   return {p,c,reqs:avaReqs(pr,p,c),treinos:avaTreinos(pr,c)};
 }
 function avaReqs(pr,p,c){
-  const r=avaResp(pr),man=r.reqMan||{},ref=pr.data||hojeISO(),out=[];let auto,tem;
+  const r=avaFatos(pr),man=r.reqMan||{},ref=pr.data||hojeISO(),out=[];let auto,tem;
   if(!c.escolaridade)auto='Não se aplica';else if(!p.escolaridade)auto=null;
   else auto=ESCOLARIDADES.indexOf(p.escolaridade)>=ESCOLARIDADES.indexOf(c.escolaridade)?'Atende':'Não atende';
   out.push({k:'esc',l:'Escolaridade',exig:c.escolaridade||'Não exige',tem:p.escolaridade||'Não informada',auto});
@@ -1798,9 +1831,39 @@ function avaTreinos(pr,c){
     return {cid,nome:cu?cu.nome:'(treinamento removido)',ult,venc,st};
   });
 }
-function avaCalc(pr,ctx){
-  ctx=ctx||avaCtx(pr);const f=ava.config.faixas,r=avaResp(pr),nt=r.notas||{};
-  const vals=lst=>lst.map(x=>n(nt[x[0]])).filter(v=>v>0);
+function avaConsol(pr){
+  const res=avaRes(pr),calib=res.calib||{},calibC=res.calibConh||{},avs=avaAvs(pr).filter(a=>a.status==='respondido');
+  const out={avs,notas:{},itens:{},conh:{},conhItens:{},lid:{},tags:[],pareceres:[],parDiv:false,segBloq:[],divs:[],nResp:avs.length,nTot:avaAvs(pr).length,consenso:null,precisaCalib:false};
+  const peso=a=>Math.max(0,n(a.peso));
+  const media=lst=>{const sw=lst.reduce((s,x)=>s+peso(x.a),0);return sw>0?lst.reduce((s,x)=>s+x.v*peso(x.a),0)/sw:lst.reduce((s,x)=>s+x.v,0)/lst.length;};
+  let tot=0,ok=0;
+  AVA_NOTAS.forEach(x=>{const k=x[0];
+    const vals=avs.map(a=>({a,v:n((avaRespDe(pr,a.id).notas||{})[k])})).filter(o=>o.v>0);
+    if(!vals.length){out.notas[k]=null;out.itens[k]={vals,div:false};return;}
+    const vs=vals.map(o=>o.v),avg=Math.round(media(vals)*10)/10,amp=Math.max(...vs)-Math.min(...vs),div=vals.length>1&&amp>=3,cal=calib[k]?+calib[k]:null;
+    out.notas[k]=cal||avg;out.itens[k]={vals,avg,amp,div,cal};tot++;if(div)out.divs.push(x[1]);else ok++;
+  });
+  AVA_CONH.forEach(x=>{const k=x[0];
+    const vals=avs.map(a=>({a,s:(avaRespDe(pr,a.id).conh||{})[k]})).filter(o=>o.s);
+    const rk=vals.filter(o=>o.s in SIT_RANK).map(o=>({a:o.a,v:SIT_RANK[o.s]}));
+    let s=null;if(rk.length){const m=media(rk);s=m<0.5?'Atende':m<1.5?'Atende parcialmente':'Não atende';}else if(vals.length)s='Não se aplica';
+    const rs=rk.map(o=>o.v),div=rs.length>1&&Math.max(...rs)-Math.min(...rs)>=2,cal=calibC[k]||null;
+    out.conh[k]=cal||s;out.conhItens[k]={vals,div,cal,auto:s};
+    if(vals.length){tot++;if(div)out.divs.push(x[1]);else ok++;}
+    if(k==='k_seg')vals.filter(o=>o.s==='Não atende').forEach(o=>out.segBloq.push(o.a.nome||o.a.email));
+  });
+  AVA_LID.forEach(x=>{const k=x[0];const vals=avs.map(a=>({a,v:(avaRespDe(pr,a.id).lid||{})[k]?1:0}));out.lid[k]=vals.length?media(vals)>=0.5:false;});
+  out.tags=uniqKeep([].concat(...avs.map(a=>avaRespDe(pr,a.id).tags||[])));
+  out.pareceres=avs.map(a=>({a,p:avaRespDe(pr,a.id).parecer||''})).filter(o=>o.p);
+  const ix=out.pareceres.map(o=>PARECERES.indexOf(o.p)).filter(i=>i>=0);
+  out.parDiv=ix.length>1&&Math.max(...ix)-Math.min(...ix)>1;
+  out.consenso=tot?Math.round(ok/tot*100):null;
+  out.precisaCalib=out.divs.length>0||out.parDiv||out.segBloq.length>0;
+  return out;
+}
+function avaCalc(pr,ctx,cons){
+  ctx=ctx||avaCtx(pr);cons=cons||avaConsol(pr);const f=ava.config.faixas,nt=cons.notas;
+  const vals=lst=>lst.map(x=>nt[x[0]]).filter(v=>v>0);
   const vc=vals(AVA_COMP),vd=vals(AVA_DES),va=vc.concat(vd);
   const out={mComp:mediaArr(vc),mDes:mediaArr(vd),mGeral:mediaArr(va),min:va.length?Math.min(...va):null,qtd:va.length,total:AVA_NOTAS.length,lv:null,parecer:null,mot:[]};
   if(!va.length)return out;
@@ -1808,43 +1871,88 @@ function avaCalc(pr,ctx){
   const caps=[];
   if(base>0)caps.push({lv:base,m:'Média geral '+fmtNota(out.mGeral)});
   const lmin=out.min>=f.itemApto?0:out.min>=f.itemPlano?1:2;
-  if(lmin>0){const it=AVA_NOTAS.find(x=>n(nt[x[0]])===out.min);caps.push({lv:lmin,m:`Nota ${out.min} em “${it[1]}”`});}
+  if(lmin>0){const it=AVA_NOTAS.find(x=>nt[x[0]]===out.min);caps.push({lv:lmin,m:`Nota ${fmtNota(out.min)} em “${it[1]}”`});}
   ctx.reqs.forEach(x=>{if(x.final==='Não atende')caps.push({lv:2,m:'Requisito não atendido: '+x.l});});
-  AVA_CONH.forEach(x=>{const s=(r.conh||{})[x[0]];if(s==='Não atende')caps.push({lv:2,m:x[1]+': não atende'});else if(s==='Atende parcialmente')caps.push({lv:1,m:x[1]+': atende parcialmente'});});
+  AVA_CONH.forEach(x=>{const s=cons.conh[x[0]];if(s==='Não atende')caps.push({lv:2,m:x[1]+': não atende'});else if(s==='Atende parcialmente')caps.push({lv:1,m:x[1]+': atende parcialmente'});});
   const pend=ctx.treinos.filter(t=>t.st!=='Possui').length;
   if(pend)caps.push({lv:1,m:pend+(pend>1?' treinamentos obrigatórios a realizar':' treinamento obrigatório a realizar')});
   out.lv=Math.max(base,...caps.map(c=>c.lv));out.parecer=PARECERES[out.lv];
-  out.mot=caps.filter(c=>c.lv===out.lv||c.lv>0).sort((a,b)=>b.lv-a.lv).map(c=>c.m);
+  out.mot=caps.filter(c=>c.lv>0).sort((a,b)=>b.lv-a.lv).map(c=>c.m);
   return out;
 }
-function avaPendencias(pr,ctx,calc){
-  const r=avaResp(pr),f=ava.config.faixas,p=[];
+function avaPendencias(pr,ctx,calc,cons){
+  const res=avaRes(pr),p=[];
   if(!pr.colaboradorId||!getRec('pessoas',pr.colaboradorId))p.push('Colaborador');
   if(!avaCargo(pr.cargoId))p.push('Cargo avaliado');
   ctx.reqs.filter(x=>!x.final).forEach(x=>p.push('Requisito sem informação: '+x.l));
-  const cq=AVA_CONH.filter(x=>!(r.conh||{})[x[0]]).length;if(cq)p.push(cq+(cq>1?' conhecimentos técnicos sem avaliação':' conhecimento técnico sem avaliação'));
-  const nq=AVA_NOTAS.length-calc.qtd;if(nq)p.push(nq+(nq>1?' notas a preencher':' nota a preencher'));
-  const ev=AVA_NOTAS.filter(x=>{const v=n((r.notas||{})[x[0]]);return v&&(v<=f.evid||v===10)&&!normTxt((r.evid||{})[x[0]]);});
-  if(ev.length)p.push('Evidência obrigatória em: '+ev.map(x=>x[1]).join(', '));
-  const pf=r.parecer||calc.parecer;
-  if(r.parecer&&r.parecer!==calc.parecer&&!normTxt(r.justificativa))p.push('Justificativa (parecer diferente do calculado)');
-  if(pf===PARECER_REAV&&!n(r.reavaliarDias))p.push('Prazo de reavaliação');
+  const avs=avaAvs(pr);if(!avs.length)p.push('Adicione ao menos um avaliador');
+  const pend=avs.filter(a=>a.status!=='respondido');if(pend.length)p.push('Aguardando a avaliação de: '+pend.map(a=>a.nome||a.email).join(', '));
+  if(cons.nResp){const sem=AVA_NOTAS.filter(x=>cons.notas[x[0]]==null).length;if(sem)p.push(sem+(sem>1?' itens sem nota':' item sem nota'));}
+  if(cons.precisaCalib&&!normTxt(res.calibTexto))p.push('Registro da calibração (há divergências entre os avaliadores)');
+  const pf=res.parecer||calc.parecer;
+  if(res.parecer&&res.parecer!==calc.parecer&&!normTxt(res.justificativa))p.push('Justificativa (parecer diferente do calculado)');
+  if(pf===PARECER_REAV&&!n(res.reavaliarDias))p.push('Prazo de reavaliação');
   return p;
 }
-function avaSugest(pr){
-  const r=avaResp(pr),nt=r.notas||{};
-  return {fortes:AVA_NOTAS.filter(x=>n(nt[x[0]])>=9).map(x=>x[1]),
-    dev:AVA_NOTAS.filter(x=>{const v=n(nt[x[0]]);return v&&v<=6;}).map(x=>x[1]).concat(AVA_CONH.filter(x=>['Não atende','Atende parcialmente'].includes((r.conh||{})[x[0]])).map(x=>x[1]))};
+function avaFormPend(r,evid){
+  const p=[],nt=r.notas||{};
+  const nq=AVA_NOTAS.filter(x=>!n(nt[x[0]])).length;if(nq)p.push(nq+(nq>1?' notas a preencher':' nota a preencher'));
+  const cq=AVA_CONH.filter(x=>!(r.conh||{})[x[0]]).length;if(cq)p.push(cq+(cq>1?' conhecimentos técnicos sem avaliação':' conhecimento técnico sem avaliação'));
+  const ev=AVA_NOTAS.filter(x=>{const v=n(nt[x[0]]);return v&&(v<=evid||v===10)&&!normTxt((r.evid||{})[x[0]]);});
+  if(ev.length)p.push('Evidência obrigatória em: '+ev.map(x=>x[1]).join(', '));
+  if(!r.parecer)p.push('Seu parecer');
+  return p;
 }
-function avaFortes(pr){const r=avaResp(pr);return Array.isArray(r.fortes)?r.fortes:avaSugest(pr).fortes;}
-function avaDev(pr){const r=avaResp(pr);return Array.isArray(r.dev)?r.dev:avaSugest(pr).dev;}
-function avaPlano(pr,ctx){const r=avaResp(pr);const auto=ctx.treinos.filter(t=>t.st!=='Possui').map(t=>({nome:t.nome,motivo:t.st==='Vencido'?'Reciclagem (vencido)':'Obrigatório do cargo'}));const extra=(r.planoCursos||[]).map(cid=>({cid,nome:nomeCurso(cid),motivo:'Indicado pelo avaliador'}));return auto.concat(extra);}
+function avaSugest(pr,cons){cons=cons||avaConsol(pr);const nt=cons.notas;
+  return {fortes:AVA_NOTAS.filter(x=>nt[x[0]]>=9).map(x=>x[1]),
+    dev:AVA_NOTAS.filter(x=>nt[x[0]]&&nt[x[0]]<=6).map(x=>x[1]).concat(AVA_CONH.filter(x=>['Não atende','Atende parcialmente'].includes(cons.conh[x[0]])).map(x=>x[1]))};}
+function avaFortes(pr,cons){const r=avaRes(pr);return Array.isArray(r.fortes)?r.fortes:avaSugest(pr,cons).fortes;}
+function avaDev(pr,cons){const r=avaRes(pr);return Array.isArray(r.dev)?r.dev:avaSugest(pr,cons).dev;}
+function avaPlano(pr,ctx){const r=avaRes(pr);const auto=ctx.treinos.filter(t=>t.st!=='Possui').map(t=>({nome:t.nome,motivo:t.st==='Vencido'?'Reciclagem (vencido)':'Obrigatório do cargo'}));const extra=(r.planoCursos||[]).map(cid=>({cid,nome:nomeCurso(cid),motivo:'Indicado na avaliação'}));return auto.concat(extra);}
 
 /* ---------- componentes ---------- */
 function avaEscala(k,v,dis){let h='<div class="ava-scale" role="radiogroup">';for(let i=1;i<=10;i++)h+=`<button type="button" class="ava-n${+v===i?' on '+avaTomNota(i):''}" data-nota="${k}" data-v="${i}" aria-pressed="${+v===i}"${dis}>${i}</button>`;return h+'</div>';}
 function avaChips(attr,k,lista,sel,dis,tom){return '<div class="ava-chips">'+lista.map(o=>`<button type="button" class="ava-c${sel===o?' on '+(tom?tom(o):''):''}" data-${attr}="${esc(k)}" data-v="${esc(o)}"${dis}>${esc(o)}</button>`).join('')+'</div>';}
 function avaMulti(grp,lista,sel,dis){return '<div class="ava-chips">'+lista.map(o=>`<button type="button" class="ava-c${sel.includes(o)?' on':''}" data-multi="${grp}" data-v="${esc(o)}"${dis}>${esc(o)}</button>`).join('')+'</div>';}
 function avaKV(lb,v){return `<div><span>${esc(lb)}</span>${v}</div>`;}
+/* Formulário de um avaliador — usado no sistema e na página do convite (link/código) */
+function avaFormHtml(r,o){
+  const dis=o.dis?' disabled':'',nt=r.notas||{},ev=r.evid||{};
+  const notaItem=x=>{const v=n(nt[x[0]]);const pede=v&&(v<=o.evid||v===10);return `<div class="ava-item"><span class="ava-l">${esc(x[1])}</span>${avaEscala(x[0],v,dis)}${pede||normTxt(ev[x[0]])?`<div class="field ava-ev"><label for="ev-${x[0]}">Evidência${pede?' (obrigatória para nota '+v+')':''}</label><textarea id="ev-${x[0]}" data-evid="${x[0]}" rows="2" placeholder="Situação concreta que justifica a nota"${dis}>${esc(ev[x[0]]||'')}</textarea></div>`:''}</div>`;};
+  return `
+  <div class="card"><h3>Conhecimentos técnicos</h3>
+    ${AVA_CONH.map(x=>`<div class="ava-item"><span class="ava-l">${esc(x[1])}${(o.conh||{})[x[0]]?`<small class="muted" style="display:block;">Exigido: ${esc(o.conh[x[0]])}</small>`:''}</span>${avaChips('conh',x[0],AVA_SIT,(r.conh||{})[x[0]],dis,avaTomSit)}</div>`).join('')}
+  </div>
+  <div class="card"><h3>Competências comportamentais <span class="h3-side">nota de 1 a 10</span></h3>
+    <div class="ava-anc">${ANCORAS.map(a=>`<div><b>${a[0]} · ${a[1]}</b>${a[2]}</div>`).join('')}</div>${AVA_COMP.map(notaItem).join('')}
+  </div>
+  <div class="card"><h3>Desempenho e maturidade profissional <span class="h3-side">nota de 1 a 10</span></h3>
+    ${AVA_DES.map(notaItem).join('')}
+    <div class="lbl-sec" style="margin-top:14px;">Evidências observadas <span style="text-transform:none;font-weight:400;">(opcional)</span></div>
+    ${avaMulti('tags',AVA_TAGS,r.tags||[],dis)}
+  </div>
+  ${o.lider?`<div class="card"><h3>Critérios de liderança <span class="h3-side">marque o que o colaborador cumpre</span></h3><div class="grid">${AVA_LID.map(x=>`<label class="chk${(r.lid||{})[x[0]]?' on':''}"><input type="checkbox" data-lid="${x[0]}"${(r.lid||{})[x[0]]?' checked':''}${dis}>${esc(x[1])}</label>`).join('')}</div></div>`:''}
+  <div class="card"><h3>${esc(o.tituloParecer||'Seu parecer')}</h3>
+    <div class="ava-chips ava-stack">${PARECERES.map((p,i)=>`<button type="button" class="ava-c${r.parecer===p?' on '+['good','good','warn','bad'][i]:''}" data-ipar="${esc(p)}"${dis}>${esc(p)}</button>`).join('')}</div>
+    <div class="field" style="margin-top:12px;"><label for="f-coment">Comentário <span style="font-weight:400;">(opcional)</span></label><textarea id="f-coment" data-fcoment="1" rows="3" placeholder="O que pesou na sua avaliação"${dis}>${esc(r.comentario||'')}</textarea></div>
+  </div>`;
+}
+function avaFormAcao(ev,r){
+  const t=ev.target;
+  if(ev.type==='click'){const b=t.closest&&t.closest('button');if(!b||b.disabled)return null;const d=b.dataset;
+    if(d.nota){r.notas=r.notas||{};r.notas[d.nota]=+d.v;return 'render';}
+    if(d.conh){r.conh=r.conh||{};r.conh[d.conh]=d.v;return 'render';}
+    if(d.multi==='tags'){r.tags=avaToggle(r.tags,d.v);return 'render';}
+    if(d.ipar){r.parecer=r.parecer===d.ipar?'':d.ipar;return 'render';}
+    return null;}
+  if(t.disabled)return null;
+  if(ev.type==='input'){if(t.dataset.evid){r.evid=r.evid||{};r.evid[t.dataset.evid]=t.value;return 'soft';}if(t.dataset.fcoment){r.comentario=t.value;return 'soft';}return null;}
+  if(ev.type==='change'){if(t.dataset.lid){r.lid=r.lid||{};r.lid[t.dataset.lid]=t.checked;return 'render';}return null;}
+  return null;
+}
+function avaToggle(arr,v){const s=new Set(arr||[]);s.has(v)?s.delete(v):s.add(v);return Array.from(s);}
+function avaPendHtml(pend,okTxt){return pend.length?`<div class="ava-pend"><b>Falta:</b><ul>${pend.map(x=>`<li>${esc(x)}</li>`).join('')}</ul></div>`:`<div class="ava-pend ok">✅ ${esc(okTxt)}</div>`;}
+function avaDigitando(rootId){const a=document.activeElement;return a&&(a.tagName==='INPUT'||a.tagName==='TEXTAREA')&&a.closest&&a.closest('#'+rootId);}
 
 /* ---------- lista ---------- */
 function renderAvaliacoes(){
@@ -1854,7 +1962,7 @@ function renderAvaliacoes(){
     const b=$('ava-retry');if(b)b.onclick=async()=>{await avaCarregar();applyModule();renderAvaliacoes();};
     return;
   }
-  if(AVA_ABERTA){const pr=avaGet('processos',AVA_ABERTA);if(pr&&avaVisiveis().some(x=>x.id===AVA_ABERTA)){root.innerHTML=avaEditorHtml(AVA_ABERTA,pr);if(!avaPodeEditar(pr))root.querySelectorAll('select,input,textarea').forEach(x=>x.disabled=true);return;}AVA_ABERTA=null;}
+  if(AVA_ABERTA){const pr=avaGet('processos',AVA_ABERTA);if(pr&&avaVisiveis().some(x=>x.id===AVA_ABERTA)){root.innerHTML=avaEditorHtml(AVA_ABERTA,pr);if(!avaPodeEditar(pr))root.querySelectorAll('.ava-fatos select,.ava-fatos input,.ava-fatos textarea,.ava-resultado select,.ava-resultado input,.ava-resultado textarea').forEach(x=>x.disabled=true);return;}AVA_ABERTA=null;}
   const vis=avaVisiveis(),nv=avaNivel();
   const anos=uniq(vis.map(p=>(p.data||'').slice(0,4))).reverse();
   const conc=vis.filter(p=>p.status==='concluida');
@@ -1876,12 +1984,12 @@ function renderAvaliacoes(){
 function avaTabela(){
   const q=chave(AVA_FLT.busca);
   const rows=avaVisiveis().filter(pr=>(!AVA_FLT.status||pr.status===AVA_FLT.status||(AVA_FLT.status==='rascunho'&&pr.status!=='concluida'))&&(!AVA_FLT.ano||(pr.data||'').startsWith(AVA_FLT.ano))).map(pr=>{
-    const ctx=avaCtx(pr),calc=avaCalc(pr,ctx);
-    return {pr,ctx,calc,nome:ctx.p.nome||'—',de:ctx.p.cargo||'',para:(ctx.c&&ctx.c.nome)||'—'};
+    const ctx=avaCtx(pr),cons=avaConsol(pr),calc=avaCalc(pr,ctx,cons);
+    return {pr,ctx,cons,calc,nome:ctx.p.nome||'—',de:ctx.p.cargo||'',para:(ctx.c&&ctx.c.nome)||'—'};
   }).filter(x=>!q||chave(x.nome+' '+x.de+' '+x.para).includes(q)).sort((a,b)=>(b.pr.data||'').localeCompare(a.pr.data||''));
   $('av-count').textContent=rows.length+(rows.length===1?' avaliação':' avaliações');
-  $('tbl-ava').innerHTML=`<thead><tr><th>Data</th><th>Colaborador</th><th>Cargo atual → avaliado</th><th>Tipo</th><th>Responsável</th><th class="r">Média</th><th>Parecer</th><th>Status</th><th></th></tr></thead><tbody>${rows.length?rows.map(x=>{const pr=x.pr,conc=pr.status==='concluida';const par=conc?pr.parecerFinal:(avaResp(pr).parecer||x.calc.parecer);
-    return `<tr class="click" data-ava-open="${esc(pr.id)}"><td class="nw">${fmtD(pr.data)}</td><td><b>${esc(x.nome)}</b></td><td>${esc(x.de||'—')} → ${esc(x.para)}</td><td>${esc(pr.tipo||'')}</td><td>${esc(pr.responsavelNome||pr.responsavel||'')}</td><td class="num">${fmtNota(conc?pr.media:x.calc.mGeral)}</td><td>${parecerBadge(par,!conc)}</td><td>${avaStatusBadge(pr)}</td><td class="nw">${conc?`<button class="btn ghost tiny" data-ava-pdf="${esc(pr.id)}" type="button" title="Relatório em PDF">🖨 PDF</button>`:''}</td></tr>`;}).join(''):`<tr><td colspan="9" class="muted" style="padding:16px;">Nenhuma avaliação${AVA_FLT.busca||AVA_FLT.status||AVA_FLT.ano?' com esses filtros':' ainda'}.</td></tr>`}</tbody>`;
+  $('tbl-ava').innerHTML=`<thead><tr><th>Data</th><th>Colaborador</th><th>Cargo atual → avaliado</th><th>Tipo</th><th class="c">Respostas</th><th class="r">Média</th><th>Parecer</th><th>Status</th><th></th></tr></thead><tbody>${rows.length?rows.map(x=>{const pr=x.pr,conc=pr.status==='concluida';const par=conc?pr.parecerFinal:(avaRes(pr).parecer||x.calc.parecer);
+    return `<tr class="click" data-ava-open="${esc(pr.id)}"><td class="nw">${fmtD(pr.data)}</td><td><b>${esc(x.nome)}</b></td><td>${esc(x.de||'—')} → ${esc(x.para)}</td><td>${esc(pr.tipo||'')}</td><td class="c nw">${x.cons.nResp}/${x.cons.nTot}</td><td class="num">${fmtNota(conc?pr.media:x.calc.mGeral)}</td><td>${parecerBadge(par,!conc)}</td><td>${avaStatusBadge(pr)}</td><td class="nw">${conc?`<button class="btn ghost tiny" data-ava-pdf="${esc(pr.id)}" type="button" title="Relatório em PDF">🖨 PDF</button>`:''}</td></tr>`;}).join(''):`<tr><td colspan="9" class="muted" style="padding:16px;">Nenhuma avaliação${AVA_FLT.busca||AVA_FLT.status||AVA_FLT.ano?' com esses filtros':' ainda'}.</td></tr>`}</tbody>`;
   $('tbl-ava').querySelectorAll('[data-ava-pdf]').forEach(b=>b.onclick=e=>{e.stopPropagation();avaPdf(b.dataset.avaPdf);});
   $('tbl-ava').querySelectorAll('[data-ava-open]').forEach(tr=>tr.onclick=()=>{AVA_ABERTA=tr.dataset.avaOpen;renderAvaliacoes();window.scrollTo({top:0});});
 }
@@ -1894,32 +2002,79 @@ function avaNova(){
     ${fld('av-n-cargo','Cargo avaliado *',null,{type:'select',options:opts(cargos.map(c=>({v:c.id,l:c.nome})),'','Selecione…')})}
     ${fld('av-n-tipo','Tipo de avaliação',null,{type:'select',options:opts(TIPOS_AVA,'Promoção')})}
     ${fld('av-n-data','Data da avaliação',hojeISO(),{type:'date'})}
-  </div><div class="note">Você fica como responsável pela avaliação. Os dados do colaborador vêm do cadastro de funcionários e os requisitos do cargo vêm do catálogo.</div>`,[
+  </div>
+  <label class="chk" style="margin-top:12px;display:inline-flex;"><input type="checkbox" id="av-n-eu" checked>Eu também vou avaliar</label>
+  <div class="grid" id="av-n-eu-box" style="margin-top:8px;max-width:420px;">${fld('av-n-papel','Meu papel',null,{type:'select',options:opts(PAPEIS_AVA.map(p=>p[0]),'Gestor direto')})}</div>
+  <div class="note">Você fica como responsável pela avaliação. Os dados do colaborador vêm do cadastro de funcionários e os requisitos, do catálogo de cargos. Depois de criar, convide os outros avaliadores.</div>`,[
     {t:'Cancelar',cls:'ghost',fn:fecharModal},
     {t:'Criar avaliação',cls:'primary',fn:()=>{
       const pid=$('av-n-pes').value,cid=$('av-n-cargo').value;if(!pid||!cid){toast('Escolha o colaborador e o cargo.');return;}
-      const id='av_'+Date.now().toString(36)+Math.random().toString(36).slice(2,6);const em=emailAtual()||'local';
-      const rec={colaboradorId:pid,cargoId:cid,tipo:$('av-n-tipo').value,data:$('av-n-data').value||hojeISO(),status:'rascunho',responsavel:em,responsavelNome:msAccount?(msAccount.name||em):'Modo local',criadoPor:em,criadoEm:new Date().toISOString(),respostas:{}};
-      rec.respostas[em]={};
+      const id='av_'+Date.now().toString(36)+Math.random().toString(36).slice(2,6);const em=emailAtual()||'local';const nome=msAccount?(msAccount.name||em):'Modo local';
+      const rec={colaboradorId:pid,cargoId:cid,tipo:$('av-n-tipo').value,data:$('av-n-data').value||hojeISO(),status:'rascunho',responsavel:em,responsavelNome:nome,criadoPor:em,criadoEm:new Date().toISOString(),avaliadores:[],respostas:{},fatos:{},resultado:{}};
+      if($('av-n-eu').checked){const papel=$('av-n-papel').value;rec.avaliadores.push({id:'a1',email:em,nome,papel,peso:pesoPadrao(papel),modo:'interno',status:'pendente'});}
       avaPut('processos',id,rec);AVA_ABERTA=id;fecharModal();renderAvaliacoes();window.scrollTo({top:0});
     }}
   ]);
+  $('av-n-eu').onchange=()=>{$('av-n-eu-box').style.display=$('av-n-eu').checked?'':'none';};
 }
 
 /* ---------- editor ---------- */
+function avaSitAv(a){
+  if(a.status==='respondido')return `<span class="ava-b good">Respondeu</span> <span class="muted">${fmtDH(a.respondidoEm)}${a.via==='código'?' · por código':''}</span>`;
+  if(a.modo==='interno')return '<span class="ava-b mute">Pendente</span>';
+  if(a.shareErro)return `<span class="ava-b bad">Convite com problema</span> <span class="muted">${esc(a.shareErro)}</span>`;
+  if(a.enviadoEm)return `<span class="ava-b warn">Convite enviado</span> <span class="muted">${fmtDH(a.enviadoEm)}${a.progresso?' · em preenchimento ('+a.progresso+'/'+AVA_NOTAS.length+')':''}</span>`;
+  return '<span class="ava-b mute">Convite não enviado</span>';
+}
+function avaAvaliadoresHtml(pr,ctx,ed){
+  const avs=avaAvs(pr),soma=avs.reduce((s,a)=>s+Math.max(0,n(a.peso)),0);
+  const gest=ctx.p.gestorEmail&&!avs.some(a=>String(a.email||'').toLowerCase()===String(ctx.p.gestorEmail).toLowerCase())?ctx.p:null;
+  const acoes=a=>{if(!ed)return '';const b=(act,t,cls)=>`<button class="btn ${cls||'ghost'} tiny" data-avact="${act}" data-av="${esc(a.id)}" type="button">${t}</button>`;const out=[];
+    if(a.modo!=='interno'&&a.status!=='respondido'){out.push(b('enviar',a.enviadoEm?'✉ Reenviar':'✉ Enviar convite','primary'));out.push(b('copiar','🔗 Copiar link'));}
+    if(a.modo==='codigo'&&a.status!=='respondido')out.push(b('importar','⇩ Importar resposta'));
+    if(a.status==='respondido'&&a.modo!=='interno')out.push(b('reabrir','Liberar nova resposta'));
+    if(a.status!=='respondido')out.push(b('editar','Editar'));
+    out.push(b('remover','Remover','danger'));return out.join(' ');};
+  return `<div class="card ava-avs"><h3>5 · Avaliadores <span class="h3-side">${avs.filter(a=>a.status==='respondido').length} de ${avs.length} responderam</span>${avs.some(a=>a.modo==='link'&&a.status!=='respondido')&&msAccount?'<button class="btn ghost small" id="ava-puxar" type="button">⟳ Atualizar respostas</button>':''}</h3>
+    ${avs.length?`<div class="tablewrap"><table class="dt"><thead><tr><th>Avaliador</th><th>Papel</th><th class="r">Peso</th><th>Forma</th><th>Situação</th><th></th></tr></thead><tbody>${avs.map(a=>`<tr><td><b>${esc(a.nome||'—')}</b><div class="muted">${esc(a.email||'')}</div></td><td>${esc(a.papel||'')}</td><td class="num">${soma?Math.round(Math.max(0,n(a.peso))/soma*100):Math.round(100/avs.length)}%</td><td>${esc(MODOS_AVA[a.modo]||a.modo)}</td><td>${avaSitAv(a)}</td><td class="nw">${acoes(a)}</td></tr>`).join('')}</tbody></table></div>`:'<div class="muted">Nenhum avaliador ainda.</div>'}
+    ${ed?`<div class="flt" style="margin-top:10px;"><button class="btn primary small" id="ava-av-add" type="button">+ Adicionar avaliador</button>${gest?`<button class="btn ghost small" id="ava-av-gestor" type="button">+ Convidar o gestor direto (${esc(gest.gestor||gest.gestorEmail)})</button>`:''}</div>`:''}
+    <div class="note">O peso vale entre quem respondeu. Cada avaliador vê só o próprio formulário e responde às cegas: <b>pelo sistema</b> (já tem acesso ao app), por <b>link com login Microsoft</b> (sem acesso a pastas nem ao sistema) ou por <b>link sem login</b> (a resposta volta como código por e-mail).</div>
+  </div>`;
+}
+function avaConsolHtml(pr,cons,ed){
+  const avs=cons.avs;
+  if(!avs.length)return `<div class="card"><h3>7 · Consolidação</h3><div class="muted">As notas aparecem aqui conforme os avaliadores respondem.</div></div>`;
+  const nm=a=>esc((a.nome||a.email||'').split(' ')[0]);
+  const corNota=v=>`<span class="ava-v ${avaTomNota(Math.round(v))}">${fmtNota(v).replace(',0','')}</span>`;
+  const rowsN=AVA_NOTAS.map(x=>{const it=cons.itens[x[0]]||{vals:[]};const byA=a=>{const o=it.vals.find(z=>z.a.id===a.id);return o?corNota(o.v):'<span class="muted">—</span>';};
+    return `<tr${it.div?' class="ava-div"':''}><td>${esc(x[1])}${it.div?` <span class="ava-b warn">diferença de ${it.amp}</span>`:''}</td>${avs.map(a=>`<td class="c">${byA(a)}</td>`).join('')}<td class="c"><b>${cons.notas[x[0]]==null?'—':fmtNota(cons.notas[x[0]])}</b>${it.cal?' <span class="muted">calibrada</span>':''}</td><td class="nw">${ed&&it.div?`<select data-calib="${x[0]}" aria-label="Nota calibrada">${opts([1,2,3,4,5,6,7,8,9,10].map(v=>({v:String(v),l:String(v)})),it.cal?String(it.cal):'','Média '+fmtNota(it.avg))}</select>`:''}</td></tr>`;}).join('');
+  const rowsK=AVA_CONH.map(x=>{const it=cons.conhItens[x[0]]||{vals:[]};const byA=a=>{const o=it.vals.find(z=>z.a.id===a.id);return o?`<span class="ava-b ${avaTomSit(o.s)}">${esc(o.s)}</span>`:'<span class="muted">—</span>';};
+    return `<tr${it.div?' class="ava-div"':''}><td>${esc(x[1])}${it.div?' <span class="ava-b warn">divergente</span>':''}</td>${avs.map(a=>`<td class="c">${byA(a)}</td>`).join('')}<td class="c">${avaBadge(cons.conh[x[0]])}${it.cal?' <span class="muted">calibrado</span>':''}</td><td class="nw">${ed&&it.div?`<select data-calibconh="${x[0]}" aria-label="Situação calibrada">${opts(AVA_SIT,it.cal||'','Automático: '+(it.auto||'—'))}</select>`:''}</td></tr>`;}).join('');
+  const evs=AVA_NOTAS.map(x=>({x,l:avs.map(a=>({a,t:normTxt((avaRespDe(pr,a.id).evid||{})[x[0]])})).filter(o=>o.t)})).filter(o=>o.l.length);
+  const coms=avs.map(a=>({a,t:normTxt(avaRespDe(pr,a.id).comentario)})).filter(o=>o.t);
+  return `<div class="card"><h3>7 · Consolidação <span class="h3-side">média ponderada pelos pesos · consenso ${cons.consenso==null?'—':cons.consenso+'%'}</span></h3>
+    ${cons.nResp<cons.nTot?`<div class="note">Prévia com ${cons.nResp} de ${cons.nTot} avaliadores. O resultado muda conforme os outros respondem.</div>`:''}
+    ${cons.segBloq.length?`<div class="ava-pend" style="margin-bottom:10px;">⚠ <b>Normas de segurança: não atende</b>, segundo ${esc(cons.segBloq.join(', '))}. Registre a calibração antes de concluir.</div>`:''}
+    <div class="tablewrap"><table class="dt"><thead><tr><th>Competências e desempenho</th>${avs.map(a=>`<th class="c">${nm(a)}<div style="font-weight:400;text-transform:none;">${esc(a.papel||'')}</div></th>`).join('')}<th class="c">Consolidada</th><th>${ed&&cons.divs.length?'Calibrar':''}</th></tr></thead><tbody>${rowsN}</tbody></table></div>
+    <div class="tablewrap" style="margin-top:12px;"><table class="dt"><thead><tr><th>Conhecimentos técnicos</th>${avs.map(a=>`<th class="c">${nm(a)}</th>`).join('')}<th class="c">Consolidado</th><th></th></tr></thead><tbody>${rowsK}</tbody></table></div>
+    <div class="lbl-sec">Pareceres individuais${cons.parDiv?' <span class="ava-b warn">distantes entre si</span>':''}</div>
+    ${cons.pareceres.length?`<div class="ava-kv">${cons.pareceres.map(o=>avaKV((o.a.nome||o.a.email)+' · '+(o.a.papel||''),parecerBadge(o.p))).join('')}</div>`:'<div class="muted">—</div>'}
+    ${evs.length||coms.length?`<details style="margin-top:12px;"><summary class="lbl-sec" style="cursor:pointer;">Evidências e comentários dos avaliadores</summary>${evs.map(o=>`<div style="margin:8px 0;"><b style="font-size:.84rem;">${esc(o.x[1])}</b>${o.l.map(z=>`<div class="muted" style="font-size:.82rem;">${esc((z.a.nome||'').split(' ')[0])}: ${esc(z.t)}</div>`).join('')}</div>`).join('')}${coms.map(o=>`<div style="margin:8px 0;"><b style="font-size:.84rem;">Comentário de ${esc(o.a.nome||o.a.email)}</b><div class="muted" style="font-size:.82rem;">${esc(o.t)}</div></div>`).join('')}</details>`:''}
+  </div>`;
+}
 function avaEditorHtml(id,pr){
-  const ctx=avaCtx(pr),calc=avaCalc(pr,ctx),r=avaResp(pr),f=ava.config.faixas;
-  const ed=avaPodeEditar(pr),dis=ed?'':' disabled',conc=pr.status==='concluida';
+  const ctx=avaCtx(pr),cons=avaConsol(pr),calc=avaCalc(pr,ctx,cons),res=avaRes(pr),fat=avaFatos(pr);
+  const ed=avaPodeEditar(pr),dis=ed?'':' disabled',conc=pr.status==='concluida',adm=avaIsAdmin();
   const p=ctx.p,c=ctx.c,nv=nivelAcesso(),podeCad=!conc&&(nv==='admin'||nv==='comum'||nv==='local');
   const cargos=avaLive('cargos').filter(x=>x.ativo!==false||x.id===pr.cargoId).sort((a,b)=>a.nome.localeCompare(b.nome,'pt-BR'));
   const lider=NIVEIS_LIDER.includes(c.nivel);
-  const parecerSel=r.parecer||calc.parecer;
-  const fortes=avaFortes(pr),dev=avaDev(pr),plano=avaPlano(pr,ctx);
-  const pend=avaPendencias(pr,ctx,calc);
-  const notaItem=x=>{const v=n((r.notas||{})[x[0]]);const pede=v&&(v<=f.evid||v===10);return `<div class="ava-item"><span class="ava-l">${esc(x[1])}</span>${avaEscala(x[0],v,dis)}${pede||normTxt((r.evid||{})[x[0]])?`<div class="field ava-ev"><label for="ev-${x[0]}">Evidência${pede?' (obrigatória para nota '+v+')':''}</label><textarea id="ev-${x[0]}" data-evid="${x[0]}" rows="2" placeholder="Situação concreta que justifica a nota"${dis}>${esc((r.evid||{})[x[0]]||'')}</textarea></div>`:''}</div>`;};
-  const ancoras=`<div class="ava-anc">${ANCORAS.map(a=>`<div><b>${a[0]} · ${a[1]}</b>${a[2]}</div>`).join('')}</div>`;
+  const meu=avaMeuAv(pr),meuR=meu?avaRespDe(pr,meu.id):null,meuEd=!conc&&meu&&meu.status!=='respondido';
+  const verNotas=adm||conc||pr.responsavel===emailAtual()||cons.nResp===cons.nTot;
+  const parecerSel=res.parecer||calc.parecer;
+  const fortes=avaFortes(pr,cons),dev=avaDev(pr,cons),plano=avaPlano(pr,ctx);
+  const pend=avaPendencias(pr,ctx,calc,cons);
   return `
-  <div class="card ava-top">
+  <div class="card ava-top ava-fatos">
     <div class="ava-head">
       <button class="btn ghost small" id="ava-voltar" type="button">← Avaliações</button>
       <div style="flex:1;min-width:220px;"><div class="ava-nome">${esc(p.nome||'—')}</div><div class="muted">${esc(p.cargo||'Cargo atual não informado')} → <b>${esc(c.nome||'—')}</b></div></div>
@@ -1946,11 +2101,11 @@ function avaEditorHtml(id,pr){
     ${(c.resp||[]).filter(Boolean).length?`<div class="lbl-sec">Principais responsabilidades</div><ol style="margin:0;padding-left:20px;font-size:.88rem;">${c.resp.filter(Boolean).map(x=>`<li>${esc(x)}</li>`).join('')}</ol>`:''}
   </div>
 
-  <div class="card"><h3>3 · Pré-requisitos <span class="h3-side">comparados automaticamente</span></h3>
+  <div class="card ava-fatos"><h3>3 · Pré-requisitos <span class="h3-side">comparados automaticamente</span></h3>
     <div class="tablewrap"><table class="dt"><thead><tr><th>Requisito</th><th>Exigido</th><th>Colaborador</th><th>Situação</th></tr></thead><tbody>
     ${ctx.reqs.map(x=>`<tr><td><b>${esc(x.l)}</b></td><td>${esc(x.exig)}</td><td>${esc(x.tem)}</td><td>${x.manual&&!conc?`<select data-req="${x.k}"${dis} aria-label="Situação de ${esc(x.l)}">${opts(['Atende','Não atende'],x.final||'','Confirmar…')}</select>`:avaBadge(x.final)}</td></tr>`).join('')}
     </tbody></table></div>
-    <div class="grid" style="margin-top:12px;max-width:520px;">${fld('ava-exp-ant','Experiência anterior na área, fora da empresa (meses)',r.expAnterior||'',{type:'number'})}</div>
+    <div class="grid" style="margin-top:12px;max-width:520px;">${fld('ava-exp-ant','Experiência anterior na área, fora da empresa (meses)',fat.expAnterior||'',{type:'number'})}</div>
     ${ctx.reqs.some(x=>x.manual)&&!conc?'<div class="note">Quando o cadastro não tem a informação, confirme a situação manualmente ou complete o cadastro do funcionário.</div>':''}
   </div>
 
@@ -1958,61 +2113,65 @@ function avaEditorHtml(id,pr){
     ${ctx.treinos.length?`<div class="tablewrap"><table class="dt"><thead><tr><th>Treinamento</th><th>Última conclusão</th><th>Vencimento</th><th>Situação</th></tr></thead><tbody>${ctx.treinos.map(t=>`<tr><td>${esc(t.nome)}${c.her&&(c.her.treinos||[]).includes(t.cid)?' <span class="muted">· herdado de '+esc(c.her.de)+'</span>':''}</td><td class="nw">${fmtD(t.ult)}</td><td class="nw">${fmtD(t.venc)}</td><td>${avaBadge(t.st)}</td></tr>`).join('')}</tbody></table></div>`:'<div class="muted">Nenhum treinamento obrigatório definido para este cargo no catálogo.</div>'}
   </div>
 
-  <div class="card"><h3>5 · Conhecimentos técnicos</h3>
-    ${AVA_CONH.map(x=>`<div class="ava-item"><span class="ava-l">${esc(x[1])}${(c.conh||{})[x[0]]?`<small class="muted" style="display:block;">Exigido: ${esc(c.conh[x[0]])}</small>`:''}</span>${avaChips('conh',x[0],AVA_SIT,(r.conh||{})[x[0]],dis,avaTomSit)}</div>`).join('')}
-  </div>
+  ${avaAvaliadoresHtml(pr,ctx,ed)}
 
-  <div class="card"><h3>6 · Competências comportamentais <span class="h3-side">nota de 1 a 10 · média ${fmtNota(calc.mComp)}</span></h3>
-    ${ancoras}${AVA_COMP.map(notaItem).join('')}
-  </div>
+  ${meu?`<div class="card ava-meu-h"><h3>6 · Minha avaliação <span class="h3-side">como ${esc(meu.papel||'avaliador')}</span></h3>${meuEd?'<p class="muted" style="margin:0;">Preencha as notas abaixo. Os outros avaliadores não veem a sua resposta.</p>':`<div class="ava-pend ok">✅ Você enviou a sua avaliação em ${fmtDH(meu.respondidoEm)}.</div>${!conc?'<div class="flt" style="margin-top:10px;"><button class="btn ghost small" id="ava-meu-editar" type="button">Editar minha resposta</button></div>':''}`}</div>
+    ${meuEd?`<div id="ava-meu">${avaFormHtml(meuR,{dis:false,lider,conh:c.conh,evid:ava.config.faixas.evid,tituloParecer:'Meu parecer'})}<div class="card"><div id="ava-meu-pend">${avaPendHtml(avaFormPend(meuR,ava.config.faixas.evid),'Tudo preenchido.')}</div><div class="flt" style="margin-top:10px;"><button class="btn primary" id="ava-meu-enviar" type="button">✔ Enviar minha avaliação</button></div></div></div>`:''}`:''}
 
-  <div class="card"><h3>7 · Desempenho e maturidade profissional <span class="h3-side">nota de 1 a 10 · média ${fmtNota(calc.mDes)}</span></h3>
-    ${AVA_DES.map(notaItem).join('')}
-    <div class="lbl-sec" style="margin-top:14px;">Evidências observadas <span style="text-transform:none;font-weight:400;">(opcional)</span></div>
-    ${avaMulti('tags',AVA_TAGS,r.tags||[],dis)}
-  </div>
+  ${verNotas?avaConsolHtml(pr,cons,ed):`<div class="card"><h3>7 · Consolidação</h3><div class="muted">As notas dos outros avaliadores aparecem quando todos responderem (${cons.nResp} de ${cons.nTot}).</div></div>`}
 
-  ${lider?`<div class="card"><h3>8 · Critérios de liderança <span class="h3-side">marque o que o colaborador cumpre</span></h3><div class="grid">${AVA_LID.map(x=>`<label class="chk${(r.lid||{})[x[0]]?' on':''}"><input type="checkbox" data-lid="${x[0]}"${(r.lid||{})[x[0]]?' checked':''}${dis}>${esc(x[1])}</label>`).join('')}</div></div>`:''}
-
-  <div class="card"><h3>${lider?'9':'8'} · Resultado</h3>
-    <div class="totals-strip">${tbox('Média competências',fmtNota(calc.mComp))}${tbox('Média desempenho',fmtNota(calc.mDes))}${tbox('Média geral',fmtNota(calc.mGeral),calc.qtd+' de '+calc.total+' notas')}${tbox('Menor nota',calc.min==null?'—':String(calc.min),'',{accent:true})}</div>
-    <div class="ava-calc"><span class="lbl-sec" style="margin:0;">Parecer calculado</span> ${calc.parecer?parecerBadge(calc.parecer):'<span class="muted">preencha as notas</span>'}${calc.mot.length?`<ul>${calc.mot.map(m=>`<li>${esc(m)}</li>`).join('')}</ul>`:''}</div>
+  ${verNotas?`<div class="card ava-resultado"><h3>8 · Resultado</h3>
+    <div class="totals-strip">${tbox('Média competências',fmtNota(calc.mComp))}${tbox('Média desempenho',fmtNota(calc.mDes))}${tbox('Média geral',fmtNota(calc.mGeral),cons.nResp+' de '+cons.nTot+' avaliadores')}${tbox('Menor nota',calc.min==null?'—':fmtNota(calc.min),'',{accent:true})}</div>
+    <div class="ava-calc"><span class="lbl-sec" style="margin:0;">Parecer calculado</span> ${calc.parecer?parecerBadge(calc.parecer):'<span class="muted">aguardando respostas</span>'}${calc.mot.length?`<ul>${calc.mot.map(m=>`<li>${esc(m)}</li>`).join('')}</ul>`:''}</div>
+    ${cons.precisaCalib||normTxt(res.calibTexto)?`<div class="field" style="margin-top:12px;"><label for="ava-calib-txt">Registro da calibração${cons.precisaCalib?' (obrigatório: há divergências)':''}</label><textarea id="ava-calib-txt" rows="3" placeholder="Quem participou, o que foi discutido e o que ficou decidido"${dis}>${esc(res.calibTexto||'')}</textarea></div>`:''}
     <div class="lbl-sec">Parecer final</div>
     <div class="ava-chips ava-stack">${PARECERES.concat([PARECER_REAV]).map((o,i)=>`<button type="button" class="ava-c${parecerSel===o?' on '+['good','good','warn','bad','mute'][i]:''}" data-parecer="${esc(o)}"${dis}>${esc(o)}${o===calc.parecer?' <small>· calculado</small>':''}</button>`).join('')}</div>
-    ${parecerSel===PARECER_REAV?`<div class="lbl-sec">Reavaliar em</div>${avaChips('reav','x',['30','60','90'],String(r.reavaliarDias||''),dis).replace(/>(30|60|90)</g,'>$1 dias<')}`:''}
-    ${(r.parecer&&r.parecer!==calc.parecer)||normTxt(r.justificativa)?`<div class="field" style="margin-top:10px;"><label for="ava-justif">Justificativa${r.parecer&&r.parecer!==calc.parecer?' (obrigatória: parecer diferente do calculado)':''}</label><textarea id="ava-justif" rows="3"${dis}>${esc(r.justificativa||'')}</textarea></div>`:''}
-    <div class="lbl-sec">Principais pontos fortes <span style="text-transform:none;font-weight:400;">${Array.isArray(r.fortes)?'':'(sugeridos pelas notas 9 e 10)'}</span></div>
+    ${parecerSel===PARECER_REAV?`<div class="lbl-sec">Reavaliar em</div>${avaChips('reav','x',['30','60','90'],String(res.reavaliarDias||''),dis).replace(/>(30|60|90)</g,'>$1 dias<')}`:''}
+    ${(res.parecer&&res.parecer!==calc.parecer)||normTxt(res.justificativa)?`<div class="field" style="margin-top:10px;"><label for="ava-justif">Justificativa${res.parecer&&res.parecer!==calc.parecer?' (obrigatória: parecer diferente do calculado)':''}</label><textarea id="ava-justif" rows="3"${dis}>${esc(res.justificativa||'')}</textarea></div>`:''}
+    <div class="lbl-sec">Principais pontos fortes <span style="text-transform:none;font-weight:400;">${Array.isArray(res.fortes)?'':'(sugeridos pelas notas consolidadas a partir de 9)'}</span></div>
     ${avaMulti('fortes',AVA_NOTAS.map(x=>x[1]),fortes,dis)}
-    <div class="lbl-sec">Competências a desenvolver <span style="text-transform:none;font-weight:400;">${Array.isArray(r.dev)?'':'(sugeridas pelas notas até 6 e conhecimentos parciais)'}</span></div>
+    <div class="lbl-sec">Competências a desenvolver <span style="text-transform:none;font-weight:400;">${Array.isArray(res.dev)?'':'(sugeridas pelas notas até 6 e conhecimentos parciais)'}</span></div>
     ${avaMulti('dev',AVA_NOTAS.map(x=>x[1]).concat(AVA_CONH.map(x=>x[1])),dev,dis)}
     <div class="lbl-sec">Plano de desenvolvimento</div>
     ${plano.length?`<div class="tablewrap"><table class="dt"><thead><tr><th>Treinamento</th><th>Motivo</th><th></th></tr></thead><tbody>${plano.map(x=>`<tr><td>${esc(x.nome)}</td><td>${esc(x.motivo)}</td><td class="nw">${x.cid&&ed?`<button class="btn danger tiny" data-plano-rem="${esc(x.cid)}" type="button">remover</button>`:''}</td></tr>`).join('')}</tbody></table></div>`:'<div class="muted">Nenhum treinamento pendente.</div>'}
-    ${ed?`<div class="flt" style="margin-top:8px;"><select id="ava-plano-add" aria-label="Adicionar treinamento ao plano">${opts(avaCursosInternos().filter(cu=>!(r.planoCursos||[]).includes(cu.id)).map(cu=>({v:cu.id,l:cu.nome})),'','+ Indicar treinamento do catálogo…')}</select></div>`:''}
-    <div class="field" style="margin-top:12px;"><label for="ava-coment">Comentários <span style="font-weight:400;">(opcional)</span></label><textarea id="ava-coment" rows="3" placeholder="Observações, combinados e pontos de atenção"${dis}>${esc(r.comentarios||'')}</textarea></div>
-  </div>
+    ${ed?`<div class="flt" style="margin-top:8px;"><select id="ava-plano-add" aria-label="Adicionar treinamento ao plano">${opts(avaCursosInternos().filter(cu=>!(res.planoCursos||[]).includes(cu.id)).map(cu=>({v:cu.id,l:cu.nome})),'','+ Indicar treinamento do catálogo…')}</select></div>`:''}
+    <div class="field" style="margin-top:12px;"><label for="ava-coment">Comentários finais <span style="font-weight:400;">(opcional)</span></label><textarea id="ava-coment" rows="3" placeholder="Combinados e pontos de atenção"${dis}>${esc(res.comentarios||'')}</textarea></div>
+  </div>`:''}
 
   <div class="card"><h3>Conclusão</h3>
-    ${conc?`<div class="ava-pend ok">✅ Concluída por <b>${esc(pr.concluidoNome||pr.concluidoPor)}</b> (${esc(pr.concluidoPor)}) em ${fmtDH(pr.concluidoEm)}, com login Microsoft.<br>Parecer final: ${parecerBadge(pr.parecerFinal)}</div>`:`<div id="ava-pend">${avaPendHtml(pend)}</div>`}
+    ${conc?`<div class="ava-pend ok">✅ Concluída por <b>${esc(pr.concluidoNome||pr.concluidoPor)}</b> (${esc(pr.concluidoPor)}) em ${fmtDH(pr.concluidoEm)}, com login Microsoft.<br>Parecer final: ${parecerBadge(pr.parecerFinal)}</div>`:(ed?`<div id="ava-pend">${avaPendHtml(pend,'Tudo pronto. Ao concluir, a avaliação fica registrada com o seu login Microsoft.')}</div>`:'<div class="muted">O responsável conclui a avaliação quando todos responderem.</div>')}
     <div class="flt" style="margin-top:12px;">
       ${!conc&&ed?`<button class="btn primary" id="ava-concluir" type="button">✔ Concluir avaliação</button>`:''}
-      ${conc?`<button class="btn primary" id="ava-pdf" type="button">🖨 Relatório em PDF</button>`:''}
-      ${conc&&avaIsAdmin()?`<button class="btn ghost" id="ava-reabrir" type="button">Reabrir para edição</button>`:''}
-      ${avaIsAdmin()?`<button class="btn danger" id="ava-excluir" type="button" style="margin-left:auto;">Excluir avaliação</button>`:''}
+      ${conc||verNotas?`<button class="btn ${conc?'primary':'ghost'}" id="ava-pdf" type="button">🖨 ${conc?'Relatório em PDF':'Prévia do relatório'}</button>`:''}
+      ${conc&&adm?`<button class="btn ghost" id="ava-reabrir" type="button">Reabrir para edição</button>`:''}
+      ${adm?`<button class="btn danger" id="ava-excluir" type="button" style="margin-left:auto;">Excluir avaliação</button>`:''}
     </div>
   </div>`;
 }
-function avaPendHtml(pend){return pend.length?`<div class="ava-pend"><b>Falta para concluir:</b><ul>${pend.map(x=>`<li>${esc(x)}</li>`).join('')}</ul></div>`:'<div class="ava-pend ok">✅ Tudo preenchido. Ao concluir, a avaliação fica registrada com o seu login Microsoft.</div>';}
-function avaAtualizarPend(){const el=$('ava-pend');if(!el)return;const pr=avaGet('processos',AVA_ABERTA);if(!pr)return;const ctx=avaCtx(pr);el.innerHTML=avaPendHtml(avaPendencias(pr,ctx,avaCalc(pr,ctx)));}
+function avaAtualizarPend(){
+  const pr=avaGet('processos',AVA_ABERTA);if(!pr)return;
+  const el=$('ava-pend');if(el){const ctx=avaCtx(pr),cons=avaConsol(pr);el.innerHTML=avaPendHtml(avaPendencias(pr,ctx,avaCalc(pr,ctx,cons),cons),'Tudo pronto. Ao concluir, a avaliação fica registrada com o seu login Microsoft.');}
+  const em=$('ava-meu-pend'),meu=avaMeuAv(pr);if(em&&meu)em.innerHTML=avaPendHtml(avaFormPend(avaRespDe(pr,meu.id),ava.config.faixas.evid),'Tudo preenchido.');
+}
 function avaMut(fn,rerender){
   const pr=avaGet('processos',AVA_ABERTA);if(!pr||!avaPodeEditar(pr))return;
-  const c=clone(pr);fn(avaResp(c),c);avaPut('processos',AVA_ABERTA,c);
+  const c=clone(pr);if(fn(c)===false)return;avaPut('processos',AVA_ABERTA,c);
   if(rerender===false)avaAtualizarPend();else renderAvaliacoes();
 }
-function avaToggle(arr,v){const s=new Set(arr||[]);s.has(v)?s.delete(v):s.add(v);return Array.from(s);}
+function avaMutMeu(fn,rerender){
+  const pr=avaGet('processos',AVA_ABERTA);if(!pr||pr.status==='concluida')return;
+  const c=clone(pr),meu=avaMeuAv(c);if(!meu||meu.status==='respondido')return;
+  if(fn(avaRespDe(c,meu.id),meu,c)===false)return;avaPut('processos',AVA_ABERTA,c);
+  if(rerender===false)avaAtualizarPend();else renderAvaliacoes();
+}
 (function avaEventos(){
   const root=$('ava-root');if(!root)return;
+  const noMeu=e=>e.target.closest&&e.target.closest('#ava-meu');
   root.addEventListener('click',e=>{
-    const b=e.target.closest('button');if(!b||b.disabled||!AVA_ABERTA)return;
+    if(!AVA_ABERTA)return;
+    const b=e.target.closest('button');
+    if(noMeu(e)&&!(b&&b.id==='ava-meu-enviar')){avaMutMeu(r=>avaFormAcao(e,r)?undefined:false,true);return;}
+    if(!b||b.disabled)return;
     const id=b.id,d=b.dataset;
     if(id==='ava-voltar'){AVA_ABERTA=null;renderAvaliacoes();return;}
     if(id==='ava-cad'){const pr=avaGet('processos',AVA_ABERTA);if(pr)abrirPessoa(pr.colaboradorId);return;}
@@ -2020,36 +2179,50 @@ function avaToggle(arr,v){const s=new Set(arr||[]);s.has(v)?s.delete(v):s.add(v)
     if(id==='ava-reabrir'){avaReabrir();return;}
     if(id==='ava-excluir'){avaExcluir();return;}
     if(id==='ava-pdf'){avaPdf(AVA_ABERTA);return;}
-    if(d.nota){avaMut(r=>{r.notas=r.notas||{};r.notas[d.nota]=+d.v;});return;}
-    if(d.conh){avaMut(r=>{r.conh=r.conh||{};r.conh[d.conh]=d.v;});return;}
-    if(d.multi){avaMut((r,pr)=>{if(d.multi==='tags')r.tags=avaToggle(r.tags,d.v);else if(d.multi==='fortes')r.fortes=avaToggle(Array.isArray(r.fortes)?r.fortes:avaSugest(pr).fortes,d.v);else r.dev=avaToggle(Array.isArray(r.dev)?r.dev:avaSugest(pr).dev,d.v);});return;}
-    if(d.parecer){avaMut((r,pr)=>{const calc=avaCalc(pr);r.parecer=d.parecer===calc.parecer?'':d.parecer;});return;}
-    if(d.reav){avaMut(r=>{r.reavaliarDias=+d.v;});return;}
-    if(d.planoRem){avaMut(r=>{r.planoCursos=(r.planoCursos||[]).filter(x=>x!==d.planoRem);});return;}
+    if(id==='ava-av-add'){avaAvModal(AVA_ABERTA,null);return;}
+    if(id==='ava-av-gestor'){const pr=avaGet('processos',AVA_ABERTA),p=pr&&getRec('pessoas',pr.colaboradorId);if(p)avaAvModal(AVA_ABERTA,null,{nome:p.gestor||'',email:p.gestorEmail||'',papel:'Gestor direto',modo:'link'});return;}
+    if(id==='ava-puxar'){b.disabled=true;avaPuxarConvites(true).then(m=>{toast(m?'Respostas atualizadas.':'Nenhuma resposta nova.');renderAvaliacoes();});return;}
+    if(id==='ava-meu-enviar'){avaMeuEnviar();return;}
+    if(id==='ava-meu-editar'){const pr=avaGet('processos',AVA_ABERTA);if(!pr||pr.status==='concluida')return;const c=clone(pr),meu=avaMeuAv(c);if(!meu)return;meu.status='pendente';avaPut('processos',AVA_ABERTA,c);renderAvaliacoes();return;}
+    if(d.avact){avaAvAcao(d.avact,d.av);return;}
+    if(d.multi==='fortes'||d.multi==='dev'){avaMut(c=>{const r=avaRes(c),cons=avaConsol(c);if(d.multi==='fortes')r.fortes=avaToggle(Array.isArray(r.fortes)?r.fortes:avaSugest(c,cons).fortes,d.v);else r.dev=avaToggle(Array.isArray(r.dev)?r.dev:avaSugest(c,cons).dev,d.v);});return;}
+    if(d.parecer){avaMut(c=>{const calc=avaCalc(c);avaRes(c).parecer=d.parecer===calc.parecer?'':d.parecer;});return;}
+    if(d.reav){avaMut(c=>{avaRes(c).reavaliarDias=+d.v;});return;}
+    if(d.planoRem){avaMut(c=>{const r=avaRes(c);r.planoCursos=(r.planoCursos||[]).filter(x=>x!==d.planoRem);});return;}
   });
   root.addEventListener('input',e=>{
     const t=e.target;if(!AVA_ABERTA||t.disabled)return;
-    if(t.dataset.evid){avaMut(r=>{r.evid=r.evid||{};r.evid[t.dataset.evid]=t.value;},false);return;}
-    if(t.id==='ava-justif'){avaMut(r=>{r.justificativa=t.value;},false);return;}
-    if(t.id==='ava-coment'){avaMut(r=>{r.comentarios=t.value;},false);return;}
+    if(noMeu(e)){avaMutMeu(r=>avaFormAcao(e,r)?undefined:false,false);return;}
+    if(t.id==='ava-justif'){avaMut(c=>{avaRes(c).justificativa=t.value;},false);return;}
+    if(t.id==='ava-coment'){avaMut(c=>{avaRes(c).comentarios=t.value;},false);return;}
+    if(t.id==='ava-calib-txt'){avaMut(c=>{avaRes(c).calibTexto=t.value;},false);return;}
   });
   root.addEventListener('change',e=>{
     const t=e.target;if(!AVA_ABERTA||t.disabled)return;
-    if(t.dataset.req){avaMut(r=>{r.reqMan=r.reqMan||{};r.reqMan[t.dataset.req]=t.value;});return;}
-    if(t.dataset.lid){avaMut(r=>{r.lid=r.lid||{};r.lid[t.dataset.lid]=t.checked;});return;}
-    if(t.id==='ava-exp-ant'){avaMut(r=>{r.expAnterior=Math.max(0,Math.round(n(t.value)));});return;}
-    if(t.id==='ava-plano-add'&&t.value){const v=t.value;avaMut(r=>{r.planoCursos=Array.from(new Set([...(r.planoCursos||[]),v]));});return;}
-    if(t.id==='ava-cargo'||t.id==='ava-tipo'||t.id==='ava-data'){const v=t.value;if(t.id==='ava-data'&&!v)return;avaMut((r,pr)=>{pr[t.id==='ava-cargo'?'cargoId':t.id==='ava-tipo'?'tipo':'data']=v;});return;}
+    if(noMeu(e)){avaMutMeu(r=>avaFormAcao(e,r)?undefined:false,true);return;}
+    if(t.dataset.req){avaMut(c=>{const f=avaFatos(c);f.reqMan=f.reqMan||{};f.reqMan[t.dataset.req]=t.value;});return;}
+    if(t.dataset.calib){avaMut(c=>{const r=avaRes(c);r.calib=r.calib||{};if(t.value)r.calib[t.dataset.calib]=+t.value;else delete r.calib[t.dataset.calib];});return;}
+    if(t.dataset.calibconh){avaMut(c=>{const r=avaRes(c);r.calibConh=r.calibConh||{};if(t.value)r.calibConh[t.dataset.calibconh]=t.value;else delete r.calibConh[t.dataset.calibconh];});return;}
+    if(t.id==='ava-exp-ant'){avaMut(c=>{avaFatos(c).expAnterior=Math.max(0,Math.round(n(t.value)));});return;}
+    if(t.id==='ava-plano-add'&&t.value){const v=t.value;avaMut(c=>{const r=avaRes(c);r.planoCursos=Array.from(new Set([...(r.planoCursos||[]),v]));});return;}
+    if(t.id==='ava-cargo'||t.id==='ava-tipo'||t.id==='ava-data'){const v=t.value;if(t.id==='ava-data'&&!v)return;avaMut(c=>{c[t.id==='ava-cargo'?'cargoId':t.id==='ava-tipo'?'tipo':'data']=v;});return;}
   });
 })();
+function avaMeuEnviar(){
+  const pr=avaGet('processos',AVA_ABERTA);if(!pr)return;const meu=avaMeuAv(pr);if(!meu)return;
+  const pend=avaFormPend(avaRespDe(pr,meu.id),ava.config.faixas.evid);
+  if(pend.length){toast('Complete a sua avaliação antes de enviar.');const el=$('ava-meu-pend');if(el)el.scrollIntoView({behavior:'smooth',block:'center'});return;}
+  avaMutMeu((r,m)=>{m.status='respondido';m.respondidoEm=new Date().toISOString();m.respondidoPor=emailAtual()||'local';m.via='sistema';});
+  toast('Sua avaliação foi enviada.');
+}
 function avaConcluir(){
   const pr=avaGet('processos',AVA_ABERTA);if(!pr||!avaPodeEditar(pr))return;
-  const ctx=avaCtx(pr),calc=avaCalc(pr,ctx),pend=avaPendencias(pr,ctx,calc);
+  const ctx=avaCtx(pr),cons=avaConsol(pr),calc=avaCalc(pr,ctx,cons),pend=avaPendencias(pr,ctx,calc,cons);
   if(pend.length){toast('Complete os itens pendentes antes de concluir.');const el=$('ava-pend');if(el)el.scrollIntoView({behavior:'smooth',block:'center'});return;}
   if(!confirm('Concluir a avaliação? Ela fica registrada com o seu login e não pode mais ser editada (um administrador pode reabrir).'))return;
-  const c=clone(pr),r=avaResp(c),p=ctx.p;
+  const c=clone(pr),r=avaRes(c),p=ctx.p;
   c.snap={pessoa:{nome:p.nome,cargo:p.cargo,departamento:p.departamento,filial:p.filial,gestor:p.gestor,admissao:p.admissao,vinculo:p.vinculo,matricula:p.matricula,escolaridade:p.escolaridade,cnh:p.cnh,cnhValidade:p.cnhValidade},cargo:clone(ctx.c),reqs:clone(ctx.reqs),treinos:clone(ctx.treinos)};
-  r.parecerCalc=calc.parecer;r.fortes=avaFortes(pr);r.dev=avaDev(pr);
+  r.parecerCalc=calc.parecer;r.fortes=avaFortes(pr,cons);r.dev=avaDev(pr,cons);r.consenso=cons.consenso;
   c.parecerFinal=r.parecer||calc.parecer;c.media=calc.mGeral;
   c.status='concluida';c.concluidoPor=emailAtual()||'local';c.concluidoNome=msAccount?(msAccount.name||''):'Modo local';c.concluidoEm=new Date().toISOString();
   avaPut('processos',AVA_ABERTA,c);renderAvaliacoes();window.scrollTo({top:0});toast('Avaliação concluída.');
@@ -2064,8 +2237,166 @@ function avaExcluir(){
   const pr=avaGet('processos',AVA_ABERTA);if(!pr||!avaIsAdmin())return;
   const nome=avaCtx(pr).p.nome||'este colaborador';
   if(!confirm(`Excluir a avaliação de ${nome}? Não dá para desfazer.`))return;
+  avaAvs(pr).filter(a=>a.modo==='link'&&a.itemId).forEach(a=>avaApagarConvite(a));
   avaDel('processos',AVA_ABERTA);AVA_ABERTA=null;renderAvaliacoes();toast('Avaliação excluída.');
 }
+
+/* ---------- avaliadores e convites ---------- */
+function avaAvModal(prId,aid,preset){
+  const pr=avaGet('processos',prId);if(!pr)return;
+  const a=aid?clone(avaAvs(pr).find(x=>x.id===aid)||{}):Object.assign({papel:'Líder técnico',modo:'link'},preset||{});
+  if(!aid&&a.peso==null)a.peso=pesoPadrao(a.papel);
+  modal(aid?'Editar avaliador':'Adicionar avaliador',`<div class="grid">
+      ${fld('avm-nome','Nome *',a.nome)}
+      ${fld('avm-email','E-mail *',a.email,{type:'email'})}
+      ${fld('avm-papel','Papel',null,{type:'select',options:opts(PAPEIS_AVA.map(p=>p[0]),a.papel)})}
+      ${fld('avm-peso','Peso',a.peso,{type:'number'})}
+      ${fld('avm-modo','Como vai responder',null,{type:'select',full:true,options:opts(Object.keys(MODOS_AVA).map(k=>({v:k,l:MODOS_AVA[k]})),a.modo)})}
+    </div>
+    <div class="note" id="avm-dica"></div>`,[
+    {t:'Cancelar',cls:'ghost',fn:fecharModal},
+    {t:aid?'Salvar':'Adicionar',cls:'primary',fn:()=>{
+      const nome=val('avm-nome'),email=val('avm-email').toLowerCase(),modo=$('avm-modo').value;
+      if(!nome){toast('Informe o nome.');return;}
+      if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)){toast('Informe um e-mail válido.');return;}
+      const c=clone(avaGet('processos',prId));const avs=c.avaliadores=c.avaliadores||[];
+      if(avs.some(x=>x.id!==aid&&String(x.email).toLowerCase()===email)){toast('Este e-mail já é avaliador nesta avaliação.');return;}
+      const novo={nome,email,papel:$('avm-papel').value,peso:Math.max(0,n($('avm-peso').value)),modo};
+      if(aid){const x=avs.find(z=>z.id===aid);if(x.modo!==modo){delete x.enviadoEm;delete x.shareErro;delete x.compartilhado;}Object.assign(x,novo);}
+      else{let k=1;while(avs.some(z=>z.id==='a'+k))k++;avs.push(Object.assign({id:'a'+k,status:'pendente'},novo));}
+      avaPut('processos',prId,c);fecharModal();renderAvaliacoes();
+      toast(modo==='interno'?'Avaliador adicionado.':'Avaliador adicionado. Agora clique em "Enviar convite".');
+    }}
+  ]);
+  const dica=()=>{const m=$('avm-modo').value,em=val('avm-email').toLowerCase();const temAcesso=em&&['admins','avaliadores'].some(g=>(ava.acesso[g]||[]).includes(em));
+    $('avm-dica').innerHTML=m==='interno'?(temAcesso||!em?'Responde dentro do sistema, na própria avaliação.':'⚠ Este e-mail não está em <b>Acessos &amp; regras</b> como administrador ou avaliador. Para responder pelo sistema, libere o acesso ou use um dos links.')
+      :m==='link'?'Recebe um e-mail com o link, entra com a conta Microsoft e vê só o formulário. Não precisa de acesso às pastas nem ao sistema: o app compartilha só o arquivo deste convite.'
+      :'Para quem não tem conta Microsoft. Recebe um link, preenche sem login e devolve a resposta como um código por e-mail; você importa o código aqui.';};
+  $('avm-modo').onchange=dica;$('avm-email').oninput=dica;dica();
+  $('avm-papel').onchange=()=>{$('avm-peso').value=pesoPadrao($('avm-papel').value);};
+}
+function avaAvAcao(act,aid){
+  const pr=avaGet('processos',AVA_ABERTA);if(!pr)return;const a=avaAvs(pr).find(x=>x.id===aid);if(!a)return;
+  if(act==='editar'){avaAvModal(AVA_ABERTA,aid);return;}
+  if(act==='enviar'){a.modo==='codigo'?avaEnviarCodigo(AVA_ABERTA,aid):avaEnviarLink(AVA_ABERTA,aid);return;}
+  if(act==='copiar'){avaCopiarLink(AVA_ABERTA,aid);return;}
+  if(act==='importar'){avaImportarModal(AVA_ABERTA,aid);return;}
+  if(act==='reabrir'){avaReabrirResposta(AVA_ABERTA,aid);return;}
+  if(act==='remover'){
+    if(!confirm(`Remover ${a.nome||a.email} desta avaliação?${a.status==='respondido'?' A resposta dele(a) também será descartada.':''}`))return;
+    const c=clone(pr);c.avaliadores=avaAvs(c).filter(x=>x.id!==aid);if(c.respostas)delete c.respostas[aid];
+    avaPut('processos',AVA_ABERTA,c);if(a.modo==='link'&&a.itemId)avaApagarConvite(a);renderAvaliacoes();toast('Avaliador removido.');
+  }
+}
+function avaInfoConvite(pr,av){
+  const ctx=avaCtx(pr),c=ctx.c,p=ctx.p;const conh={};AVA_CONH.forEach(x=>{if(normTxt((c.conh||{})[x[0]]))conh[x[0]]=c.conh[x[0]];});
+  return {colab:p.nome||'',cargoAtual:p.cargo||'',departamento:p.departamento||'',cargo:c.nome||'',nivel:c.nivel||'',objetivo:c.objetivo||'',resp:(c.resp||[]).filter(Boolean),conh,
+    lider:NIVEIS_LIDER.includes(c.nivel),evid:ava.config.faixas.evid,tipo:pr.tipo||'',avaliador:av.nome||'',email:av.email||'',papel:av.papel||'',responsavel:pr.responsavelNome||pr.responsavel||'',respEmail:pr.responsavel||''};
+}
+function avaConvPasta(){return `/${SP_BIBLIOTECA}/${SP_PASTA}/${AVA_DIR}/${CONV_DIR}`;}
+async function avaGarantirConvites(){
+  await avaGarantirPasta();const t=await getGraphToken();if(!t)return;const base=await spDriveUrl(`/${SP_BIBLIOTECA}/${SP_PASTA}/${AVA_DIR}`);if(!base)return;
+  try{await fetch(base+':/children',{method:'POST',headers:{Authorization:'Bearer '+t,'Content-Type':'application/json'},body:JSON.stringify({name:CONV_DIR,folder:{},'@microsoft.graph.conflictBehavior':'fail'})});}catch(e){}
+}
+async function avaGraph(url,opt){const t=await getGraphToken();if(!t)return null;opt=opt||{};opt.headers=Object.assign({Authorization:'Bearer '+t},opt.headers||{});try{return await fetch(url,opt);}catch(e){return null;}}
+async function avaEnviarLink(prId,aid){
+  const pr=avaGet('processos',prId);const av=avaAvs(pr).find(x=>x.id===aid);if(!av)return;
+  if(!msAccount){toast('Entre com a sua conta Microsoft para enviar convites por link.');return;}
+  setSyncStatus('⏳ preparando convite…','saving');
+  await avaGarantirConvites();
+  const base=await spDriveUrl(avaConvPasta()+'/'+prId+'__'+aid+'.json');
+  let doc=null,etag=null;
+  const m=base&&await avaGraph(base);
+  if(m&&m.ok){const mj=await m.json();etag=mj.eTag;const cr=await avaGraph(base+':/content');if(cr&&cr.ok){try{doc=await cr.json();}catch(e){}}}
+  doc=doc||{v:1,proc:prId,av:aid,resposta:{},status:'pendente',criadoEm:new Date().toISOString()};
+  doc.info=avaInfoConvite(pr,av);
+  const h={'Content-Type':'application/octet-stream'};if(etag)h['If-Match']=etag;
+  const put=base&&await avaGraph(base+':/content',{method:'PUT',headers:h,body:new TextEncoder().encode(JSON.stringify(doc))});
+  let erro='',item=null;
+  if(!put||!put.ok)erro='Não foi possível criar o arquivo do convite no SharePoint.';
+  else{item=await put.json();
+    const inv=await avaGraph(`https://graph.microsoft.com/v1.0/drives/${item.parentReference.driveId}/items/${item.id}/invite`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({recipients:[{email:av.email}],requireSignIn:true,sendInvitation:false,roles:['write']})});
+    if(!inv||!inv.ok){let msg='';try{const j=inv&&await inv.json();msg=j&&j.error&&j.error.message||'';}catch(e){}erro='O SharePoint não permitiu compartilhar o convite com '+av.email+(msg?' ('+msg+')':'')+'.';}}
+  const c=clone(avaGet('processos',prId)),ca=avaAvs(c).find(x=>x.id===aid);
+  if(item){ca.driveId=item.parentReference.driveId;ca.itemId=item.id;}
+  ca.shareErro=erro;ca.compartilhado=!erro;if(!erro)ca.enviadoEm=new Date().toISOString();
+  avaPut('processos',prId,c);renderAvaliacoes();
+  if(erro){toast(erro+' Tente de novo ou use o link sem login.');setSyncStatus('⚠ convite não compartilhado','warn');return;}
+  avaAbrirEmail(pr,av,avaLinkConvite(prId,ca),'link');
+}
+function avaLinkConvite(prId,a){return appUrl()+'?'+new URLSearchParams({avaliar:prId+'__'+a.id,d:a.driveId||'',i:a.itemId||''}).toString();}
+async function avaLinkCodigo(pr,a){const i=avaInfoConvite(pr,a);delete i.objetivo;delete i.departamento;return appUrl()+'?av='+await avaEnc({p:pr.id,a:a.id,i});}
+async function avaEnviarCodigo(prId,aid){
+  const pr=Object.assign({id:prId},avaGet('processos',prId));const av=avaAvs(pr).find(x=>x.id===aid);if(!av)return;
+  const link=await avaLinkCodigo(pr,av);
+  const c=clone(avaGet('processos',prId)),ca=avaAvs(c).find(x=>x.id===aid);ca.enviadoEm=new Date().toISOString();ca.shareErro='';avaPut('processos',prId,c);renderAvaliacoes();
+  avaAbrirEmail(pr,av,link,'codigo');
+}
+function avaAbrirEmail(pr,av,link,modo){
+  const i=avaInfoConvite(pr,av);const assunto=`Avaliação de ${i.colab} para ${i.cargo}`;
+  const corpo=t=>`Olá${av.nome?', '+av.nome.split(' ')[0]:''}!\n\nVocê foi convidado(a) a avaliar ${i.colab}${i.cargoAtual?' ('+i.cargoAtual+')':''} para o cargo de ${i.cargo}, como ${i.papel||'avaliador'}.\n\nLeva cerca de 10 minutos: conhecimentos técnicos, notas de 1 a 10 em competências e desempenho, e o seu parecer.\n\nAcesse pelo link:\n${t}\n\n`+(modo==='link'?`Entre com a sua conta Microsoft (${av.email}). Você verá apenas o formulário desta avaliação.\n\n`:`Não precisa de login. No final, clique em "Enviar por e-mail" para mandar a sua resposta.\n\n`)+`A sua avaliação é confidencial.\n\nObrigado,\n${i.responsavel}`;
+  let url=`mailto:${encodeURIComponent(av.email||'')}?subject=${encodeURIComponent(assunto)}&body=${encodeURIComponent(corpo(link))}`;
+  if(url.length>1900){avaCopiarTexto(link);url=`mailto:${encodeURIComponent(av.email||'')}?subject=${encodeURIComponent(assunto)}&body=${encodeURIComponent(corpo('[cole aqui o link — ele já está copiado]'))}`;toast('O link é longo: ele foi copiado. Cole no e-mail que abriu.');}
+  window.location.href=url;
+}
+function avaCopiarTexto(t){try{navigator.clipboard.writeText(t).then(()=>{},()=>prompt('Copie o texto:',t));}catch(e){prompt('Copie o texto:',t);}}
+async function avaCopiarLink(prId,aid){
+  const pr=Object.assign({id:prId},avaGet('processos',prId));const a=avaAvs(pr).find(x=>x.id===aid);if(!a)return;
+  if(a.modo==='link'){if(!a.itemId){toast('Envie o convite primeiro: é ele que cria e compartilha o arquivo.');return;}avaCopiarTexto(avaLinkConvite(prId,a));}
+  else avaCopiarTexto(await avaLinkCodigo(pr,a));
+  toast('Link copiado.');
+}
+async function avaApagarConvite(a){if(!msAccount||!a.driveId||!a.itemId)return;await avaGraph(`https://graph.microsoft.com/v1.0/drives/${a.driveId}/items/${a.itemId}`,{method:'DELETE'});}
+async function avaReabrirResposta(prId,aid){
+  const pr=avaGet('processos',prId);const a=avaAvs(pr).find(x=>x.id===aid);if(!a)return;
+  if(!confirm(`Liberar ${a.nome||a.email} para responder de novo? A resposta atual continua salva até ele(a) enviar outra.`))return;
+  if(a.modo==='link'&&a.itemId){
+    const u=`https://graph.microsoft.com/v1.0/drives/${a.driveId}/items/${a.itemId}`;const m=await avaGraph(u);
+    if(m&&m.ok){const mj=await m.json();const cr=await avaGraph(u+'/content');const d=cr&&cr.ok?await cr.json():null;if(d){d.status='pendente';await avaGraph(u+'/content',{method:'PUT',headers:{'Content-Type':'application/octet-stream','If-Match':mj.eTag},body:new TextEncoder().encode(JSON.stringify(d))});}}
+  }
+  const c=clone(avaGet('processos',prId)),ca=avaAvs(c).find(x=>x.id===aid);ca.status='pendente';avaPut('processos',prId,c);renderAvaliacoes();toast('Resposta liberada.');
+}
+function avaImportarModal(prId,aid){
+  const pr=avaGet('processos',prId);const a=avaAvs(pr).find(x=>x.id===aid);if(!a)return;
+  modal('Importar resposta de '+(a.nome||a.email),`<div class="field"><label for="imp-cod">Código recebido por e-mail</label><textarea id="imp-cod" rows="6" placeholder="AVA1-…"></textarea></div><div class="note">Cole o código inteiro, começando por AVA1-. Ele traz as notas, conhecimentos, evidências e o parecer do avaliador.</div>`,[
+    {t:'Cancelar',cls:'ghost',fn:fecharModal},
+    {t:'Importar',cls:'primary',fn:async()=>{
+      const raw=$('imp-cod').value.replace(/\s+/g,'');const m=/AVA1-([A-Za-z0-9_-]+)/.exec(raw);if(!m){toast('Código inválido: ele começa com AVA1-.');return;}
+      let o=null;try{o=await avaDec(m[1]);}catch(e){}
+      if(!o||!o.r){toast('Não consegui ler o código. Confira se copiou inteiro.');return;}
+      if(o.p!==prId||o.a!==aid){toast('Este código é de outra avaliação ou de outro avaliador.');return;}
+      const c=clone(avaGet('processos',prId)),ca=avaAvs(c).find(x=>x.id===aid);c.respostas=c.respostas||{};c.respostas[aid]=o.r;
+      ca.status='respondido';ca.respondidoEm=o.t||new Date().toISOString();ca.via='código';ca.respondidoPor=a.email;
+      avaPut('processos',prId,c);fecharModal();renderAvaliacoes();toast('Resposta importada.');
+    }}
+  ]);
+}
+const _convEtag={};
+async function avaPuxarConvites(forcar){
+  if(!msAccount||!avaOk||!avaNivel())return 0;
+  const abertos=avaLive('processos').filter(p=>p.status!=='concluida'&&avaAvs(p).some(a=>a.modo==='link'&&a.status!=='respondido'&&a.itemId));
+  if(!abertos.length)return 0;
+  const base=await spDriveUrl(avaConvPasta());if(!base)return 0;
+  const r=await avaGraph(base+':/children?$select=id,name,eTag&$top=999');if(!r||!r.ok)return 0;
+  let itens=[];try{itens=(await r.json()).value||[];}catch(e){return 0;}
+  let mud=0;
+  for(const pr of abertos){for(const a of avaAvs(pr).filter(x=>x.modo==='link'&&x.status!=='respondido'&&x.itemId)){
+    const it=itens.find(x=>x.id===a.itemId);if(!it)continue;if(!forcar&&_convEtag[it.id]===it.eTag)continue;
+    const cr=await avaGraph(`https://graph.microsoft.com/v1.0/drives/${a.driveId}/items/${a.itemId}/content`);if(!cr||!cr.ok)continue;
+    let d=null;try{d=await cr.json();}catch(e){continue;}_convEtag[it.id]=it.eTag;
+    const cur=avaGet('processos',pr.id);if(!cur)continue;const c=clone(cur),ca=avaAvs(c).find(x=>x.id===a.id);if(!ca)continue;
+    const prog=AVA_NOTAS.filter(x=>n(((d.resposta||{}).notas||{})[x[0]])>0).length;
+    if(d.status==='enviado'){c.respostas=c.respostas||{};c.respostas[a.id]=d.resposta||{};ca.status='respondido';ca.respondidoEm=d.enviadoEm||new Date().toISOString();ca.respondidoPor=d.enviadoPor||'';ca.via='link';avaPut('processos',pr.id,c);mud++;}
+    else if((ca.progresso||0)!==prog){ca.progresso=prog;avaPut('processos',pr.id,c);mud++;}
+  }}
+  if(mud&&MOD==='ava'&&abaAtiva()==='avaliacoes'&&!avaDigitando('ava-root')&&!editando())renderAvaliacoes();
+  return mud;
+}
+/* compactação dos links e códigos (sem login) */
+function b64u(u8){let s='';for(let i=0;i<u8.length;i++)s+=String.fromCharCode(u8[i]);return btoa(s).replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/,'');}
+function unb64u(t){t=t.replace(/-/g,'+').replace(/_/g,'/');while(t.length%4)t+='=';const s=atob(t);const u=new Uint8Array(s.length);for(let i=0;i<s.length;i++)u[i]=s.charCodeAt(i);return u;}
+async function avaEnc(obj){const s=JSON.stringify(obj);try{if(window.CompressionStream){const st=new Blob([s]).stream().pipeThrough(new CompressionStream('deflate-raw'));return 'z'+b64u(new Uint8Array(await new Response(st).arrayBuffer()));}}catch(e){}return 'j'+b64u(new TextEncoder().encode(s));}
+async function avaDec(code){code=String(code).trim();const k=code[0],buf=unb64u(code.slice(1));let s;if(k==='z'){const st=new Blob([buf]).stream().pipeThrough(new DecompressionStream('deflate-raw'));s=await new Response(st).text();}else s=new TextDecoder().decode(buf);return JSON.parse(s);}
 
 /* ---------- catálogo de cargos ---------- */
 /* Herança: um cargo pode herdar os requisitos de outro (o cargo anterior na carreira).
@@ -2214,53 +2545,157 @@ function renderAvaConfig(){
 
 /* ---------- relatório (PDF via impressão) ---------- */
 function avaPdf(id){
-  const pr=avaGet('processos',id);if(!pr)return;
-  const ctx=avaCtx(pr),calc=avaCalc(pr,ctx),r=avaResp(pr),p=ctx.p,c=ctx.c,conc=pr.status==='concluida';
+  const pr0=avaGet('processos',id);if(!pr0)return;const pr=Object.assign({id},pr0);
+  const ctx=avaCtx(pr),cons=avaConsol(pr),calc=avaCalc(pr,ctx,cons),res=avaRes(pr),p=ctx.p,c=ctx.c,conc=pr.status==='concluida';
   const w=window.open('','_blank');if(!w){toast('Permita pop-ups para gerar o relatório.');return;}
-  const par=conc?pr.parecerFinal:(r.parecer||calc.parecer);
+  const par=conc?pr.parecerFinal:(res.parecer||calc.parecer);
   const cor=['#1f8c33','#1f8c33','#c99a12','#a3312a','#8a8f86'][avaParecerIdx(par)]||'#8a8f86';
-  const lider=NIVEIS_LIDER.includes(c.nivel);
-  const linhaNota=x=>{const v=n((r.notas||{})[x[0]]);const ev=normTxt((r.evid||{})[x[0]]);return `<tr><td>${esc(x[1])}${ev?`<div class="ev">${esc(ev)}</div>`:''}</td><td class="nt"><span class="bar"><i style="width:${v*10}%;background:${v<=4?'#a3312a':v<=6?'#c99a12':'#1f8c33'}"></i></span><b>${v||'—'}</b></td></tr>`;};
+  const lider=NIVEIS_LIDER.includes(c.nivel),avs=cons.avs,soma=avs.reduce((s,a)=>s+Math.max(0,n(a.peso)),0);
+  const nm=a=>esc((a.nome||a.email||'').split(' ')[0]);
+  const corN=v=>v<=4?'#a3312a':v<=6?'#c99a12':'#1f8c33';
+  const linhaNota=x=>{const v=cons.notas[x[0]]||0,it=cons.itens[x[0]]||{vals:[]};const ev=avs.map(a=>({a,t:normTxt((avaRespDe(pr,a.id).evid||{})[x[0]])})).filter(o=>o.t);
+    return `<tr><td>${esc(x[1])}${it.div?' <span class="dv">divergência'+(it.cal?' · calibrada':'')+'</span>':''}${ev.map(o=>`<div class="ev">${nm(o.a)}: ${esc(o.t)}</div>`).join('')}</td>${avs.map(a=>{const o=it.vals.find(z=>z.a.id===a.id);return `<td class="c">${o?o.v:'—'}</td>`;}).join('')}<td class="nt"><span class="bar"><i style="width:${v*10}%;background:${corN(v)}"></i></span><b>${v?fmtNota(v):'—'}</b></td></tr>`;};
   const plano=avaPlano(pr,ctx),cod=(hashStr(id)+hashStr(pr.concluidoEm||'')).toUpperCase().slice(0,10);
+  const cabN=`<tr><th>Item</th>${avs.map(a=>`<th class="c">${nm(a)}</th>`).join('')}<th>Consolidada</th></tr>`;
   const html=`<!DOCTYPE html><html lang="pt-BR"><head><meta charset="utf-8"><title>Avaliação de cargo - ${esc(p.nome||'')}</title><style>
-@page{size:A4;margin:14mm 14mm 16mm;}*{box-sizing:border-box;}body{margin:0;font-family:-apple-system,'Segoe UI',Roboto,Arial,sans-serif;color:#1e2b22;font-size:10.5pt;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+@page{size:A4;margin:14mm 14mm 16mm;}*{box-sizing:border-box;}body{margin:0;font-family:-apple-system,'Segoe UI',Roboto,Arial,sans-serif;color:#1e2b22;font-size:10pt;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
 .top{display:flex;justify-content:space-between;align-items:flex-end;border-bottom:3px solid #03590f;padding-bottom:8px;margin-bottom:12px;}
 .top small{font-size:8pt;letter-spacing:1.5px;color:#1f8c33;font-weight:700;}.top h1{margin:2px 0 0;font-family:Georgia,serif;font-size:18pt;color:#03590f;}
 .hero{display:flex;justify-content:space-between;gap:12px;background:#f4efe6;border-radius:6px;padding:10px 12px;margin-bottom:12px;}
 .hero b{font-size:13pt;}.hero .par{color:#fff;background:${cor};border-radius:14px;padding:5px 12px;font-weight:700;font-size:10pt;align-self:center;white-space:nowrap;}
 h2{font-size:9pt;text-transform:uppercase;letter-spacing:1px;color:#fff;background:#03590f;padding:5px 8px;margin:14px 0 6px;border-radius:3px;break-after:avoid;}
-table{width:100%;border-collapse:collapse;break-inside:auto;}td,th{padding:5px 6px;border-bottom:1px solid #e8dfd0;text-align:left;vertical-align:top;}th{font-size:8pt;color:#5f6e62;text-transform:uppercase;}
-tr{break-inside:avoid;}.kv{display:grid;grid-template-columns:repeat(3,1fr);gap:6px 14px;}.kv span{display:block;font-size:7.5pt;color:#5f6e62;text-transform:uppercase;}
-.nt{width:170px;white-space:nowrap;}.bar{display:inline-block;width:110px;height:7px;background:#ecebe6;border-radius:4px;margin-right:8px;vertical-align:middle;overflow:hidden;}.bar i{display:block;height:100%;}
-.ev{font-size:8.5pt;color:#5f6e62;margin-top:2px;}.ok{color:#1f8c33;font-weight:700;}.no{color:#a3312a;font-weight:700;}.pa{color:#8a6a07;font-weight:700;}
+table{width:100%;border-collapse:collapse;}td,th{padding:5px 6px;border-bottom:1px solid #e8dfd0;text-align:left;vertical-align:top;}th{font-size:7.5pt;color:#5f6e62;text-transform:uppercase;}
+.c{text-align:center;}tr{break-inside:avoid;}.kv{display:grid;grid-template-columns:repeat(3,1fr);gap:6px 14px;}.kv span{display:block;font-size:7.5pt;color:#5f6e62;text-transform:uppercase;}
+.nt{width:150px;white-space:nowrap;}.bar{display:inline-block;width:80px;height:7px;background:#ecebe6;border-radius:4px;margin-right:6px;vertical-align:middle;overflow:hidden;}.bar i{display:block;height:100%;}
+.ev{font-size:8pt;color:#5f6e62;margin-top:2px;}.dv{font-size:7.5pt;color:#8a6a07;font-weight:700;}.ok{color:#1f8c33;font-weight:700;}.no{color:#a3312a;font-weight:700;}.pa{color:#8a6a07;font-weight:700;}
 .med{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:8px 0;}.med div{background:#03590f;color:#fff;border-radius:5px;padding:7px 9px;}.med span{display:block;font-size:7pt;text-transform:uppercase;color:#a9cfb2;}.med b{font-size:13pt;}
 ul{margin:4px 0;padding-left:18px;}.sig{border:1.5px solid #1f8c33;border-left:6px solid #03590f;border-radius:4px;padding:10px 12px;margin-top:14px;break-inside:avoid;}
 .foot{margin-top:10px;font-size:7.5pt;color:#8a8f86;}.draft{color:#a3312a;font-weight:700;}
 </style></head><body>
 <div class="top"><div><small>MAQCAMPO IRRIGAÇÃO</small><h1>Avaliação de cargo e pré-requisitos</h1></div><div style="text-align:right;font-size:8.5pt;color:#5f6e62;">${esc(pr.tipo||'')}<br>${fmtD(pr.data)}</div></div>
-${conc?'':'<p class="draft">RASCUNHO — avaliação ainda não concluída.</p>'}
+${conc?'':'<p class="draft">PRÉVIA — avaliação ainda não concluída.</p>'}
 <div class="hero"><div><b>${esc(p.nome||'—')}</b><br>${esc(p.cargo||'—')} → <b>${esc(c.nome||'—')}</b></div>${par?`<div class="par">${esc(par)}</div>`:''}</div>
 <h2>1 · Identificação</h2><div class="kv"><div><span>Departamento</span>${esc(p.departamento||'—')}</div><div><span>Gestor direto</span>${esc(p.gestor||'—')}</div><div><span>Admissão</span>${p.admissao?fmtD(p.admissao):'—'}</div><div><span>Vínculo</span>${esc(p.vinculo||'—')}</div><div><span>Matrícula</span>${esc(p.matricula||'—')}</div><div><span>Responsável</span>${esc(pr.responsavelNome||pr.responsavel||'—')}</div></div>
 <h2>2 · Descrição do cargo</h2><div class="kv" style="margin-bottom:6px;"><div><span>Nível</span>${esc(c.nivel||'—')}</div><div><span>Departamento</span>${esc(c.departamento||'—')}</div>${c.her&&c.her.de?`<div><span>Herda requisitos de</span>${esc(c.her.de)}</div>`:''}</div>${c.objetivo?`<p style="margin:4px 0;">${esc(c.objetivo)}</p>`:''}${(c.resp||[]).filter(Boolean).length?`<ol style="margin:4px 0;padding-left:18px;">${c.resp.filter(Boolean).map(x=>`<li>${esc(x)}</li>`).join('')}</ol>`:''}
 <h2>3 · Pré-requisitos</h2><table><tr><th>Requisito</th><th>Exigido</th><th>Colaborador</th><th>Situação</th></tr>${ctx.reqs.map(x=>`<tr><td>${esc(x.l)}</td><td>${esc(x.exig)}</td><td>${esc(x.tem)}</td><td class="${x.final==='Atende'?'ok':x.final==='Não atende'?'no':''}">${esc(x.final||'—')}${x.manual&&x.final?' (confirmado)':''}</td></tr>`).join('')}</table>
 <h2>4 · Treinamentos obrigatórios</h2>${ctx.treinos.length?`<table><tr><th>Treinamento</th><th>Última conclusão</th><th>Vencimento</th><th>Situação</th></tr>${ctx.treinos.map(t=>`<tr><td>${esc(t.nome)}</td><td>${fmtD(t.ult)}</td><td>${fmtD(t.venc)}</td><td class="${t.st==='Possui'?'ok':t.st==='Vencido'?'pa':'no'}">${esc(t.st)}</td></tr>`).join('')}</table>`:'<p>Nenhum treinamento obrigatório definido para o cargo.</p>'}
-<h2>5 · Conhecimentos técnicos</h2><table>${AVA_CONH.map(x=>{const s=(r.conh||{})[x[0]]||'—';return `<tr><td>${esc(x[1])}${(c.conh||{})[x[0]]?`<div class="ev">Exigido: ${esc(c.conh[x[0]])}</div>`:''}</td><td class="${s==='Atende'?'ok':s==='Não atende'?'no':s==='Atende parcialmente'?'pa':''}" style="width:170px;">${esc(s)}</td></tr>`;}).join('')}</table>
-<h2>6 · Competências comportamentais (1 a 10)</h2><table>${AVA_COMP.map(linhaNota).join('')}</table>
-<h2>7 · Desempenho e maturidade (1 a 10)</h2><table>${AVA_DES.map(linhaNota).join('')}</table>${(r.tags||[]).length?`<p style="margin:6px 0 0;"><b>Evidências observadas:</b> ${r.tags.map(esc).join(' · ')}</p>`:''}
-${lider?`<h2>8 · Critérios de liderança</h2><table>${AVA_LID.map(x=>`<tr><td>${esc(x[1])}</td><td style="width:90px;" class="${(r.lid||{})[x[0]]?'ok':'no'}">${(r.lid||{})[x[0]]?'Cumpre':'Não marcado'}</td></tr>`).join('')}</table>`:''}
-<h2>${lider?'9':'8'} · Resultado</h2>
-<div class="med"><div><span>Competências</span><b>${fmtNota(calc.mComp)}</b></div><div><span>Desempenho</span><b>${fmtNota(calc.mDes)}</b></div><div><span>Média geral</span><b>${fmtNota(calc.mGeral)}</b></div><div><span>Menor nota</span><b>${calc.min==null?'—':calc.min}</b></div></div>
+<h2>5 · Avaliadores</h2><table><tr><th>Avaliador</th><th>Papel</th><th class="c">Peso</th><th>Forma</th><th>Respondeu em</th><th>Parecer individual</th></tr>${avaAvs(pr).map(a=>`<tr><td>${esc(a.nome||'')}<div class="ev">${esc(a.email||'')}</div></td><td>${esc(a.papel||'')}</td><td class="c">${a.status==='respondido'&&soma?Math.round(Math.max(0,n(a.peso))/soma*100)+'%':'—'}</td><td>${esc(MODOS_AVA[a.modo]||'')}</td><td>${a.status==='respondido'?fmtDH(a.respondidoEm):'<span class="no">não respondeu</span>'}</td><td>${esc(avaRespDe(pr,a.id).parecer||'—')}</td></tr>`).join('')}</table>
+<p style="margin:6px 0 0;font-size:9pt;">Consenso entre avaliadores: <b>${cons.consenso==null?'—':cons.consenso+'%'}</b> dos itens sem divergência (diferença menor que 3 pontos).</p>
+<h2>6 · Conhecimentos técnicos</h2><table><tr><th>Item</th>${avs.map(a=>`<th class="c">${nm(a)}</th>`).join('')}<th>Consolidado</th></tr>${AVA_CONH.map(x=>{const it=cons.conhItens[x[0]]||{vals:[]},s=cons.conh[x[0]]||'—';return `<tr><td>${esc(x[1])}${it.div?' <span class="dv">divergência'+(it.cal?' · calibrada':'')+'</span>':''}${(c.conh||{})[x[0]]?`<div class="ev">Exigido: ${esc(c.conh[x[0]])}</div>`:''}</td>${avs.map(a=>{const o=it.vals.find(z=>z.a.id===a.id);return `<td class="c" style="font-size:8pt;">${o?esc(o.s):'—'}</td>`;}).join('')}<td class="${s==='Atende'?'ok':s==='Não atende'?'no':s==='Atende parcialmente'?'pa':''}" style="width:150px;">${esc(s)}</td></tr>`;}).join('')}</table>
+<h2>7 · Competências comportamentais (1 a 10)</h2><table>${cabN}${AVA_COMP.map(linhaNota).join('')}</table>
+<h2>8 · Desempenho e maturidade (1 a 10)</h2><table>${cabN}${AVA_DES.map(linhaNota).join('')}</table>${cons.tags.length?`<p style="margin:6px 0 0;"><b>Evidências observadas:</b> ${cons.tags.map(esc).join(' · ')}</p>`:''}
+${lider?`<h2>9 · Critérios de liderança</h2><table>${AVA_LID.map(x=>`<tr><td>${esc(x[1])}</td><td style="width:110px;" class="${cons.lid[x[0]]?'ok':'no'}">${cons.lid[x[0]]?'Cumpre':'Não cumpre'}</td></tr>`).join('')}</table>`:''}
+<h2>${lider?'10':'9'} · Resultado</h2>
+<div class="med"><div><span>Competências</span><b>${fmtNota(calc.mComp)}</b></div><div><span>Desempenho</span><b>${fmtNota(calc.mDes)}</b></div><div><span>Média geral</span><b>${fmtNota(calc.mGeral)}</b></div><div><span>Menor nota</span><b>${calc.min==null?'—':fmtNota(calc.min)}</b></div></div>
 <table><tr><td style="width:190px;"><b>Parecer calculado</b></td><td>${esc(calc.parecer||'—')}${calc.mot.length?`<div class="ev">${calc.mot.map(esc).join(' · ')}</div>`:''}</td></tr>
-<tr><td><b>Parecer final</b></td><td style="color:${cor};font-weight:700;">${esc(par||'—')}${par===PARECER_REAV&&r.reavaliarDias?' — em '+r.reavaliarDias+' dias':''}</td></tr>
-${normTxt(r.justificativa)?`<tr><td><b>Justificativa</b></td><td>${esc(r.justificativa)}</td></tr>`:''}
-<tr><td><b>Pontos fortes</b></td><td>${avaFortes(pr).map(esc).join(' · ')||'—'}</td></tr>
-<tr><td><b>A desenvolver</b></td><td>${avaDev(pr).map(esc).join(' · ')||'—'}</td></tr>
+<tr><td><b>Parecer final</b></td><td style="color:${cor};font-weight:700;">${esc(par||'—')}${par===PARECER_REAV&&res.reavaliarDias?' — em '+res.reavaliarDias+' dias':''}</td></tr>
+${normTxt(res.justificativa)?`<tr><td><b>Justificativa</b></td><td>${esc(res.justificativa)}</td></tr>`:''}
+${normTxt(res.calibTexto)?`<tr><td><b>Calibração</b></td><td>${esc(res.calibTexto)}</td></tr>`:''}
+<tr><td><b>Pontos fortes</b></td><td>${avaFortes(pr,cons).map(esc).join(' · ')||'—'}</td></tr>
+<tr><td><b>A desenvolver</b></td><td>${avaDev(pr,cons).map(esc).join(' · ')||'—'}</td></tr>
 <tr><td><b>Plano de desenvolvimento</b></td><td>${plano.length?`<ul>${plano.map(x=>`<li>${esc(x.nome)} <span class="ev">(${esc(x.motivo)})</span></li>`).join('')}</ul>`:'Nenhum treinamento pendente.'}</td></tr>
-${normTxt(r.comentarios)?`<tr><td><b>Comentários</b></td><td>${esc(r.comentarios)}</td></tr>`:''}</table>
-<div class="sig">${conc?`<b>Avaliação concluída eletronicamente</b><br>por ${esc(pr.concluidoNome||pr.concluidoPor)} (${esc(pr.concluidoPor)}) em ${fmtDH(pr.concluidoEm)}, com autenticação Microsoft 365.<br><span style="font-size:8pt;color:#5f6e62;">Código de registro: ${cod}</span>`:'<b>Avaliação não concluída</b> — este documento é apenas um rascunho.'}</div>
+${avs.filter(a=>normTxt(avaRespDe(pr,a.id).comentario)).map(a=>`<tr><td><b>Comentário de ${nm(a)}</b></td><td>${esc(avaRespDe(pr,a.id).comentario)}</td></tr>`).join('')}
+${normTxt(res.comentarios)?`<tr><td><b>Comentários finais</b></td><td>${esc(res.comentarios)}</td></tr>`:''}</table>
+<div class="sig">${conc?`<b>Avaliação concluída eletronicamente</b><br>por ${esc(pr.concluidoNome||pr.concluidoPor)} (${esc(pr.concluidoPor)}) em ${fmtDH(pr.concluidoEm)}, com autenticação Microsoft 365.<br><span style="font-size:8pt;color:#5f6e62;">Respostas: ${avs.map(a=>esc(a.nome||a.email)+' ('+(a.via==='código'?'código':a.via==='link'?'link com login':'sistema')+', '+fmtDH(a.respondidoEm)+')').join('; ')}. Código de registro: ${cod}</span>`:'<b>Avaliação não concluída</b> — este documento é apenas uma prévia.'}</div>
 <div class="foot">MAQCAMPO Irrigação · Treinamentos MCPO › Avaliações · documento confidencial · gerado em ${fmtDH(new Date().toISOString())}</div>
 <script>window.onload=()=>setTimeout(()=>window.print(),300);<\/script></body></html>`;
   w.document.open();w.document.write(html);w.document.close();
+}
+
+/* ---------- página do avaliador convidado (link com login ou sem login) ---------- */
+const AVL=(()=>{try{const q=new URLSearchParams(location.search);const c=q.get('avaliar');if(c)return {modo:'link',id:c,d:q.get('d')||'',i:q.get('i')||''};const o=q.get('av');if(o)return {modo:'codigo',raw:o};}catch(e){}return null;})();
+function avlMsg(h){return `<div class="card" style="text-align:center;padding:28px 18px;">${h}</div>`;}
+function avlIniciar(){
+  $('avl-page').hidden=false;document.body.style.overflow='hidden';
+  try{$('avl-logo').src=LOGO_G;}catch(e){}
+  const b=$('avl-body');
+  if(AVL.modo==='codigo'){
+    avaDec(AVL.raw).then(o=>{
+      if(!o||!o.i)throw new Error('x');AVL.p=o.p;AVL.a=o.a;AVL.info=o.i;AVL.key='maqcampo-avl-'+o.p+'-'+o.a;
+      let d=null;try{d=JSON.parse(localStorage.getItem(AVL.key)||'null');}catch(e){}
+      AVL.resp=(d&&d.resposta)||{};AVL.status=(d&&d.status)||'pendente';AVL.codigo=d&&d.codigo||'';avlRender();
+    }).catch(()=>{b.innerHTML=avlMsg('<div class="emoji">⚠️</div><p><b>Link incompleto.</b></p><p class="muted">Abra o link exatamente como chegou no e-mail. Se ele foi quebrado em mais de uma linha, peça um novo ao responsável.</p>');});
+  }else b.innerHTML=avlMsg('<p class="muted">Carregando a avaliação…</p>');
+}
+function avlLogin(msg){
+  $('avl-body').innerHTML=avlMsg(`<div class="emoji">🔒</div><p><b>Entre com a sua conta Microsoft</b> para abrir a avaliação.</p>${msg?`<p class="muted">${msg}</p>`:''}<button class="btn primary" id="avl-entrar" type="button" style="padding:12px 20px;">🔑 Entrar com Microsoft</button>`);
+  $('avl-entrar').onclick=async()=>{if(!msalInstance){toast('Login indisponível no momento. Tente de novo em instantes.');return;}try{const r=await msalInstance.loginPopup({scopes:GRAPH_SCOPES,prompt:'select_account'});msAccount=r.account;avlCarregar();}catch(e){toast('Não foi possível entrar: '+(e.errorCode||e.message||''));}};
+}
+function avlAposLogin(){if(AVL.modo!=='link')return;if(!msalReady){$('avl-body').innerHTML=avlMsg('<p><b>O login Microsoft não carregou.</b></p><p class="muted">Confira a conexão e recarregue a página.</p>');return;}if(!msAccount){avlLogin();return;}avlCarregar();}
+function avlUrl(){return `https://graph.microsoft.com/v1.0/drives/${encodeURIComponent(AVL.d)}/items/${encodeURIComponent(AVL.i)}`;}
+async function avlCarregar(){
+  const b=$('avl-body');b.innerHTML=avlMsg('<p class="muted">Carregando a avaliação…</p>');
+  if(!AVL.d||!AVL.i){b.innerHTML=avlMsg('<p><b>Link incompleto.</b></p><p class="muted">Abra o link exatamente como chegou no e-mail.</p>');return;}
+  const m=await avaGraph(avlUrl());
+  if(!m||!m.ok){avlLogin(`Você entrou como <b>${esc(emailAtual())}</b>, mas esta conta não tem acesso a esta avaliação. Entre com o e-mail que recebeu o convite.`);return;}
+  const mj=await m.json();AVL.etag=mj.eTag;
+  const c=await avaGraph(avlUrl()+'/content');let d=null;try{d=c&&c.ok?await c.json():null;}catch(e){}
+  if(!d){b.innerHTML=avlMsg('<p><b>Não consegui abrir a avaliação.</b></p><p class="muted">Tente de novo em instantes.</p>');return;}
+  AVL.doc=d;AVL.info=d.info||{};AVL.resp=d.resposta||{};AVL.status=d.status||'pendente';avlRender();
+}
+let _avlT=null,_avlSalvando=false;
+function avlAgendar(){if(AVL.modo==='codigo'){try{localStorage.setItem(AVL.key,JSON.stringify({resposta:AVL.resp,status:AVL.status,codigo:AVL.codigo}));}catch(e){}return;}clearTimeout(_avlT);avlStatus('⏳ salvando…');_avlT=setTimeout(avlSalvar,1000);}
+function avlStatus(t){const el=$('avl-st');if(el)el.textContent=t;}
+async function avlSalvar(){
+  if(AVL.modo!=='link'||!AVL.doc)return false;if(_avlSalvando){clearTimeout(_avlT);_avlT=setTimeout(avlSalvar,800);return false;}_avlSalvando=true;
+  let ok=false;
+  for(let t=0;t<4&&!ok;t++){
+    const d=Object.assign({},AVL.doc,{resposta:AVL.resp,status:AVL.status});if(AVL.status==='enviado'){d.enviadoEm=AVL.enviadoEm;d.enviadoPor=emailAtual();d.enviadoNome=msAccount&&msAccount.name||'';}
+    const r=await avaGraph(avlUrl()+'/content',{method:'PUT',headers:{'Content-Type':'application/octet-stream','If-Match':AVL.etag},body:new TextEncoder().encode(JSON.stringify(d))});
+    if(r&&r.ok){const j=await r.json();AVL.etag=j.eTag;AVL.doc=d;ok=true;}
+    else if(r&&(r.status===412||r.status===409)){const m=await avaGraph(avlUrl());const c=await avaGraph(avlUrl()+'/content');if(m&&m.ok&&c&&c.ok){AVL.etag=(await m.json()).eTag;AVL.doc=await c.json();}else break;}
+    else break;
+  }
+  _avlSalvando=false;avlStatus(ok?'✓ rascunho salvo':'⚠ não foi possível salvar — confira a conexão');return ok;
+}
+function avlRender(){
+  const b=$('avl-body'),i=AVL.info||{},r=AVL.resp||{},env=AVL.status==='enviado';
+  const pend=avaFormPend(r,n(i.evid)||4);
+  b.innerHTML=`<div class="card ava-top">
+      <div class="lbl-sec" style="margin-top:0;">Avaliação de cargo · confidencial</div>
+      <div class="ava-nome">${esc(i.colab||'—')}</div>
+      <div class="muted">${esc(i.cargoAtual||'Cargo atual não informado')} → <b>${esc(i.cargo||'—')}</b>${i.nivel?' · '+esc(i.nivel):''}</div>
+      <div class="ava-kv" style="margin-top:12px;">${avaKV('Você avalia como',esc(i.papel||'Avaliador'))}${avaKV('Avaliador',esc(i.avaliador||emailAtual()||''))}${avaKV('Responsável',esc(i.responsavel||''))}</div>
+      ${(i.resp||[]).length||i.objetivo?`<details style="margin-top:10px;"><summary class="lbl-sec" style="cursor:pointer;">O que o cargo exige</summary>${i.objetivo?`<p style="font-size:.86rem;">${esc(i.objetivo)}</p>`:''}${(i.resp||[]).length?`<ol style="font-size:.86rem;padding-left:20px;">${i.resp.map(x=>`<li>${esc(x)}</li>`).join('')}</ol>`:''}</details>`:''}
+      ${env?'':'<p class="muted" style="margin:10px 0 0;">As notas vão de 1 a 10. A sua resposta é vista só pelo responsável pela avaliação.'+(AVL.modo==='link'?' O rascunho é salvo sozinho.':' O rascunho fica salvo neste navegador.')+'</p>'}
+    </div>
+    ${env?`<div class="card"><div class="ava-pend ok">✅ <b>Avaliação enviada${AVL.modo==='link'&&AVL.doc&&AVL.doc.enviadoEm?' em '+fmtDH(AVL.doc.enviadoEm):''}.</b> Obrigado!</div>${AVL.modo==='codigo'?avlCodigoHtml():''}</div>`:''}
+    <div id="avl-form">${avaFormHtml(r,{dis:env,lider:!!i.lider,conh:i.conh||{},evid:n(i.evid)||4})}</div>
+    ${env?'':`<div class="card"><div id="avl-pend">${avaPendHtml(pend,'Tudo preenchido. Revise e envie.')}</div><div class="flt" style="margin-top:12px;align-items:center;"><button class="btn primary" id="avl-enviar" type="button" style="padding:12px 20px;">✔ Enviar avaliação</button><span class="muted" id="avl-st"></span></div></div>`}`;
+}
+function avlCodigoHtml(){
+  const i=AVL.info||{};
+  return `<div class="lbl-sec">Mande este código para ${esc(i.responsavel||'o responsável')}</div><textarea readonly rows="4" style="width:100%;font-family:var(--fonte-dado);font-size:.78rem;border:1px solid var(--borda);border-radius:4px;padding:8px;" id="avl-cod">${esc(AVL.codigo)}</textarea>
+    <div class="flt" style="margin-top:8px;"><button class="btn primary small" id="avl-mail" type="button">✉ Enviar por e-mail</button><button class="btn ghost small" id="avl-copy" type="button">📋 Copiar código</button></div>
+    <div class="note">Se o e-mail não abrir com o código, copie o código e cole numa mensagem para ${esc(i.respEmail||'o responsável')}.</div>`;
+}
+(function avlEventos(){
+  const body=$('avl-body');if(!body)return;
+  const acao=e=>{
+    if(!AVL||!AVL.info)return;
+    if(e.type==='click'){const b=e.target.closest&&e.target.closest('button');if(!b)return;
+      if(b.id==='avl-enviar'){avlEnviar();return;}
+      if(b.id==='avl-mail'){const i=AVL.info;const body=`Segue a minha avaliação de ${i.colab} para ${i.cargo}.\n\n${AVL.codigo}\n\n${i.avaliador||''}`;const url=`mailto:${encodeURIComponent(i.respEmail||'')}?subject=${encodeURIComponent('Resposta da avaliação de '+i.colab)}&body=${encodeURIComponent(body)}`;if(url.length>1900){avaCopiarTexto(AVL.codigo);toast('Código copiado: cole no e-mail que abriu.');window.location.href=`mailto:${encodeURIComponent(i.respEmail||'')}?subject=${encodeURIComponent('Resposta da avaliação de '+i.colab)}&body=${encodeURIComponent('Segue a minha avaliação (cole o código abaixo):\n\n')}`;}else window.location.href=url;return;}
+      if(b.id==='avl-copy'){avaCopiarTexto(AVL.codigo);toast('Código copiado.');return;}
+    }
+    if(AVL.status==='enviado'||!(e.target.closest&&e.target.closest('#avl-form')))return;
+    const m=avaFormAcao(e,AVL.resp);if(!m)return;avlAgendar();
+    if(m==='render'){const y=window.scrollY,pg=$('avl-page'),sy=pg.scrollTop;avlRender();pg.scrollTop=sy;window.scrollTo(0,y);}
+    else{const el=$('avl-pend');if(el)el.innerHTML=avaPendHtml(avaFormPend(AVL.resp,n(AVL.info.evid)||4),'Tudo preenchido. Revise e envie.');}
+  };
+  ['click','input','change'].forEach(t=>body.addEventListener(t,acao));
+})();
+async function avlEnviar(){
+  const pend=avaFormPend(AVL.resp,n(AVL.info.evid)||4);
+  if(pend.length){toast('Complete os itens que faltam antes de enviar.');const el=$('avl-pend');if(el)el.scrollIntoView({behavior:'smooth',block:'center'});return;}
+  if(!confirm('Enviar a avaliação? Depois de enviada, ela não pode ser alterada.'))return;
+  if(AVL.modo==='link'){
+    clearTimeout(_avlT);AVL.status='enviado';AVL.enviadoEm=new Date().toISOString();
+    const ok=await avlSalvar();if(!ok){AVL.status='pendente';toast('Não foi possível enviar. Confira a conexão e tente de novo.');return;}
+    avlRender();$('avl-page').scrollTop=0;return;
+  }
+  AVL.codigo='AVA1-'+await avaEnc({p:AVL.p,a:AVL.a,r:AVL.resp,t:new Date().toISOString()});
+  AVL.status='enviado';avlAgendar();avlRender();$('avl-page').scrollTop=0;
 }
 
 /* ==================== LOGIN / INIT ==================== */
@@ -2268,10 +2703,11 @@ async function initAuth(){
   try{
     await loadMsal();const M=window.msal&&window.msal.PublicClientApplication;if(!M)throw new Error('MSAL');
     msalInstance=new M(MSAL_CONFIG);await msalInstance.initialize();msalReady=true;
-    const accs=msalInstance.getAllAccounts();if(accs.length){msAccount=accs[0];if(!CONF)await sincronizarNuvem(true);}
+    const accs=msalInstance.getAllAccounts();if(accs.length){msAccount=accs[0];if(!CONF&&!AVL)await sincronizarNuvem(true);}
     if(CONF){updateLoginUI();iniciarConfirm();return;}
+    if(AVL){updateLoginUI();avlAposLogin();return;}
     updateLoginUI();applyAccess();
-  }catch(e){msalReady=false;$('ms-login-label').textContent='🔑 Entrar com Microsoft';const info=$('ms-user-info');info.textContent='(modo local — login indisponível)';info.style.display='block';if(CONF){iniciarConfirm();return;}await avaCarregar();applyAccess();renderAll();}
+  }catch(e){msalReady=false;$('ms-login-label').textContent='🔑 Entrar com Microsoft';const info=$('ms-user-info');info.textContent='(modo local — login indisponível)';info.style.display='block';if(CONF){iniciarConfirm();return;}if(AVL){avlAposLogin();return;}await avaCarregar();applyAccess();renderAll();}
 }
 function updateLoginUI(){const lbl=$('ms-login-label'),info=$('ms-user-info');if(msAccount){lbl.textContent='✓ '+(msAccount.name||msAccount.username);info.textContent='SharePoint › '+SP_PASTA;info.style.display='block';}else{lbl.textContent='🔑 Entrar com Microsoft';info.style.display='none';}}
 $('btn-ms-login').addEventListener('click',async()=>{
@@ -2282,7 +2718,7 @@ $('btn-ms-login').addEventListener('click',async()=>{
 });
 
 document.body.classList.add('is-admin');
-if(CONF){$('cf-logo').src=LOGO_G;$('overlay-confirm').style.display='flex';telaConf('carregando');}else{applyModule();renderAll();}
+if(CONF){$('cf-logo').src=LOGO_G;$('overlay-confirm').style.display='flex';telaConf('carregando');}else if(AVL){avlIniciar();}else{applyModule();renderAll();}
 initAuth();
 
 </script>

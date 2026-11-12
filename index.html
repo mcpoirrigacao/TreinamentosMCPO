@@ -184,6 +184,11 @@ body:not([data-mod="cli"]) .so-cli{display:none !important;}
 .cls-col.good .cls-h b{color:var(--ok);}.cls-col.warn .cls-h b{color:#8a6a07;}.cls-col.bad .cls-h b{color:var(--vermelho);}
 .cls-i{display:flex;gap:8px;align-items:baseline;width:100%;text-align:left;border:1px solid transparent;border-left:4px solid;background:#fff;border-radius:4px;padding:6px 8px;margin-bottom:5px;font-size:.8rem;cursor:pointer;color:var(--texto);font-family:var(--fonte-corpo);}
 .cls-i:hover:not(:disabled){border-color:var(--borda);}.cls-i:disabled{cursor:default;}
+.cls-i:not(:disabled){cursor:grab;touch-action:none;user-select:none;-webkit-user-select:none;}
+.cls-i:focus-visible{outline:2px solid var(--azul-claro);outline-offset:1px;}
+.cls-col{min-height:110px;transition:box-shadow .12s;}.cls-col.cls-over{box-shadow:0 0 0 3px var(--azul-claro) inset;}
+.cls-src{opacity:.35;}body.cls-arrastando,body.cls-arrastando *{cursor:grabbing !important;}
+.cls-ghost{position:fixed;z-index:2000;pointer-events:none;margin:0;box-shadow:0 8px 22px rgba(0,0,0,.22);transform:rotate(1.5deg);opacity:.96;}
 .cls-i.man{border-style:dashed;border-left-style:solid;border-color:var(--borda);}
 .cls-i.good{border-left-color:var(--ok);}.cls-i.warn{border-left-color:var(--amarelo);}.cls-i.bad{border-left-color:var(--vermelho);}
 .cls-n{font-family:var(--fonte-dado);font-weight:700;min-width:26px;flex:none;}.cls-t{min-width:0;}.cls-t small{display:block;color:var(--texto-suave);font-size:.7rem;}
@@ -1938,15 +1943,33 @@ function avaClsOrd(a,b){if(a.tipo!==b.tipo)return a.tipo==='nota'?-1:1;return (b
 function avaClsLista(pr,cons,tom){return avaClassif(pr,cons).filter(i=>i.tom===tom).sort(avaClsOrd);}
 function avaFortes(pr,cons){return avaClsLista(pr,cons,'good').map(i=>i.l);}
 function avaDev(pr,cons){return avaClsLista(pr,cons,'bad').map(i=>i.l);}
+function avaClsMover(k,tom){
+  avaMut(c=>{const r=avaRes(c),it=avaClassif(c).find(x=>x.k===k);if(!it||it.tom===tom)return false;r.classif=r.classif||{};if(tom===it.auto)delete r.classif[k];else r.classif[k]=tom;});
+  setTimeout(()=>{const el=document.querySelector('.cls-i[data-cls="'+k+'"]');if(el)el.focus({preventScroll:true});},0);
+}
+/* arrastar e soltar entre as faixas (mouse, toque e teclado) */
+(function avaClsArrastar(){
+  const root=$('ava-root');if(!root)return;let dr=null;
+  const limpar=()=>{if(!dr)return;if(dr.ghost)dr.ghost.remove();dr.el.classList.remove('cls-src');document.querySelectorAll('.cls-col.cls-over').forEach(x=>x.classList.remove('cls-over'));document.body.classList.remove('cls-arrastando');dr=null;};
+  const alvo=e=>{const el=document.elementFromPoint(e.clientX,e.clientY);return el&&el.closest?el.closest('.cls-col'):null;};
+  root.addEventListener('pointerdown',e=>{const it=e.target.closest&&e.target.closest('.cls-i');if(!it||it.disabled||(e.pointerType==='mouse'&&e.button!==0))return;dr={el:it,k:it.dataset.cls,x:e.clientX,y:e.clientY,ox:0,oy:0,on:false,ghost:null,id:e.pointerId};try{it.setPointerCapture(e.pointerId);}catch(_){}});
+  root.addEventListener('pointermove',e=>{if(!dr||e.pointerId!==dr.id)return;
+    if(!dr.on){if(Math.hypot(e.clientX-dr.x,e.clientY-dr.y)<6)return;const r=dr.el.getBoundingClientRect();dr.ox=dr.x-r.left;dr.oy=dr.y-r.top;dr.ghost=dr.el.cloneNode(true);dr.ghost.classList.add('cls-ghost');dr.ghost.style.width=r.width+'px';document.body.appendChild(dr.ghost);dr.el.classList.add('cls-src');document.body.classList.add('cls-arrastando');dr.on=true;}
+    dr.ghost.style.left=(e.clientX-dr.ox)+'px';dr.ghost.style.top=(e.clientY-dr.oy)+'px';
+    const c=alvo(e);document.querySelectorAll('.cls-col').forEach(x=>x.classList.toggle('cls-over',x===c&&x!==dr.el.closest('.cls-col')));e.preventDefault();});
+  root.addEventListener('pointerup',e=>{if(!dr||e.pointerId!==dr.id)return;const on=dr.on,k=dr.k,c=on?alvo(e):null;limpar();if(c&&c.dataset.tom)avaClsMover(k,c.dataset.tom);});
+  root.addEventListener('pointercancel',limpar);
+  root.addEventListener('keydown',e=>{const it=e.target.closest&&e.target.closest('.cls-i');if(!it||it.disabled||(e.key!=='ArrowLeft'&&e.key!=='ArrowRight'))return;const ord=['bad','warn','good'],cur=it.closest('.cls-col').dataset.tom,i=ord.indexOf(cur)+(e.key==='ArrowRight'?1:-1);if(i<0||i>2)return;e.preventDefault();avaClsMover(it.dataset.cls,ord[i]);});
+})();
 function avaClassifHtml(pr,cons,ed){
   const {vd,am}=avaLimites(),dis=ed?'':' disabled',its=avaClassif(pr,cons);
   if(!its.length)return '<div class="lbl-sec">Classificação das competências</div><div class="muted">Aparece quando houver notas.</div>';
   const faixa={bad:'notas abaixo de '+fmtNota(am)+' · não atende',warn:'notas de '+fmtNota(am)+' a '+fmtNota(Math.round((vd-0.1)*10)/10)+' · parcial',good:'notas a partir de '+fmtNota(vd)+' · atende'};
-  const col=tom=>{const l=its.filter(i=>i.tom===tom).sort(avaClsOrd);return `<div class="cls-col ${tom}"><div class="cls-h"><b>${CLS_NOME[tom]}</b><em>${l.length}</em><span>${faixa[tom]}</span></div>${l.map(i=>`<button type="button" class="cls-i ${tom}${i.manual?' man':''}" data-cls="${i.k}" title="${ed?'Clique para mudar a cor':''}"${dis}><span class="cls-n">${i.tipo==='nota'?esc(i.txt):'◆'}</span><span class="cls-t">${esc(i.l)}${i.tipo==='conh'?`<small>${esc(i.txt)}</small>`:''}${i.manual?'<small>✎ ajustado · era '+esc(CLS_NOME[i.auto].split(' ·')[0].toLowerCase())+'</small>':''}</span></button>`).join('')||'<div class="muted" style="padding:4px 2px;">—</div>'}</div>`;};
-  return `<div class="lbl-sec">Classificação das competências <span style="text-transform:none;font-weight:400;">(pela escala de notas consolidadas${ed?'; clique num item para mudar a cor':''})</span></div>
+  const col=tom=>{const l=its.filter(i=>i.tom===tom).sort(avaClsOrd);return `<div class="cls-col ${tom}" data-tom="${tom}"><div class="cls-h"><b>${CLS_NOME[tom]}</b><em>${l.length}</em><span>${faixa[tom]}</span></div>${l.map(i=>`<button type="button" class="cls-i ${tom}${i.manual?' man':''}" data-cls="${i.k}" title="${ed?'Arraste para outra faixa (ou use ← →)':''}" aria-label="${esc(i.l)}: ${esc(CLS_NOME[tom])}${ed?'. Use as setas esquerda e direita para mudar de faixa':''}"${dis}><span class="cls-n">${i.tipo==='nota'?esc(i.txt):'◆'}</span><span class="cls-t">${esc(i.l)}${i.tipo==='conh'?`<small>${esc(i.txt)}</small>`:''}${i.manual?'<small>✎ ajustado · era '+esc(CLS_NOME[i.auto].split(' ·')[0].toLowerCase())+'</small>':''}</span></button>`).join('')||'<div class="muted" style="padding:4px 2px;">—</div>'}</div>`;};
+  return `<div class="lbl-sec">Classificação das competências <span style="text-transform:none;font-weight:400;">(pela escala de notas consolidadas${ed?'; arraste um item para outra faixa para reclassificar':''})</span></div>
     <div class="cls-scale" aria-hidden="true">${[1,2,3,4,5,6,7,8,9,10].map(i=>`<span class="${i>=vd?'good':i>=am?'warn':'bad'}">${i}</span>`).join('')}</div>
     <div class="cls-grid">${col('bad')}${col('warn')}${col('good')}</div>
-    <div class="muted" style="margin-top:6px;">◆ = conhecimento técnico, classificado pela situação consolidada.</div>`;
+    <div class="muted" style="margin-top:6px;">◆ = conhecimento técnico, classificado pela situação consolidada.${ed?' Para desfazer um ajuste, arraste o item de volta para a faixa original.':''}</div>`;
 }
 function avaPlano(pr,ctx){const r=avaRes(pr);const auto=ctx.treinos.filter(t=>t.st!=='Possui').map(t=>({nome:t.nome,motivo:t.st==='Vencido'?'Reciclagem (vencido)':'Obrigatório do cargo'}));const extra=(r.planoCursos||[]).map(cid=>({cid,nome:nomeCurso(cid),motivo:'Indicado na avaliação'}));return auto.concat(extra);}
 
@@ -2222,7 +2245,6 @@ function avaMutMeu(fn,rerender){
     if(id==='ava-meu-enviar'){avaMeuEnviar();return;}
     if(id==='ava-meu-editar'){const pr=avaGet('processos',AVA_ABERTA);if(!pr||pr.status==='concluida')return;const c=clone(pr),meu=avaMeuAv(c);if(!meu)return;meu.status='pendente';avaPut('processos',AVA_ABERTA,c);renderAvaliacoes();return;}
     if(d.avact){avaAvAcao(d.avact,d.av);return;}
-    if(d.cls){avaMut(c=>{const r=avaRes(c),it=avaClassif(c).find(x=>x.k===d.cls);if(!it)return false;const nx=CLS_TONS[(CLS_TONS.indexOf(it.tom)+1)%3];r.classif=r.classif||{};if(nx===it.auto)delete r.classif[d.cls];else r.classif[d.cls]=nx;});return;}
     if(d.parecer){avaMut(c=>{const calc=avaCalc(c);avaRes(c).parecer=d.parecer===calc.parecer?'':d.parecer;});return;}
     if(d.reav){avaMut(c=>{avaRes(c).reavaliarDias=+d.v;});return;}
     if(d.planoRem){avaMut(c=>{const r=avaRes(c);r.planoCursos=(r.planoCursos||[]).filter(x=>x!==d.planoRem);});return;}

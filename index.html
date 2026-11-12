@@ -171,6 +171,41 @@ body:not([data-mod="cli"]) .so-cli{display:none !important;}
 .toast{position:fixed;bottom:18px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--azul-escuro);color:#fff;padding:10px 18px;border-radius:20px;font-size:.82rem;opacity:0;transition:opacity .25s,transform .25s;pointer-events:none;z-index:2000;box-shadow:0 4px 16px rgba(0,0,0,.3);}
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
 .lbl-sec{font-size:.72rem;text-transform:uppercase;letter-spacing:.5px;color:var(--texto-suave);font-weight:700;margin:14px 0 6px;}
+/* ---- Avaliações ---- */
+.cg-resp-row{display:flex;gap:8px;align-items:center;margin-bottom:6px;}.cg-resp-row select{flex:1;min-width:0;border:1px solid var(--borda);border-radius:4px;padding:8px 9px;font-size:.9rem;background:#fffdf9;color:var(--texto);}
+.cg-her{background:var(--areia);border-radius:6px;padding:8px 12px;margin-bottom:8px;font-size:.84rem;}.cg-her ul{margin:4px 0 0;padding-left:18px;color:var(--texto-suave);}
+.ava-b{display:inline-block;font-size:.68rem;font-weight:700;padding:2px 8px;border-radius:10px;white-space:nowrap;}
+.ava-b.good{background:#e4f1e6;color:var(--ok);}.ava-b.warn{background:#fbf2d3;color:#8a6a07;}.ava-b.bad{background:#f7e1df;color:var(--vermelho);}.ava-b.mute{background:#ecebe6;color:#5d5f5a;}
+.ava-item{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px 16px;align-items:center;padding:10px 0;border-top:1px solid var(--areia-escura);}
+.ava-item:first-of-type,.ava-anc + .ava-item{border-top:0;}
+.ava-item .ava-ev{grid-column:1/-1;}
+.ava-l{font-size:.9rem;font-weight:600;min-width:0;}
+@media (max-width:780px){.ava-item{grid-template-columns:minmax(0,1fr);}}
+.ava-scale{display:flex;flex-wrap:wrap;gap:4px;}
+.ava-n{width:34px;height:34px;border:1px solid var(--borda);border-radius:6px;background:#fffdf9;font-weight:700;font-family:var(--fonte-dado);font-size:.9rem;cursor:pointer;color:var(--texto);padding:0;}
+.ava-n:hover:not(:disabled){border-color:var(--azul-claro);}
+.ava-n.on{color:#fff;border-color:transparent;}.ava-n.on.good{background:var(--ok);}.ava-n.on.warn{background:var(--amarelo);}.ava-n.on.bad{background:var(--vermelho);}
+.ava-chips{display:flex;flex-wrap:wrap;gap:6px;}
+.ava-c{border:1px solid var(--borda);background:#fffdf9;border-radius:14px;padding:6px 12px;font-size:.8rem;cursor:pointer;color:var(--texto);font-family:var(--fonte-corpo);}
+.ava-c:hover:not(:disabled){border-color:var(--azul-claro);}
+.ava-c.on{background:var(--azul);color:#fff;border-color:transparent;font-weight:600;}
+.ava-c.on.good{background:var(--ok);}.ava-c.on.warn{background:var(--amarelo);}.ava-c.on.bad{background:var(--vermelho);}.ava-c.on.mute{background:var(--cinza);}
+.ava-c small{font-weight:400;opacity:.85;}
+.ava-n:disabled,.ava-c:disabled{cursor:default;}
+.ava-stack{flex-direction:column;align-items:stretch;max-width:560px;}.ava-stack .ava-c{border-radius:6px;text-align:left;padding:10px 12px;font-size:.86rem;}
+.ava-anc{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:6px;margin-bottom:6px;}
+@media (max-width:780px){.ava-anc{grid-template-columns:repeat(2,minmax(0,1fr));}}
+.ava-anc div{background:var(--areia);border-radius:5px;padding:6px 8px;font-size:.72rem;color:var(--texto-suave);}.ava-anc b{display:block;color:var(--texto);font-size:.76rem;}
+.ava-kv{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:10px 16px;}
+.ava-kv div{font-size:.88rem;min-width:0;}.ava-kv span{display:block;font-size:.68rem;color:var(--texto-suave);font-weight:700;text-transform:uppercase;letter-spacing:.4px;}
+.ava-head{display:flex;gap:12px;align-items:center;flex-wrap:wrap;}
+.ava-nome{font-family:var(--fonte-titulo);font-size:1.2rem;color:var(--azul-escuro);font-weight:700;}
+.ava-calc{border:1px solid var(--borda);border-radius:6px;padding:10px 12px;background:#fffdf9;font-size:.84rem;}
+.ava-calc ul,.ava-pend ul{margin:6px 0 0;padding-left:18px;}
+.ava-pend{border:1px solid var(--amarelo);border-radius:6px;padding:10px 12px;background:#fffbef;font-size:.84rem;}
+.ava-pend.ok{border-color:var(--ok);background:#f2f8f3;}
+.ava-user{display:flex;align-items:center;gap:8px;padding:7px 0;border-bottom:1px solid var(--areia-escura);flex-wrap:wrap;}.ava-user > span:first-child{flex:1;min-width:200px;}
+.mod-switch button[data-mod="ava"]{display:none;}body.tem-ava .mod-switch button[data-mod="ava"]{display:inline-block;}
 @media (max-width:600px){.grid{grid-template-columns:1fr 1fr;}.hbar{grid-template-columns:90px minmax(0,1fr) 44px;}}
 </style>
 </head>
@@ -190,7 +225,7 @@ body:not([data-mod="cli"]) .so-cli{display:none !important;}
       </div>
     </div>
   </div>
-  <div class="mod-switch" id="mod-switch"><button type="button" data-mod="int">🏢 Treinamentos internos</button><button type="button" data-mod="cli">🌱 Capacitação de clientes</button></div>
+  <div class="mod-switch" id="mod-switch"><button type="button" data-mod="int">🏢 Treinamentos internos</button><button type="button" data-mod="cli">🌱 Capacitação de clientes</button><button type="button" data-mod="ava">📋 Avaliações</button></div>
   <nav class="tabs" id="tabs">
     <button data-tab="painel" class="active">Painel</button>
     <button data-tab="painelcli">Painel</button>
@@ -200,6 +235,9 @@ body:not([data-mod="cli"]) .so-cli{display:none !important;}
     <button data-tab="cursos">Treinamentos &amp; Matriz</button>
     <button data-tab="turmas">Turmas</button>
     <button data-tab="historico">Histórico</button>
+    <button data-tab="avaliacoes">Avaliações</button>
+    <button data-tab="cargos">Catálogo de cargos</button>
+    <button data-tab="avaconfig">⚙ Acessos &amp; regras</button>
     <button data-tab="parametros">⚙ Parâmetros</button>
   </nav>
 </header>
@@ -364,6 +402,23 @@ body:not([data-mod="cli"]) .so-cli{display:none !important;}
     <div class="card"><h3>Participações <span class="h3-side" id="hs-count"></span><button class="btn ghost small" id="hs-excel" type="button">⬇ Excel</button></h3><div class="tablewrap"><table class="dt" id="tbl-hist"></table></div></div>
   </section>
 
+  <!-- ============ AVALIAÇÕES DE CARGO (acesso restrito) ============ -->
+  <section class="pane" id="pane-avaliacoes">
+    <h2 class="pane-title">Avaliações de cargo</h2>
+    <p class="pane-desc">Promoções e mudanças de cargo: requisitos comparados automaticamente, notas de 1 a 10 e parecer calculado. Acesso restrito.</p>
+    <div id="ava-root"></div>
+  </section>
+  <section class="pane" id="pane-cargos">
+    <h2 class="pane-title">Catálogo de cargos</h2>
+    <p class="pane-desc">O que cada cargo exige: descrição, escolaridade, CNH, experiência, conhecimentos e treinamentos obrigatórios.</p>
+    <div id="cargos-root"></div>
+  </section>
+  <section class="pane" id="pane-avaconfig">
+    <h2 class="pane-title">⚙ Acessos e regras das avaliações</h2>
+    <p class="pane-desc">Quem vê e preenche as avaliações, e as faixas que calculam o parecer.</p>
+    <div id="avacfg-root"></div>
+  </section>
+
   <!-- ============ PARÂMETROS ============ -->
   <section class="pane" id="pane-parametros">
     <h2 class="pane-title">⚙ Parâmetros do Sistema</h2>
@@ -518,32 +573,35 @@ function uniq(a){return Array.from(new Set(a.filter(x=>x!=null&&String(x).trim()
 function setSel(id,list,vazio){const el=$(id);if(!el)return;const cur=el.value;el.innerHTML=opts(list,cur,vazio);if(cur&&!list.some(v=>String(typeof v==='object'?v.v:v)===cur))el.value='';}
 
 /* ============================ MÓDULOS (Interno × Clientes) ============================ */
-let MOD=(()=>{try{return localStorage.getItem('maqcampo-treinamentos-mod')==='cli'?'cli':'int';}catch(e){return 'int';}})();
+let MOD_PREF=(()=>{try{const m=localStorage.getItem('maqcampo-treinamentos-mod');return ['int','cli','ava'].includes(m)?m:'int';}catch(e){return 'int';}})();
+let MOD=MOD_PREF==='cli'?'cli':'int';
 function pessoaNoMod(p,m){m=m||MOD;return m==='cli'?p.tipo==='Cliente':p.tipo!=='Cliente';}
 function cursoNoMod(c,m){m=m||MOD;const pub=c.publico||'Interno';return m==='cli'?pub!=='Interno':pub!=='Cliente';}
 function turmaMod(t){if(t.modulo)return t.modulo;const c=getRec('cursos',t.cursoId);if(c&&c.publico==='Cliente')return 'cli';const ps=Object.keys(t.inscritos||{}).map(pid=>getRec('pessoas',pid)).filter(Boolean);if(ps.length&&ps.some(p=>p.tipo==='Cliente'))return 'cli';return 'int';}
 function turmasMod(){return live('turmas').filter(t=>turmaMod(t)===MOD);}
-const MOD_TABS={int:['painel','alertas','pessoas','cursos','turmas','historico','parametros'],cli:['painelcli','clientes','pessoas','cursos','turmas','historico','parametros']};
+const MOD_TABS={int:['painel','alertas','pessoas','cursos','turmas','historico','parametros'],cli:['painelcli','clientes','pessoas','cursos','turmas','historico','parametros'],ava:['avaliacoes','cargos','avaconfig']};
 const MOD_TXT={
   int:{pessoas:['Funcionários','Funcionários','Colaboradores da MCPO (e terceiros que fazem treinamentos internos).'],cursos:['Treinamentos & Matriz','Treinamentos & Matriz de obrigatórios','Catálogo de treinamentos internos (vigência em meses: 0 = sem vencimento) e quais são obrigatórios por departamento.'],turmas:'Turmas de treinamentos internos: agende, inscreva funcionários, convide, registre presença e resultado.',historico:'Treinamentos internos realizados. Clique em 🎓 para gerar o certificado em PDF.'},
   cli:{pessoas:['Participantes','Participantes de clientes','Pessoas dos clientes (fazendas/empresas) que participam das capacitações.'],cursos:['Capacitações','Catálogo de capacitações','Capacitações oferecidas a clientes — produto, operação, plataformas.'],turmas:'Turmas de capacitação de clientes: agende, inscreva participantes, convide, registre presença, resultado e satisfação.',historico:'Capacitações de clientes realizadas. Clique em 🎓 para gerar o certificado em PDF.'}
 };
-function modulosPermitidos(){const nv=nivelAcesso();if(nv==='admin'||nv==='local'||nv==='deslogado')return ['int','cli'];const m=(acesso.modulos||{})[emailAtual()];return m&&m.length?m:['int','cli'];}
+function modulosPermitidos(){const nv=nivelAcesso();let b;if(nv==='bloqueado')b=[];else if(nv==='admin'||nv==='local'||nv==='deslogado')b=['int','cli'];else{const m=(acesso.modulos||{})[emailAtual()];b=m&&m.length?m.slice():['int','cli'];}if(avaNivel())b.push('ava');return b.length?b:['int'];}
 function applyModule(){
-  const perm=modulosPermitidos();if(!perm.includes(MOD))MOD=perm[0];
+  const perm=modulosPermitidos();if(perm.includes(MOD_PREF))MOD=MOD_PREF;else if(!perm.includes(MOD))MOD=perm[0];
+  document.body.classList.toggle('tem-ava',perm.includes('ava'));
   $('mod-switch').style.display=perm.length>1?'':'none';
   $('mod-switch').querySelectorAll('[data-mod]').forEach(b=>b.classList.toggle('on',b.dataset.mod===MOD));
   document.body.dataset.mod=MOD;
-  const tx=MOD_TXT[MOD];
+  const tx=MOD_TXT[MOD]||MOD_TXT.int;
   document.querySelector('#tabs button[data-tab="pessoas"]').textContent=tx.pessoas[0];
   document.querySelector('#tabs button[data-tab="cursos"]').textContent=tx.cursos[0];
   $('pane-pessoas').querySelector('.pane-title').textContent=tx.pessoas[1];$('pane-pessoas').querySelector('.pane-desc').textContent=tx.pessoas[2];
   $('pane-cursos').querySelector('.pane-title').textContent=tx.cursos[1];$('pane-cursos').querySelector('.pane-desc').textContent=tx.cursos[2];
   $('pane-turmas').querySelector('.pane-desc').textContent=tx.turmas;$('pane-historico').querySelector('.pane-desc').textContent=tx.historico;
-  document.querySelectorAll('#tabs button[data-tab]').forEach(b=>{if(b.dataset.tab==='parametros')return;b.style.display=MOD_TABS[MOD].includes(b.dataset.tab)?'':'none';});
+  const avn=MOD==='ava'?avaNivel():null;
+  document.querySelectorAll('#tabs button[data-tab]').forEach(b=>{const t=b.dataset.tab;if(t==='parametros'){b.style.display=(MOD!=='ava'&&document.body.classList.contains('is-admin'))?'':'none';return;}let on=MOD_TABS[MOD].includes(t);if(t==='avaconfig'&&avn!=='admin')on=false;if(t==='cargos'&&avn==='leitura')on=false;b.style.display=on?'':'none';});
   if(!MOD_TABS[MOD].includes(abaAtiva())||document.querySelector('#tabs button.active').style.display==='none'){const first=document.querySelector(`#tabs button[data-tab="${MOD_TABS[MOD][0]}"]`);document.querySelectorAll('nav.tabs button').forEach(b=>b.classList.remove('active'));first.classList.add('active');document.querySelectorAll('section.pane').forEach(p=>p.classList.remove('active'));$('pane-'+first.dataset.tab).classList.add('active');}
 }
-function setMod(m){MOD=m;try{localStorage.setItem('maqcampo-treinamentos-mod',m);}catch(e){}['ps-busca','hs-busca','cs-busca'].forEach(id=>{if($(id))$(id).value='';});['ps-dep','ps-filial','ps-tipo','ps-cli','hs-tipo','hs-cli','hs-curso','hs-dep','hs-forn','tm-status'].forEach(id=>{if($(id)&&id!=='tm-status')$(id).value='';});invalidate();applyModule();renderAll();}
+function setMod(m){MOD=m;MOD_PREF=m;try{localStorage.setItem('maqcampo-treinamentos-mod',m);}catch(e){}['ps-busca','hs-busca','cs-busca'].forEach(id=>{if($(id))$(id).value='';});['ps-dep','ps-filial','ps-tipo','ps-cli','hs-tipo','hs-cli','hs-curso','hs-dep','hs-forn','tm-status'].forEach(id=>{if($(id)&&id!=='tm-status')$(id).value='';});invalidate();applyModule();renderAll();}
 document.addEventListener('click',e=>{const b=e.target.closest&&e.target.closest('#mod-switch [data-mod]');if(b&&b.dataset.mod!==MOD)setMod(b.dataset.mod);});
 
 /* ============================ DOMÍNIO ============================ */
@@ -825,6 +883,11 @@ function abrirPessoa(pid,preset){
     ${fld('pe-adm','Data de admissão',p.admissao,{type:'date'})}
     ${fld('pe-gestor','Gestor direto',p.gestor)}
     ${fld('pe-gestor-em','E-mail do gestor',p.gestorEmail,{type:'email'})}
+    ${fld('pe-mat','Matrícula',p.matricula)}
+    ${fld('pe-vinc','Vínculo',null,{type:'select',options:opts(VINCULOS,p.vinculo||'','Não informado')})}
+    ${fld('pe-esc','Escolaridade',null,{type:'select',options:opts(ESCOLARIDADES,p.escolaridade||'','Não informada')})}
+    ${fld('pe-cnh','CNH (categoria)',null,{type:'select',options:opts(['Não possui'].concat(CNH_CATS),p.cnh||'','Não informada')})}
+    ${fld('pe-cnhv','Validade da CNH',p.cnhValidade,{type:'date'})}
   </div>
   <div class="lbl-sec" id="pe-lbl-ext">Participante de cliente / externo</div>
   <div class="grid" id="pe-ext">
@@ -847,7 +910,7 @@ function abrirPessoa(pid,preset){
       const dup=idx().pessoas.find(x=>x.id!==pid&&chave(x.nome)===chave(nome));if(dup&&!confirm('Já existe uma pessoa com esse nome. Salvar mesmo assim?'))return;
       const id=pid||('p_'+slug(nome)+(getRec('pessoas','p_'+slug(nome))?'-'+Date.now().toString(36):''));
       const base=pid?clone(state.pessoas[pid]):{criadoEm:new Date().toISOString()};
-      Object.assign(base,{nome,tipo:$('pe-tipo').value,status:$('pe-status').value,cpf:val('pe-cpf'),email:val('pe-email').toLowerCase(),telefone:val('pe-tel'),filial:val('pe-filial').toUpperCase(),cargo:val('pe-cargo'),departamento:val('pe-dep').toUpperCase(),admissao:$('pe-adm').value,gestor:val('pe-gestor'),gestorEmail:val('pe-gestor-em').toLowerCase(),setor:val('pe-setor'),obs:$('pe-obs').value});
+      Object.assign(base,{nome,tipo:$('pe-tipo').value,status:$('pe-status').value,cpf:val('pe-cpf'),email:val('pe-email').toLowerCase(),telefone:val('pe-tel'),filial:val('pe-filial').toUpperCase(),cargo:val('pe-cargo'),departamento:val('pe-dep').toUpperCase(),admissao:$('pe-adm').value,gestor:val('pe-gestor'),gestorEmail:val('pe-gestor-em').toLowerCase(),matricula:val('pe-mat'),vinculo:$('pe-vinc').value,escolaridade:$('pe-esc').value,cnh:$('pe-cnh').value,cnhValidade:$('pe-cnhv').value,setor:val('pe-setor'),obs:$('pe-obs').value});
       {const cv=$('pe-cli').value;const cl=base.tipo!=='Interno'&&cv&&cv!=='__novo'?getRec('clientes',cv):null;base.clienteId=cl?cv:'';base.empresa=cl?cl.nome:'';base.semCliente=base.tipo!=='Interno'&&!cl;}
       putRec('pessoas',id,base);save();invalidate();fecharModal();renderAll();toast('Pessoa salva.');
     }}
@@ -1441,7 +1504,7 @@ $('btn-salvar-params').addEventListener('click',()=>{
 });
 
 /* ============================ RENDER GERAL / ABAS ============================ */
-const RENDER={painel:()=>renderPainel(),painelcli:()=>renderPainelCli(),alertas:()=>renderAlertas(),pessoas:()=>renderPessoas(),clientes:()=>renderClientes(),cursos:()=>renderCursos(),turmas:()=>renderTurmas(),historico:()=>renderHistorico(),parametros:()=>renderParametros()};
+const RENDER={painel:()=>renderPainel(),painelcli:()=>renderPainelCli(),alertas:()=>renderAlertas(),pessoas:()=>renderPessoas(),clientes:()=>renderClientes(),cursos:()=>renderCursos(),turmas:()=>renderTurmas(),historico:()=>renderHistorico(),parametros:()=>renderParametros(),avaliacoes:()=>renderAvaliacoes(),cargos:()=>renderCargos(),avaconfig:()=>renderAvaConfig()};
 function abaAtiva(){const b=document.querySelector('#tabs button.active');return b?b.dataset.tab:'painel';}
 function updateBadge(){invalidate();if(MOD!=='int'){$('badge-alertas').style.display='none';return;}const I=idx();const k=I.itens.filter(i=>i.status==='vencido'||i.status==='urgente'||(i.status==='pendente'&&i.obrig)).length;const b=$('badge-alertas');b.textContent=k;b.style.display=k?'':'none';}
 function renderAll(){invalidate();updateBadge();const a=abaAtiva();(RENDER[a]||renderPainel)();}
@@ -1502,6 +1565,7 @@ async function sincronizarNuvem(silencioso){
   if(dd.ok&&dd.data&&dd.data.config){state=(dirtyReg.size||dirtyConfig.size)?aplicarLocalSobre(dd.data):normalizeState(dd.data);cloudEtag=dd.etag;try{localStorage.setItem(STORE_KEY,JSON.stringify(state));}catch(e){}}
   else if(dd.ok&&dd.missing){cloudEtag=null;}
   {const nv=nivelAcesso();if((nv==='admin'||nv==='comum')&&live('pessoas').length){const mg=migrarClientes();if(mg.vinc)save();}}
+  await avaCarregar();applyModule();
   renderRemoto();setSyncStatus('☁ conectado','ok');if(!silencioso)toast('Dados atualizados da nuvem.');startPolling();ensureConfFolder();setTimeout(()=>puxarConfirmacoes(),1500);
 }
 let _saveTimer=null;
@@ -1533,7 +1597,7 @@ function applyAccess(){
   const nivel=nivelAcesso();const ovL=$('overlay-login'),ovN=$('overlay-negado');
   const tabParam=document.querySelector('#tabs button[data-tab="parametros"]');
   if(nivel==='deslogado'){ovL.style.display='flex';ovN.style.display='none';return;}ovL.style.display='none';
-  if(nivel==='bloqueado'){ovN.style.display='flex';$('overlay-email-info').textContent='Logado como: '+emailAtual();return;}ovN.style.display='none';
+  if(nivel==='bloqueado'&&!avaNivel()){ovN.style.display='flex';$('overlay-email-info').textContent='Logado como: '+emailAtual();return;}ovN.style.display='none';
   const isAdmin=(nivel==='admin'||nivel==='local');
   document.body.classList.toggle('is-admin',isAdmin);
   tabParam.style.display=isAdmin?'':'none';
@@ -1555,6 +1619,650 @@ $('btn-add-admin').addEventListener('click',async()=>{const em=$('inp-novo-admin
 $('btn-add-comum').addEventListener('click',async()=>{const em=$('inp-novo-comum').value.trim().toLowerCase();if(!em)return;if(acesso.emailsAutorizados.map(x=>x.toLowerCase()).includes(em)){toast('Já é admin.');return;}if(!acesso.emailsComuns.map(x=>x.toLowerCase()).includes(em))acesso.emailsComuns.push(em);$('inp-novo-comum').value='';await saveAcesso();renderUsuarios();toast('Usuário adicionado.');});
 $('btn-sync').addEventListener('click',()=>{if(!msAccount){toast('Entre com o Microsoft primeiro.');return;}sincronizarNuvem(false);});
 
+/* ==================== MÓDULO AVALIAÇÕES DE CARGO (acesso restrito) ==================== */
+/* Dados em: Documentos Compartilhados › TreinamentosMCPO › Avaliacoes › avaliacoes_dados.json
+   A pasta "Avaliacoes" deve ter permissão exclusiva no SharePoint (só quem participa das avaliações):
+   quem não consegue ler o arquivo não vê o módulo.                                                    */
+const AVA_DIR='Avaliacoes',AVA_FILE='avaliacoes_dados.json',AVA_LS='maqcampo-avaliacoes-local-v1';
+// Administradores iniciais: usados só para criar a base das avaliações; depois são editáveis em Acessos & regras.
+const AVA_ADMINS_INICIAIS=['felipe.fantoni@mcpoirrigacao.com.br','thais.teixeira@mcpoirrigacao.com.br'];
+const AVA_FAIXAS={apto:8,plano:7,capac:6,itemApto:6,itemPlano:4,evid:4};
+const ESCOLARIDADES=['Fundamental incompleto','Fundamental completo','Médio incompleto','Médio completo','Técnico','Superior incompleto','Superior completo','Pós-graduação'];
+const CNH_CATS=['A','B','AB','C','D','E','AC','AD','AE'];
+const CNH_COBRE={A:'A',B:'B',AB:'AB',C:'BC',D:'BCD',E:'BCDE',AC:'ABC',AD:'ABCD',AE:'ABCDE'};
+const VINCULOS=['CLT','Intermitente','Temporário','Estágio','Aprendiz','Terceiro'];
+const NIVEIS_CARGO=['Auxiliar','Assistente','Júnior','Pleno','Sênior','Técnico especializado','Supervisão','Coordenação','Gerência'];
+const NIVEIS_LIDER=['Supervisão','Coordenação','Gerência'];
+const TIPOS_AVA=['Promoção','Mudança de cargo','Contratação','Avaliação de desempenho','Plano de desenvolvimento'];
+const AVA_CONH=[['k_tec','Conhecimento técnico da área'],['k_sis','Sistemas e ferramentas utilizados'],['k_proc','Procedimentos operacionais'],['k_doc','Leitura e interpretação de documentos técnicos'],['k_seg','Normas de segurança aplicáveis'],['k_prod','Conhecimento de produtos e equipamentos']];
+const AVA_COMP=[['c_com','Comunicação'],['c_org','Organização e planejamento'],['c_comp','Comprometimento e responsabilidade'],['c_eq','Trabalho em equipe'],['c_res','Resolução de problemas'],['c_pro','Proatividade'],['c_tempo','Gestão do tempo e cumprimento de prazos'],['c_rel','Relacionamento com clientes e colegas']];
+const AVA_DES=[['d_qual','Qualidade das entregas'],['d_aut','Autonomia na execução das atividades'],['d_proc','Cumprimento dos procedimentos'],['d_dec','Capacidade de tomar decisões dentro de sua alçada'],['d_meta','Cumprimento de metas e prazos'],['d_resp','Capacidade de assumir responsabilidades do cargo']];
+const AVA_LID=[['l_dist','Distribui atividades e acompanha resultados'],['l_orient','Orienta e desenvolve a equipe'],['l_feed','Realiza alinhamentos e fornece feedbacks'],['l_conf','Administra conflitos'],['l_ind','Controla indicadores, prazos e custos'],['l_dec','Toma decisões com responsabilidade'],['l_seg','Garante o cumprimento dos procedimentos de segurança'],['l_mel','Promove melhorias nos processos']];
+const AVA_NOTAS=AVA_COMP.concat(AVA_DES);
+const AVA_SIT=['Atende','Atende parcialmente','Não atende','Não se aplica'];
+const AVA_TAGS=['Executou sozinho','Cumpriu prazo apertado','Orientou colegas','Sugeriu melhoria','Elogio de cliente','Retrabalho','Reclamação de cliente','Incidente de segurança'];
+const PARECERES=['Apto para o cargo','Apto com plano de desenvolvimento','Necessita de capacitação antes de assumir o cargo','Não atende aos requisitos neste momento'];
+const PARECER_REAV='Reavaliar em novo prazo';
+const ANCORAS=[['1–2','Insuficiente','Não executa mesmo com orientação'],['3–4','Abaixo do esperado','Precisa de supervisão constante'],['5–6','Em desenvolvimento','Executa com supervisão frequente'],['7–8','Atende bem','Executa com supervisão pontual'],['9–10','Referência','Executa sozinho e orienta outros']];
+
+function avaDefault(){return {v:1,acesso:{admins:[],avaliadores:[],leitura:[]},config:{faixas:clone(AVA_FAIXAS),respLista:[]},cargos:{},processos:{}};}
+function avaNorm(d){
+  d=(d&&typeof d==='object')?d:{};const b=avaDefault();
+  d.acesso=Object.assign(b.acesso,d.acesso||{});['admins','avaliadores','leitura'].forEach(k=>{if(!Array.isArray(d.acesso[k]))d.acesso[k]=[];});
+  d.config=d.config||{};d.config.faixas=Object.assign(clone(AVA_FAIXAS),d.config.faixas||{});if(!Array.isArray(d.config.respLista))d.config.respLista=[];
+  ['cargos','processos'].forEach(c=>{if(!d[c]||typeof d[c]!=='object')d[c]={};});
+  return d;
+}
+let ava=avaDefault(),avaEtag=null,avaOk=false,avaErro='',avaSalvando=false,avaPend=false,_avaPoll=null;
+const avaDirty=new Set();
+let AVA_ABERTA=null;
+const AVA_FLT={busca:'',status:'',ano:''};
+
+/* ---------- acesso ---------- */
+function avaNivel(){
+  const nv=nivelAcesso();
+  if(nv==='local')return 'admin';
+  if(!msAccount)return null;
+  const e=emailAtual(),tem=l=>(l||[]).map(x=>String(x).toLowerCase()).includes(e);
+  if(!avaOk)return null;
+  if(tem(ava.acesso.admins))return 'admin';
+  if(tem(ava.acesso.avaliadores))return 'avaliador';
+  if(tem(ava.acesso.leitura))return 'leitura';
+  return null;
+}
+function avaIsAdmin(){return avaNivel()==='admin';}
+
+/* ---------- persistência (SharePoint, ETag + mesclagem por registro) ---------- */
+function avaPath(){return spPath(AVA_DIR+'/'+AVA_FILE);}
+function avaLocal(){return nivelAcesso()==='local';}
+function avaMesclar(remoto){
+  const res=avaNorm(clone(remoto));
+  avaDirty.forEach(k=>{
+    if(k==='acesso'||k==='config'){res[k]=clone(ava[k]);return;}
+    const i=k.indexOf('|'),col=k.slice(0,i),id=k.slice(i+1);
+    if(ava[col]&&ava[col][id])res[col][id]=clone(ava[col][id]);
+  });
+  return res;
+}
+async function avaGarantirPasta(){
+  await ensureFolder();const t=await getGraphToken();if(!t)return;const base=await spDriveUrl(`/${SP_BIBLIOTECA}/${SP_PASTA}`);if(!base)return;
+  try{await fetch(base+':/children',{method:'POST',headers:{Authorization:'Bearer '+t,'Content-Type':'application/json'},body:JSON.stringify({name:AVA_DIR,folder:{},'@microsoft.graph.conflictBehavior':'fail'})});}catch(e){}
+}
+async function avaPutNovo(body){
+  const t=await getGraphToken();if(!t)return {ok:false,status:0};const base=await spDriveUrl(avaPath());if(!base)return {ok:false,status:0};
+  try{const r=await fetch(base+':/content?@microsoft.graph.conflictBehavior=fail',{method:'PUT',headers:{Authorization:'Bearer '+t,'Content-Type':'application/octet-stream'},body});let ne=null;if(r.ok){try{const j=await r.json();ne=j.eTag||j.cTag||null;}catch(e){}}return {ok:r.ok,status:r.status,etag:ne};}catch(e){return {ok:false,status:0};}
+}
+async function avaCarregar(){
+  if(!msAccount){
+    if(avaLocal()){try{ava=avaNorm(JSON.parse(localStorage.getItem(AVA_LS)||'null'));}catch(e){ava=avaDefault();}if(!Object.keys(ava.cargos).length)avaSemente();if(!ava.acesso.admins.length)ava.acesso.admins=AVA_ADMINS_INICIAIS.slice();avaOk=true;}
+    return;
+  }
+  const r=await graphGetJsonEtag(avaPath());
+  if(r.ok&&r.data){ava=avaDirty.size?avaMesclar(r.data):avaNorm(r.data);avaEtag=r.etag;avaOk=true;avaErro='';}
+  else if(r.ok&&r.missing){
+    if(AVA_ADMINS_INICIAIS.includes(emailAtual())){ava=avaDefault();ava.acesso.admins=AVA_ADMINS_INICIAIS.slice();avaSemente();avaDirty.add('acesso');avaEtag=null;avaOk=true;avaErro='';await avaSalvarAgora();}
+    else{avaOk=false;avaErro='';}
+  }else{avaOk=false;avaErro=`Não foi possível ler a pasta ${SP_PASTA} › ${AVA_DIR} no SharePoint. Verifique se você tem permissão nela.`;}
+  if(avaOk&&!_avaPoll)_avaPoll=setInterval(avaPuxarSeMudou,20000);
+}
+function avaAgendar(){
+  if(avaLocal()){try{localStorage.setItem(AVA_LS,JSON.stringify(ava));}catch(e){}return;}
+  if(!msAccount)return;
+  setSyncStatus('⏳ salvando…','saving');clearTimeout(avaAgendar._t);avaAgendar._t=setTimeout(avaSalvarAgora,900);
+}
+async function avaSalvarAgora(){
+  if(!msAccount||!avaNivel())return;if(avaSalvando){avaPend=true;return;}avaSalvando=true;
+  if(!avaEtag)await avaGarantirPasta();
+  let ok=false,t=0;
+  while(t<5&&!ok){t++;
+    const env=new Set(avaDirty),body=new TextEncoder().encode(JSON.stringify(ava));
+    const res=avaEtag?await graphPutEtag(avaPath(),body,avaEtag):await avaPutNovo(body);
+    if(res.ok){avaEtag=res.etag||avaEtag;env.forEach(k=>avaDirty.delete(k));ok=true;setSyncStatus('☁ salvo','ok');}
+    else if(res.status===412||res.status===409){const r=await graphGetJsonEtag(avaPath());if(r.ok&&r.data){ava=avaMesclar(r.data);avaEtag=r.etag;}else break;}
+    else break;
+  }
+  avaSalvando=false;if(!ok)setSyncStatus('⚠ avaliação não salva na nuvem','warn');
+  if(avaPend||(ok&&avaDirty.size)){avaPend=false;avaSalvarAgora();}
+}
+async function avaPuxarSeMudou(){
+  if(!msAccount||!avaOk||avaSalvando||avaDirty.size||editando()||document.hidden)return;
+  const a=document.activeElement;if(a&&(a.tagName==='INPUT'||a.tagName==='TEXTAREA'||a.tagName==='SELECT'))return;
+  const r=await graphGetJsonEtag(avaPath());
+  if(r.ok&&r.data&&r.etag&&r.etag!==avaEtag){ava=avaNorm(r.data);avaEtag=r.etag;if(MOD==='ava'){applyModule();RENDER[abaAtiva()]&&RENDER[abaAtiva()]();}}
+}
+function avaSemente(){
+  const id='cg_montador-de-pivo-jr';
+  ava.cargos[id]={nome:'Montador de pivô Jr',nivel:'Júnior',departamento:'PÓS VENDA',
+    objetivo:'Executar a montagem, instalação e manutenção de sistemas de irrigação por pivô central, conforme projetos, desenhos técnicos e procedimentos estabelecidos pela Maqcampo Irrigação e pelo fabricante, garantindo a qualidade, o alinhamento e o correto funcionamento dos equipamentos. Atuar com segurança, organização e eficiência, cumprindo os prazos estabelecidos, utilizando adequadamente ferramentas, equipamentos e materiais, contribuindo para a entrega da obra dentro dos padrões técnicos e de qualidade exigidos pela empresa e pelo cliente.',
+    resp:['Execução técnica e qualidade','Segurança e organização','Produtividade e cumprimento de prazos','Trabalho em equipe e responsabilidade'],
+    escolaridade:'Médio completo',cnh:'AB',expMeses:0,conh:{},treinos:[],ativo:true,criadoEm:new Date().toISOString()};
+  avaDirty.add('cargos|'+id);
+}
+
+/* ---------- registros ---------- */
+function avaLive(col){const o=ava[col]||{};return Object.keys(o).filter(id=>o[id]&&!o[id]._del).map(id=>Object.assign({id},o[id]));}
+function avaGet(col,id){const r=(ava[col]||{})[id];return r&&!r._del?r:null;}
+function avaCargo(id){return avaGet('cargos',id);}
+function avaPut(col,id,rec){delete rec.id;rec.atualizadoEm=new Date().toISOString();rec.atualizadoPor=emailAtual()||'local';ava[col][id]=rec;avaDirty.add(col+'|'+id);avaAgendar();}
+function avaDel(col,id){if(!ava[col][id])return;ava[col][id]={_del:true,atualizadoEm:new Date().toISOString(),atualizadoPor:emailAtual()||'local'};avaDirty.add(col+'|'+id);avaAgendar();}
+function avaMeta(k){avaDirty.add(k);avaAgendar();}
+function avaResp(pr){pr.respostas=pr.respostas||{};const k=pr.responsavel||'local';if(!pr.respostas[k])pr.respostas[k]={};return pr.respostas[k];}
+function avaPodeEditar(pr){if(!pr||pr.status==='concluida')return false;const nv=avaNivel();if(nv==='admin')return true;return nv==='avaliador'&&pr.responsavel===emailAtual();}
+function avaVisiveis(){const nv=avaNivel(),e=emailAtual();return avaLive('processos').filter(pr=>nv==='admin'||(nv==='avaliador'&&(pr.responsavel===e||pr.criadoPor===e))||(nv==='leitura'&&pr.status==='concluida'));}
+function avaPessoas(){return live('pessoas').filter(p=>(p.tipo||'Interno')!=='Cliente'&&pessoaStatus(p)!=='INATIVO').sort((a,b)=>a.nome.localeCompare(b.nome,'pt-BR'));}
+function avaCursosInternos(){return live('cursos').filter(c=>(c.publico||'Interno')!=='Cliente'&&c.ativo!==false).sort((a,b)=>a.nome.localeCompare(b.nome,'pt-BR'));}
+
+/* ---------- helpers ---------- */
+function mesesEntre(a,b){const x=dataLocal(a),y=dataLocal(b);if(!x||!y)return null;let m=(y.getFullYear()-x.getFullYear())*12+(y.getMonth()-x.getMonth());if(y.getDate()<x.getDate())m--;return Math.max(0,m);}
+function fmtMeses(m){if(m==null)return '—';const a=Math.floor(m/12),r=m%12;return [a?a+(a>1?' anos':' ano'):'',r?r+(r>1?' meses':' mês'):''].filter(Boolean).join(' e ')||'menos de 1 mês';}
+function fmtNota(v){return v==null||isNaN(v)?'—':v.toLocaleString('pt-BR',{minimumFractionDigits:1,maximumFractionDigits:1});}
+function mediaArr(a){return a.length?a.reduce((s,x)=>s+x,0)/a.length:null;}
+function fmtDH(iso){if(!iso)return '—';const d=new Date(iso);return pad(d.getDate())+'/'+pad(d.getMonth()+1)+'/'+d.getFullYear()+' às '+pad(d.getHours())+':'+pad(d.getMinutes());}
+function avaTomNota(v){v=+v;return v<=4?'bad':v<=6?'warn':'good';}
+function avaTomSit(s){return {'Atende':'good','Possui':'good','Atende parcialmente':'warn','Vencido':'warn','Não atende':'bad','Não possui':'bad','Não se aplica':'mute'}[s]||'mute';}
+function avaBadge(s){return s?`<span class="ava-b ${avaTomSit(s)}">${esc(s)}</span>`:'<span class="ava-b warn">Sem informação</span>';}
+function avaParecerIdx(p){return p===PARECER_REAV?4:PARECERES.indexOf(p);}
+function parecerBadge(p,previa){if(!p)return '<span class="muted">—</span>';return `<span class="ava-b ${['good','good','warn','bad','mute'][avaParecerIdx(p)]||'mute'}">${esc(p)}</span>${previa?' <span class="muted">(prévia)</span>':''}`;}
+function avaStatusBadge(pr){return pr.status==='concluida'?'<span class="ava-b good">Concluída</span>':'<span class="ava-b mute">Em andamento</span>';}
+
+/* ---------- regras ---------- */
+function avaCtx(pr){
+  if(pr.status==='concluida'&&pr.snap)return {p:pr.snap.pessoa||{},c:pr.snap.cargo||{},reqs:pr.snap.reqs||[],treinos:pr.snap.treinos||[]};
+  const p=getRec('pessoas',pr.colaboradorId)||{nome:'(pessoa removida)'},c=avaCargoEfetivo(pr.cargoId)||{};
+  return {p,c,reqs:avaReqs(pr,p,c),treinos:avaTreinos(pr,c)};
+}
+function avaReqs(pr,p,c){
+  const r=avaResp(pr),man=r.reqMan||{},ref=pr.data||hojeISO(),out=[];let auto,tem;
+  if(!c.escolaridade)auto='Não se aplica';else if(!p.escolaridade)auto=null;
+  else auto=ESCOLARIDADES.indexOf(p.escolaridade)>=ESCOLARIDADES.indexOf(c.escolaridade)?'Atende':'Não atende';
+  out.push({k:'esc',l:'Escolaridade',exig:c.escolaridade||'Não exige',tem:p.escolaridade||'Não informada',auto});
+  const venc=!!(p.cnhValidade&&p.cnhValidade<ref);
+  if(!c.cnh)auto='Não se aplica';else if(!p.cnh)auto=null;else if(p.cnh==='Não possui')auto='Não atende';
+  else{const cob=CNH_COBRE[p.cnh]||'';auto=c.cnh.split('').every(ch=>cob.includes(ch))&&!venc?'Atende':'Não atende';}
+  tem=!p.cnh?'Não informada':p.cnh==='Não possui'?'Não possui':p.cnh+(p.cnhValidade?' · validade '+fmtD(p.cnhValidade)+(venc?' (vencida)':''):'');
+  out.push({k:'cnh',l:'CNH',exig:c.cnh?'Categoria '+c.cnh:'Não exige',tem,auto});
+  const casa=p.admissao?mesesEntre(p.admissao,ref):null,ant=Math.max(0,Math.round(n(r.expAnterior))),tot=(casa||0)+ant;
+  if(!n(c.expMeses))auto='Não se aplica';else if(casa==null&&!ant)auto=null;else auto=tot>=n(c.expMeses)?'Atende':'Não atende';
+  tem=(casa==null&&!ant)?'Admissão não informada':fmtMeses(tot)+(ant?` (${casa!=null?fmtMeses(casa)+' na empresa + ':''}${fmtMeses(ant)} anterior)`:' na empresa');
+  out.push({k:'exp',l:'Experiência',exig:n(c.expMeses)?'Mínimo de '+fmtMeses(n(c.expMeses)):'Não exige',tem,auto});
+  out.forEach(x=>{x.manual=!x.auto;x.final=x.auto||man[x.k]||null;});
+  return out;
+}
+function avaTreinos(pr,c){
+  const ref=pr.data||hojeISO();
+  const hs=live('hist').filter(h=>h.pessoaId===pr.colaboradorId&&SIT_VALIDAS.includes(h.situacao));
+  return (c.treinos||[]).map(cid=>{
+    const cu=getRec('cursos',cid);const ult=hs.filter(h=>h.cursoId===cid).map(h=>h.data).filter(Boolean).sort().pop()||null;
+    let st='Não possui',venc=null;
+    if(ult){if(cu&&n(cu.validadeMeses)>0){venc=addMeses(ult,n(cu.validadeMeses));st=venc<ref?'Vencido':'Possui';}else st='Possui';}
+    return {cid,nome:cu?cu.nome:'(treinamento removido)',ult,venc,st};
+  });
+}
+function avaCalc(pr,ctx){
+  ctx=ctx||avaCtx(pr);const f=ava.config.faixas,r=avaResp(pr),nt=r.notas||{};
+  const vals=lst=>lst.map(x=>n(nt[x[0]])).filter(v=>v>0);
+  const vc=vals(AVA_COMP),vd=vals(AVA_DES),va=vc.concat(vd);
+  const out={mComp:mediaArr(vc),mDes:mediaArr(vd),mGeral:mediaArr(va),min:va.length?Math.min(...va):null,qtd:va.length,total:AVA_NOTAS.length,lv:null,parecer:null,mot:[]};
+  if(!va.length)return out;
+  const base=out.mGeral>=f.apto?0:out.mGeral>=f.plano?1:out.mGeral>=f.capac?2:3;
+  const caps=[];
+  if(base>0)caps.push({lv:base,m:'Média geral '+fmtNota(out.mGeral)});
+  const lmin=out.min>=f.itemApto?0:out.min>=f.itemPlano?1:2;
+  if(lmin>0){const it=AVA_NOTAS.find(x=>n(nt[x[0]])===out.min);caps.push({lv:lmin,m:`Nota ${out.min} em “${it[1]}”`});}
+  ctx.reqs.forEach(x=>{if(x.final==='Não atende')caps.push({lv:2,m:'Requisito não atendido: '+x.l});});
+  AVA_CONH.forEach(x=>{const s=(r.conh||{})[x[0]];if(s==='Não atende')caps.push({lv:2,m:x[1]+': não atende'});else if(s==='Atende parcialmente')caps.push({lv:1,m:x[1]+': atende parcialmente'});});
+  const pend=ctx.treinos.filter(t=>t.st!=='Possui').length;
+  if(pend)caps.push({lv:1,m:pend+(pend>1?' treinamentos obrigatórios a realizar':' treinamento obrigatório a realizar')});
+  out.lv=Math.max(base,...caps.map(c=>c.lv));out.parecer=PARECERES[out.lv];
+  out.mot=caps.filter(c=>c.lv===out.lv||c.lv>0).sort((a,b)=>b.lv-a.lv).map(c=>c.m);
+  return out;
+}
+function avaPendencias(pr,ctx,calc){
+  const r=avaResp(pr),f=ava.config.faixas,p=[];
+  if(!pr.colaboradorId||!getRec('pessoas',pr.colaboradorId))p.push('Colaborador');
+  if(!avaCargo(pr.cargoId))p.push('Cargo avaliado');
+  ctx.reqs.filter(x=>!x.final).forEach(x=>p.push('Requisito sem informação: '+x.l));
+  const cq=AVA_CONH.filter(x=>!(r.conh||{})[x[0]]).length;if(cq)p.push(cq+(cq>1?' conhecimentos técnicos sem avaliação':' conhecimento técnico sem avaliação'));
+  const nq=AVA_NOTAS.length-calc.qtd;if(nq)p.push(nq+(nq>1?' notas a preencher':' nota a preencher'));
+  const ev=AVA_NOTAS.filter(x=>{const v=n((r.notas||{})[x[0]]);return v&&(v<=f.evid||v===10)&&!normTxt((r.evid||{})[x[0]]);});
+  if(ev.length)p.push('Evidência obrigatória em: '+ev.map(x=>x[1]).join(', '));
+  const pf=r.parecer||calc.parecer;
+  if(r.parecer&&r.parecer!==calc.parecer&&!normTxt(r.justificativa))p.push('Justificativa (parecer diferente do calculado)');
+  if(pf===PARECER_REAV&&!n(r.reavaliarDias))p.push('Prazo de reavaliação');
+  return p;
+}
+function avaSugest(pr){
+  const r=avaResp(pr),nt=r.notas||{};
+  return {fortes:AVA_NOTAS.filter(x=>n(nt[x[0]])>=9).map(x=>x[1]),
+    dev:AVA_NOTAS.filter(x=>{const v=n(nt[x[0]]);return v&&v<=6;}).map(x=>x[1]).concat(AVA_CONH.filter(x=>['Não atende','Atende parcialmente'].includes((r.conh||{})[x[0]])).map(x=>x[1]))};
+}
+function avaFortes(pr){const r=avaResp(pr);return Array.isArray(r.fortes)?r.fortes:avaSugest(pr).fortes;}
+function avaDev(pr){const r=avaResp(pr);return Array.isArray(r.dev)?r.dev:avaSugest(pr).dev;}
+function avaPlano(pr,ctx){const r=avaResp(pr);const auto=ctx.treinos.filter(t=>t.st!=='Possui').map(t=>({nome:t.nome,motivo:t.st==='Vencido'?'Reciclagem (vencido)':'Obrigatório do cargo'}));const extra=(r.planoCursos||[]).map(cid=>({cid,nome:nomeCurso(cid),motivo:'Indicado pelo avaliador'}));return auto.concat(extra);}
+
+/* ---------- componentes ---------- */
+function avaEscala(k,v,dis){let h='<div class="ava-scale" role="radiogroup">';for(let i=1;i<=10;i++)h+=`<button type="button" class="ava-n${+v===i?' on '+avaTomNota(i):''}" data-nota="${k}" data-v="${i}" aria-pressed="${+v===i}"${dis}>${i}</button>`;return h+'</div>';}
+function avaChips(attr,k,lista,sel,dis,tom){return '<div class="ava-chips">'+lista.map(o=>`<button type="button" class="ava-c${sel===o?' on '+(tom?tom(o):''):''}" data-${attr}="${esc(k)}" data-v="${esc(o)}"${dis}>${esc(o)}</button>`).join('')+'</div>';}
+function avaMulti(grp,lista,sel,dis){return '<div class="ava-chips">'+lista.map(o=>`<button type="button" class="ava-c${sel.includes(o)?' on':''}" data-multi="${grp}" data-v="${esc(o)}"${dis}>${esc(o)}</button>`).join('')+'</div>';}
+function avaKV(lb,v){return `<div><span>${esc(lb)}</span>${v}</div>`;}
+
+/* ---------- lista ---------- */
+function renderAvaliacoes(){
+  const root=$('ava-root');if(!root)return;
+  if(!avaOk){
+    root.innerHTML=`<div class="card"><h3>Avaliações</h3>${avaErro?`<p>${esc(avaErro)}</p><p class="muted">Se você deveria ter acesso, peça a um administrador das avaliações para liberar seu e-mail e a pasta no SharePoint.</p><button class="btn ghost small" id="ava-retry" type="button">⟳ Tentar de novo</button>`:'<p class="muted">Carregando avaliações…</p>'}</div>`;
+    const b=$('ava-retry');if(b)b.onclick=async()=>{await avaCarregar();applyModule();renderAvaliacoes();};
+    return;
+  }
+  if(AVA_ABERTA){const pr=avaGet('processos',AVA_ABERTA);if(pr&&avaVisiveis().some(x=>x.id===AVA_ABERTA)){root.innerHTML=avaEditorHtml(AVA_ABERTA,pr);if(!avaPodeEditar(pr))root.querySelectorAll('select,input,textarea').forEach(x=>x.disabled=true);return;}AVA_ABERTA=null;}
+  const vis=avaVisiveis(),nv=avaNivel();
+  const anos=uniq(vis.map(p=>(p.data||'').slice(0,4))).reverse();
+  const conc=vis.filter(p=>p.status==='concluida');
+  const aptos=conc.filter(p=>avaParecerIdx(p.parecerFinal)<=1).length;
+  root.innerHTML=`<div class="flt">
+      <input type="search" id="av-busca" placeholder="Buscar colaborador ou cargo…" value="${esc(AVA_FLT.busca)}">
+      <select id="av-status">${opts([{v:'',l:'Todas'},{v:'rascunho',l:'Em andamento'},{v:'concluida',l:'Concluídas'}],AVA_FLT.status)}</select>
+      <select id="av-ano">${opts(anos,AVA_FLT.ano,'Todos os anos')}</select>
+      ${nv==='admin'||nv==='avaliador'?'<button class="btn primary small" id="av-nova" type="button">+ Nova avaliação</button>':''}
+    </div>
+    <div class="totals-strip">${tbox('Em andamento',int(vis.length-conc.length))}${tbox('Concluídas',int(conc.length))}${tbox('Aptos',int(aptos),'inclui apto com plano')}${tbox('Não aptos / reavaliar',int(conc.length-aptos),'',{accent:true})}</div>
+    <div class="card"><h3>Avaliações <span class="h3-side" id="av-count"></span></h3><div class="tablewrap"><table class="dt" id="tbl-ava"></table></div></div>`;
+  $('av-busca').oninput=e=>{AVA_FLT.busca=e.target.value;avaTabela();};
+  $('av-status').onchange=e=>{AVA_FLT.status=e.target.value;avaTabela();};
+  $('av-ano').onchange=e=>{AVA_FLT.ano=e.target.value;avaTabela();};
+  if($('av-nova'))$('av-nova').onclick=avaNova;
+  avaTabela();
+}
+function avaTabela(){
+  const q=chave(AVA_FLT.busca);
+  const rows=avaVisiveis().filter(pr=>(!AVA_FLT.status||pr.status===AVA_FLT.status||(AVA_FLT.status==='rascunho'&&pr.status!=='concluida'))&&(!AVA_FLT.ano||(pr.data||'').startsWith(AVA_FLT.ano))).map(pr=>{
+    const ctx=avaCtx(pr),calc=avaCalc(pr,ctx);
+    return {pr,ctx,calc,nome:ctx.p.nome||'—',de:ctx.p.cargo||'',para:(ctx.c&&ctx.c.nome)||'—'};
+  }).filter(x=>!q||chave(x.nome+' '+x.de+' '+x.para).includes(q)).sort((a,b)=>(b.pr.data||'').localeCompare(a.pr.data||''));
+  $('av-count').textContent=rows.length+(rows.length===1?' avaliação':' avaliações');
+  $('tbl-ava').innerHTML=`<thead><tr><th>Data</th><th>Colaborador</th><th>Cargo atual → avaliado</th><th>Tipo</th><th>Responsável</th><th class="r">Média</th><th>Parecer</th><th>Status</th><th></th></tr></thead><tbody>${rows.length?rows.map(x=>{const pr=x.pr,conc=pr.status==='concluida';const par=conc?pr.parecerFinal:(avaResp(pr).parecer||x.calc.parecer);
+    return `<tr class="click" data-ava-open="${esc(pr.id)}"><td class="nw">${fmtD(pr.data)}</td><td><b>${esc(x.nome)}</b></td><td>${esc(x.de||'—')} → ${esc(x.para)}</td><td>${esc(pr.tipo||'')}</td><td>${esc(pr.responsavelNome||pr.responsavel||'')}</td><td class="num">${fmtNota(conc?pr.media:x.calc.mGeral)}</td><td>${parecerBadge(par,!conc)}</td><td>${avaStatusBadge(pr)}</td><td class="nw">${conc?`<button class="btn ghost tiny" data-ava-pdf="${esc(pr.id)}" type="button" title="Relatório em PDF">🖨 PDF</button>`:''}</td></tr>`;}).join(''):`<tr><td colspan="9" class="muted" style="padding:16px;">Nenhuma avaliação${AVA_FLT.busca||AVA_FLT.status||AVA_FLT.ano?' com esses filtros':' ainda'}.</td></tr>`}</tbody>`;
+  $('tbl-ava').querySelectorAll('[data-ava-pdf]').forEach(b=>b.onclick=e=>{e.stopPropagation();avaPdf(b.dataset.avaPdf);});
+  $('tbl-ava').querySelectorAll('[data-ava-open]').forEach(tr=>tr.onclick=()=>{AVA_ABERTA=tr.dataset.avaOpen;renderAvaliacoes();window.scrollTo({top:0});});
+}
+function avaNova(){
+  const cargos=avaLive('cargos').filter(c=>c.ativo!==false).sort((a,b)=>a.nome.localeCompare(b.nome,'pt-BR'));
+  if(!cargos.length){toast('Cadastre um cargo no Catálogo de cargos primeiro.');return;}
+  const ps=avaPessoas();if(!ps.length){toast('Nenhum funcionário ativo no cadastro.');return;}
+  modal('Nova avaliação',`<div class="grid">
+    ${fld('av-n-pes','Colaborador *',null,{type:'select',full:true,options:opts(ps.map(p=>({v:p.id,l:p.nome+(p.cargo?' — '+p.cargo:'')})),'','Selecione…')})}
+    ${fld('av-n-cargo','Cargo avaliado *',null,{type:'select',options:opts(cargos.map(c=>({v:c.id,l:c.nome})),'','Selecione…')})}
+    ${fld('av-n-tipo','Tipo de avaliação',null,{type:'select',options:opts(TIPOS_AVA,'Promoção')})}
+    ${fld('av-n-data','Data da avaliação',hojeISO(),{type:'date'})}
+  </div><div class="note">Você fica como responsável pela avaliação. Os dados do colaborador vêm do cadastro de funcionários e os requisitos do cargo vêm do catálogo.</div>`,[
+    {t:'Cancelar',cls:'ghost',fn:fecharModal},
+    {t:'Criar avaliação',cls:'primary',fn:()=>{
+      const pid=$('av-n-pes').value,cid=$('av-n-cargo').value;if(!pid||!cid){toast('Escolha o colaborador e o cargo.');return;}
+      const id='av_'+Date.now().toString(36)+Math.random().toString(36).slice(2,6);const em=emailAtual()||'local';
+      const rec={colaboradorId:pid,cargoId:cid,tipo:$('av-n-tipo').value,data:$('av-n-data').value||hojeISO(),status:'rascunho',responsavel:em,responsavelNome:msAccount?(msAccount.name||em):'Modo local',criadoPor:em,criadoEm:new Date().toISOString(),respostas:{}};
+      rec.respostas[em]={};
+      avaPut('processos',id,rec);AVA_ABERTA=id;fecharModal();renderAvaliacoes();window.scrollTo({top:0});
+    }}
+  ]);
+}
+
+/* ---------- editor ---------- */
+function avaEditorHtml(id,pr){
+  const ctx=avaCtx(pr),calc=avaCalc(pr,ctx),r=avaResp(pr),f=ava.config.faixas;
+  const ed=avaPodeEditar(pr),dis=ed?'':' disabled',conc=pr.status==='concluida';
+  const p=ctx.p,c=ctx.c,nv=nivelAcesso(),podeCad=!conc&&(nv==='admin'||nv==='comum'||nv==='local');
+  const cargos=avaLive('cargos').filter(x=>x.ativo!==false||x.id===pr.cargoId).sort((a,b)=>a.nome.localeCompare(b.nome,'pt-BR'));
+  const lider=NIVEIS_LIDER.includes(c.nivel);
+  const parecerSel=r.parecer||calc.parecer;
+  const fortes=avaFortes(pr),dev=avaDev(pr),plano=avaPlano(pr,ctx);
+  const pend=avaPendencias(pr,ctx,calc);
+  const notaItem=x=>{const v=n((r.notas||{})[x[0]]);const pede=v&&(v<=f.evid||v===10);return `<div class="ava-item"><span class="ava-l">${esc(x[1])}</span>${avaEscala(x[0],v,dis)}${pede||normTxt((r.evid||{})[x[0]])?`<div class="field ava-ev"><label for="ev-${x[0]}">Evidência${pede?' (obrigatória para nota '+v+')':''}</label><textarea id="ev-${x[0]}" data-evid="${x[0]}" rows="2" placeholder="Situação concreta que justifica a nota"${dis}>${esc((r.evid||{})[x[0]]||'')}</textarea></div>`:''}</div>`;};
+  const ancoras=`<div class="ava-anc">${ANCORAS.map(a=>`<div><b>${a[0]} · ${a[1]}</b>${a[2]}</div>`).join('')}</div>`;
+  return `
+  <div class="card ava-top">
+    <div class="ava-head">
+      <button class="btn ghost small" id="ava-voltar" type="button">← Avaliações</button>
+      <div style="flex:1;min-width:220px;"><div class="ava-nome">${esc(p.nome||'—')}</div><div class="muted">${esc(p.cargo||'Cargo atual não informado')} → <b>${esc(c.nome||'—')}</b></div></div>
+      <div>${avaStatusBadge(pr)}</div>
+    </div>
+    <div class="grid" style="margin-top:12px;">
+      ${fld('ava-cargo','Cargo avaliado',null,{type:'select',options:opts(cargos.map(x=>({v:x.id,l:x.nome})),pr.cargoId)})}
+      ${fld('ava-tipo','Tipo de avaliação',null,{type:'select',options:opts(TIPOS_AVA,pr.tipo)})}
+      ${fld('ava-data','Data da avaliação',pr.data,{type:'date'})}
+      <div class="field"><label>Responsável</label><input type="text" value="${esc(pr.responsavelNome||pr.responsavel||'')}" readonly></div>
+    </div>
+  </div>
+
+  <div class="card"><h3>1 · Identificação <span class="h3-side">do cadastro de funcionários</span>${podeCad&&getRec('pessoas',pr.colaboradorId)?'<button class="btn ghost small" id="ava-cad" type="button">✎ Editar cadastro</button>':''}</h3>
+    <div class="ava-kv">
+      ${avaKV('Departamento',esc(p.departamento||'—'))}${avaKV('Filial',esc(p.filial||'—'))}${avaKV('Gestor direto',esc(p.gestor||'—'))}
+      ${avaKV('Admissão',p.admissao?fmtD(p.admissao)+` <span class="muted">(${fmtMeses(mesesEntre(p.admissao,pr.data||hojeISO()))})</span>`:'—')}${avaKV('Vínculo',esc(p.vinculo||'—'))}${avaKV('Matrícula',esc(p.matricula||'—'))}
+    </div>
+  </div>
+
+  <div class="card"><h3>2 · Descrição do cargo <span class="h3-side">do catálogo de cargos</span></h3>
+    <div class="ava-kv" style="margin-bottom:10px;">${avaKV('Cargo',esc(c.nome||'—'))}${avaKV('Nível',esc(c.nivel||'—'))}${avaKV('Departamento',esc(c.departamento||'—'))}${c.her&&c.her.de?avaKV('Herda requisitos de',esc(c.her.de)):''}</div>
+    ${c.objetivo?`<div class="lbl-sec">Objetivo da função</div><p style="margin:0 0 8px;font-size:.88rem;">${esc(c.objetivo)}</p>`:''}
+    ${(c.resp||[]).filter(Boolean).length?`<div class="lbl-sec">Principais responsabilidades</div><ol style="margin:0;padding-left:20px;font-size:.88rem;">${c.resp.filter(Boolean).map(x=>`<li>${esc(x)}</li>`).join('')}</ol>`:''}
+  </div>
+
+  <div class="card"><h3>3 · Pré-requisitos <span class="h3-side">comparados automaticamente</span></h3>
+    <div class="tablewrap"><table class="dt"><thead><tr><th>Requisito</th><th>Exigido</th><th>Colaborador</th><th>Situação</th></tr></thead><tbody>
+    ${ctx.reqs.map(x=>`<tr><td><b>${esc(x.l)}</b></td><td>${esc(x.exig)}</td><td>${esc(x.tem)}</td><td>${x.manual&&!conc?`<select data-req="${x.k}"${dis} aria-label="Situação de ${esc(x.l)}">${opts(['Atende','Não atende'],x.final||'','Confirmar…')}</select>`:avaBadge(x.final)}</td></tr>`).join('')}
+    </tbody></table></div>
+    <div class="grid" style="margin-top:12px;max-width:520px;">${fld('ava-exp-ant','Experiência anterior na área, fora da empresa (meses)',r.expAnterior||'',{type:'number'})}</div>
+    ${ctx.reqs.some(x=>x.manual)&&!conc?'<div class="note">Quando o cadastro não tem a informação, confirme a situação manualmente ou complete o cadastro do funcionário.</div>':''}
+  </div>
+
+  <div class="card"><h3>4 · Treinamentos obrigatórios do cargo <span class="h3-side">do histórico de treinamentos</span></h3>
+    ${ctx.treinos.length?`<div class="tablewrap"><table class="dt"><thead><tr><th>Treinamento</th><th>Última conclusão</th><th>Vencimento</th><th>Situação</th></tr></thead><tbody>${ctx.treinos.map(t=>`<tr><td>${esc(t.nome)}${c.her&&(c.her.treinos||[]).includes(t.cid)?' <span class="muted">· herdado de '+esc(c.her.de)+'</span>':''}</td><td class="nw">${fmtD(t.ult)}</td><td class="nw">${fmtD(t.venc)}</td><td>${avaBadge(t.st)}</td></tr>`).join('')}</tbody></table></div>`:'<div class="muted">Nenhum treinamento obrigatório definido para este cargo no catálogo.</div>'}
+  </div>
+
+  <div class="card"><h3>5 · Conhecimentos técnicos</h3>
+    ${AVA_CONH.map(x=>`<div class="ava-item"><span class="ava-l">${esc(x[1])}${(c.conh||{})[x[0]]?`<small class="muted" style="display:block;">Exigido: ${esc(c.conh[x[0]])}</small>`:''}</span>${avaChips('conh',x[0],AVA_SIT,(r.conh||{})[x[0]],dis,avaTomSit)}</div>`).join('')}
+  </div>
+
+  <div class="card"><h3>6 · Competências comportamentais <span class="h3-side">nota de 1 a 10 · média ${fmtNota(calc.mComp)}</span></h3>
+    ${ancoras}${AVA_COMP.map(notaItem).join('')}
+  </div>
+
+  <div class="card"><h3>7 · Desempenho e maturidade profissional <span class="h3-side">nota de 1 a 10 · média ${fmtNota(calc.mDes)}</span></h3>
+    ${AVA_DES.map(notaItem).join('')}
+    <div class="lbl-sec" style="margin-top:14px;">Evidências observadas <span style="text-transform:none;font-weight:400;">(opcional)</span></div>
+    ${avaMulti('tags',AVA_TAGS,r.tags||[],dis)}
+  </div>
+
+  ${lider?`<div class="card"><h3>8 · Critérios de liderança <span class="h3-side">marque o que o colaborador cumpre</span></h3><div class="grid">${AVA_LID.map(x=>`<label class="chk${(r.lid||{})[x[0]]?' on':''}"><input type="checkbox" data-lid="${x[0]}"${(r.lid||{})[x[0]]?' checked':''}${dis}>${esc(x[1])}</label>`).join('')}</div></div>`:''}
+
+  <div class="card"><h3>${lider?'9':'8'} · Resultado</h3>
+    <div class="totals-strip">${tbox('Média competências',fmtNota(calc.mComp))}${tbox('Média desempenho',fmtNota(calc.mDes))}${tbox('Média geral',fmtNota(calc.mGeral),calc.qtd+' de '+calc.total+' notas')}${tbox('Menor nota',calc.min==null?'—':String(calc.min),'',{accent:true})}</div>
+    <div class="ava-calc"><span class="lbl-sec" style="margin:0;">Parecer calculado</span> ${calc.parecer?parecerBadge(calc.parecer):'<span class="muted">preencha as notas</span>'}${calc.mot.length?`<ul>${calc.mot.map(m=>`<li>${esc(m)}</li>`).join('')}</ul>`:''}</div>
+    <div class="lbl-sec">Parecer final</div>
+    <div class="ava-chips ava-stack">${PARECERES.concat([PARECER_REAV]).map((o,i)=>`<button type="button" class="ava-c${parecerSel===o?' on '+['good','good','warn','bad','mute'][i]:''}" data-parecer="${esc(o)}"${dis}>${esc(o)}${o===calc.parecer?' <small>· calculado</small>':''}</button>`).join('')}</div>
+    ${parecerSel===PARECER_REAV?`<div class="lbl-sec">Reavaliar em</div>${avaChips('reav','x',['30','60','90'],String(r.reavaliarDias||''),dis).replace(/>(30|60|90)</g,'>$1 dias<')}`:''}
+    ${(r.parecer&&r.parecer!==calc.parecer)||normTxt(r.justificativa)?`<div class="field" style="margin-top:10px;"><label for="ava-justif">Justificativa${r.parecer&&r.parecer!==calc.parecer?' (obrigatória: parecer diferente do calculado)':''}</label><textarea id="ava-justif" rows="3"${dis}>${esc(r.justificativa||'')}</textarea></div>`:''}
+    <div class="lbl-sec">Principais pontos fortes <span style="text-transform:none;font-weight:400;">${Array.isArray(r.fortes)?'':'(sugeridos pelas notas 9 e 10)'}</span></div>
+    ${avaMulti('fortes',AVA_NOTAS.map(x=>x[1]),fortes,dis)}
+    <div class="lbl-sec">Competências a desenvolver <span style="text-transform:none;font-weight:400;">${Array.isArray(r.dev)?'':'(sugeridas pelas notas até 6 e conhecimentos parciais)'}</span></div>
+    ${avaMulti('dev',AVA_NOTAS.map(x=>x[1]).concat(AVA_CONH.map(x=>x[1])),dev,dis)}
+    <div class="lbl-sec">Plano de desenvolvimento</div>
+    ${plano.length?`<div class="tablewrap"><table class="dt"><thead><tr><th>Treinamento</th><th>Motivo</th><th></th></tr></thead><tbody>${plano.map(x=>`<tr><td>${esc(x.nome)}</td><td>${esc(x.motivo)}</td><td class="nw">${x.cid&&ed?`<button class="btn danger tiny" data-plano-rem="${esc(x.cid)}" type="button">remover</button>`:''}</td></tr>`).join('')}</tbody></table></div>`:'<div class="muted">Nenhum treinamento pendente.</div>'}
+    ${ed?`<div class="flt" style="margin-top:8px;"><select id="ava-plano-add" aria-label="Adicionar treinamento ao plano">${opts(avaCursosInternos().filter(cu=>!(r.planoCursos||[]).includes(cu.id)).map(cu=>({v:cu.id,l:cu.nome})),'','+ Indicar treinamento do catálogo…')}</select></div>`:''}
+    <div class="field" style="margin-top:12px;"><label for="ava-coment">Comentários <span style="font-weight:400;">(opcional)</span></label><textarea id="ava-coment" rows="3" placeholder="Observações, combinados e pontos de atenção"${dis}>${esc(r.comentarios||'')}</textarea></div>
+  </div>
+
+  <div class="card"><h3>Conclusão</h3>
+    ${conc?`<div class="ava-pend ok">✅ Concluída por <b>${esc(pr.concluidoNome||pr.concluidoPor)}</b> (${esc(pr.concluidoPor)}) em ${fmtDH(pr.concluidoEm)}, com login Microsoft.<br>Parecer final: ${parecerBadge(pr.parecerFinal)}</div>`:`<div id="ava-pend">${avaPendHtml(pend)}</div>`}
+    <div class="flt" style="margin-top:12px;">
+      ${!conc&&ed?`<button class="btn primary" id="ava-concluir" type="button">✔ Concluir avaliação</button>`:''}
+      ${conc?`<button class="btn primary" id="ava-pdf" type="button">🖨 Relatório em PDF</button>`:''}
+      ${conc&&avaIsAdmin()?`<button class="btn ghost" id="ava-reabrir" type="button">Reabrir para edição</button>`:''}
+      ${avaIsAdmin()?`<button class="btn danger" id="ava-excluir" type="button" style="margin-left:auto;">Excluir avaliação</button>`:''}
+    </div>
+  </div>`;
+}
+function avaPendHtml(pend){return pend.length?`<div class="ava-pend"><b>Falta para concluir:</b><ul>${pend.map(x=>`<li>${esc(x)}</li>`).join('')}</ul></div>`:'<div class="ava-pend ok">✅ Tudo preenchido. Ao concluir, a avaliação fica registrada com o seu login Microsoft.</div>';}
+function avaAtualizarPend(){const el=$('ava-pend');if(!el)return;const pr=avaGet('processos',AVA_ABERTA);if(!pr)return;const ctx=avaCtx(pr);el.innerHTML=avaPendHtml(avaPendencias(pr,ctx,avaCalc(pr,ctx)));}
+function avaMut(fn,rerender){
+  const pr=avaGet('processos',AVA_ABERTA);if(!pr||!avaPodeEditar(pr))return;
+  const c=clone(pr);fn(avaResp(c),c);avaPut('processos',AVA_ABERTA,c);
+  if(rerender===false)avaAtualizarPend();else renderAvaliacoes();
+}
+function avaToggle(arr,v){const s=new Set(arr||[]);s.has(v)?s.delete(v):s.add(v);return Array.from(s);}
+(function avaEventos(){
+  const root=$('ava-root');if(!root)return;
+  root.addEventListener('click',e=>{
+    const b=e.target.closest('button');if(!b||b.disabled||!AVA_ABERTA)return;
+    const id=b.id,d=b.dataset;
+    if(id==='ava-voltar'){AVA_ABERTA=null;renderAvaliacoes();return;}
+    if(id==='ava-cad'){const pr=avaGet('processos',AVA_ABERTA);if(pr)abrirPessoa(pr.colaboradorId);return;}
+    if(id==='ava-concluir'){avaConcluir();return;}
+    if(id==='ava-reabrir'){avaReabrir();return;}
+    if(id==='ava-excluir'){avaExcluir();return;}
+    if(id==='ava-pdf'){avaPdf(AVA_ABERTA);return;}
+    if(d.nota){avaMut(r=>{r.notas=r.notas||{};r.notas[d.nota]=+d.v;});return;}
+    if(d.conh){avaMut(r=>{r.conh=r.conh||{};r.conh[d.conh]=d.v;});return;}
+    if(d.multi){avaMut((r,pr)=>{if(d.multi==='tags')r.tags=avaToggle(r.tags,d.v);else if(d.multi==='fortes')r.fortes=avaToggle(Array.isArray(r.fortes)?r.fortes:avaSugest(pr).fortes,d.v);else r.dev=avaToggle(Array.isArray(r.dev)?r.dev:avaSugest(pr).dev,d.v);});return;}
+    if(d.parecer){avaMut((r,pr)=>{const calc=avaCalc(pr);r.parecer=d.parecer===calc.parecer?'':d.parecer;});return;}
+    if(d.reav){avaMut(r=>{r.reavaliarDias=+d.v;});return;}
+    if(d.planoRem){avaMut(r=>{r.planoCursos=(r.planoCursos||[]).filter(x=>x!==d.planoRem);});return;}
+  });
+  root.addEventListener('input',e=>{
+    const t=e.target;if(!AVA_ABERTA||t.disabled)return;
+    if(t.dataset.evid){avaMut(r=>{r.evid=r.evid||{};r.evid[t.dataset.evid]=t.value;},false);return;}
+    if(t.id==='ava-justif'){avaMut(r=>{r.justificativa=t.value;},false);return;}
+    if(t.id==='ava-coment'){avaMut(r=>{r.comentarios=t.value;},false);return;}
+  });
+  root.addEventListener('change',e=>{
+    const t=e.target;if(!AVA_ABERTA||t.disabled)return;
+    if(t.dataset.req){avaMut(r=>{r.reqMan=r.reqMan||{};r.reqMan[t.dataset.req]=t.value;});return;}
+    if(t.dataset.lid){avaMut(r=>{r.lid=r.lid||{};r.lid[t.dataset.lid]=t.checked;});return;}
+    if(t.id==='ava-exp-ant'){avaMut(r=>{r.expAnterior=Math.max(0,Math.round(n(t.value)));});return;}
+    if(t.id==='ava-plano-add'&&t.value){const v=t.value;avaMut(r=>{r.planoCursos=Array.from(new Set([...(r.planoCursos||[]),v]));});return;}
+    if(t.id==='ava-cargo'||t.id==='ava-tipo'||t.id==='ava-data'){const v=t.value;if(t.id==='ava-data'&&!v)return;avaMut((r,pr)=>{pr[t.id==='ava-cargo'?'cargoId':t.id==='ava-tipo'?'tipo':'data']=v;});return;}
+  });
+})();
+function avaConcluir(){
+  const pr=avaGet('processos',AVA_ABERTA);if(!pr||!avaPodeEditar(pr))return;
+  const ctx=avaCtx(pr),calc=avaCalc(pr,ctx),pend=avaPendencias(pr,ctx,calc);
+  if(pend.length){toast('Complete os itens pendentes antes de concluir.');const el=$('ava-pend');if(el)el.scrollIntoView({behavior:'smooth',block:'center'});return;}
+  if(!confirm('Concluir a avaliação? Ela fica registrada com o seu login e não pode mais ser editada (um administrador pode reabrir).'))return;
+  const c=clone(pr),r=avaResp(c),p=ctx.p;
+  c.snap={pessoa:{nome:p.nome,cargo:p.cargo,departamento:p.departamento,filial:p.filial,gestor:p.gestor,admissao:p.admissao,vinculo:p.vinculo,matricula:p.matricula,escolaridade:p.escolaridade,cnh:p.cnh,cnhValidade:p.cnhValidade},cargo:clone(ctx.c),reqs:clone(ctx.reqs),treinos:clone(ctx.treinos)};
+  r.parecerCalc=calc.parecer;r.fortes=avaFortes(pr);r.dev=avaDev(pr);
+  c.parecerFinal=r.parecer||calc.parecer;c.media=calc.mGeral;
+  c.status='concluida';c.concluidoPor=emailAtual()||'local';c.concluidoNome=msAccount?(msAccount.name||''):'Modo local';c.concluidoEm=new Date().toISOString();
+  avaPut('processos',AVA_ABERTA,c);renderAvaliacoes();window.scrollTo({top:0});toast('Avaliação concluída.');
+}
+function avaReabrir(){
+  const pr=avaGet('processos',AVA_ABERTA);if(!pr||!avaIsAdmin())return;
+  if(!confirm('Reabrir a avaliação para edição? A conclusão atual será desfeita e ela precisará ser concluída de novo.'))return;
+  const c=clone(pr);c.status='rascunho';delete c.snap;c.reabertoPor=emailAtual()||'local';c.reabertoEm=new Date().toISOString();
+  avaPut('processos',AVA_ABERTA,c);renderAvaliacoes();toast('Avaliação reaberta.');
+}
+function avaExcluir(){
+  const pr=avaGet('processos',AVA_ABERTA);if(!pr||!avaIsAdmin())return;
+  const nome=avaCtx(pr).p.nome||'este colaborador';
+  if(!confirm(`Excluir a avaliação de ${nome}? Não dá para desfazer.`))return;
+  avaDel('processos',AVA_ABERTA);AVA_ABERTA=null;renderAvaliacoes();toast('Avaliação excluída.');
+}
+
+/* ---------- catálogo de cargos ---------- */
+/* Herança: um cargo pode herdar os requisitos de outro (o cargo anterior na carreira).
+   Herda responsabilidades, treinamentos obrigatórios e conhecimentos, somando os seus;
+   escolaridade, CNH e experiência vêm do anterior quando ficam em branco no cargo.     */
+function uniqKeep(a){return a.filter((x,i)=>x&&a.indexOf(x)===i);}
+function avaCargoEfetivo(id,seen){
+  const c=avaCargo(id);if(!c)return null;seen=seen||new Set();
+  const e=clone(c);e.id=id;e.her={resp:[],treinos:[],conh:{},escolaridade:false,cnh:false,expMeses:false,de:''};e.cadeia=[];
+  if(seen.has(id))return e;seen.add(id);
+  const b=c.base&&c.base!==id?avaCargoEfetivo(c.base,seen):null;
+  if(!b)return e;
+  const own=(c.resp||[]).filter(Boolean),ot=c.treinos||[];
+  e.resp=uniqKeep((b.resp||[]).concat(own));e.her.resp=(b.resp||[]).filter(x=>x&&!own.includes(x));
+  e.treinos=uniqKeep((b.treinos||[]).concat(ot));e.her.treinos=(b.treinos||[]).filter(x=>!ot.includes(x));
+  e.conh=Object.assign({},b.conh||{});AVA_CONH.forEach(x=>{const k=x[0];if(normTxt((c.conh||{})[k]))e.conh[k]=c.conh[k];else if(normTxt((b.conh||{})[k]))e.her.conh[k]=true;});
+  if(!c.escolaridade&&b.escolaridade){e.escolaridade=b.escolaridade;e.her.escolaridade=true;}
+  if(!c.cnh&&b.cnh){e.cnh=b.cnh;e.her.cnh=true;}
+  if(!n(c.expMeses)&&n(b.expMeses)){e.expMeses=b.expMeses;e.her.expMeses=true;}
+  e.her.de=b.nome;e.cadeia=(b.cadeia||[]).concat([b.nome]);
+  return e;
+}
+function avaDescendeDe(cid,anc){const seen=new Set();let c=avaCargo(cid);while(c&&c.base&&!seen.has(c.base)){if(c.base===anc)return true;seen.add(c.base);c=avaCargo(c.base);}return false;}
+function avaRespBiblioteca(){const s=new Set((ava.config.respLista||[]).filter(Boolean));avaLive('cargos').forEach(c=>(c.resp||[]).forEach(x=>{if(normTxt(x))s.add(normTxt(x));}));return Array.from(s).sort((a,b)=>a.localeCompare(b,'pt-BR'));}
+function renderCargos(){
+  const root=$('cargos-root');if(!root)return;
+  if(!avaOk){root.innerHTML='<div class="card"><p class="muted">Catálogo indisponível.</p></div>';return;}
+  const adm=avaIsAdmin(),procs=avaLive('processos');
+  const cs=avaLive('cargos').map(c=>avaCargoEfetivo(c.id)).sort((a,b)=>(a.ativo===false)-(b.ativo===false)||a.nome.localeCompare(b.nome,'pt-BR'));
+  const h=(v,her)=>esc(v)+(her?' <span class="muted">· herdado</span>':'');
+  root.innerHTML=`${adm?'<div class="flt"><button class="btn primary small" id="cg-novo" type="button">+ Novo cargo</button></div>':''}
+    <div class="card"><h3>Cargos <span class="h3-side">${cs.length} ${cs.length===1?'cargo':'cargos'}</span></h3><div class="tablewrap"><table class="dt"><thead><tr><th>Cargo</th><th>Nível</th><th>Herda de</th><th>Escolaridade</th><th>CNH</th><th>Experiência mín.</th><th class="c">Treinamentos</th><th class="c">Avaliações</th></tr></thead><tbody>
+    ${cs.length?cs.map(c=>`<tr class="click" data-cg="${esc(c.id)}"><td><b>${esc(c.nome)}</b>${c.ativo===false?' <span class="ava-b mute">Inativo</span>':''}</td><td>${esc(c.nivel||'—')}</td><td>${c.her.de?esc(c.her.de):'<span class="muted">—</span>'}</td><td>${h(c.escolaridade||'Não exige',c.her.escolaridade)}</td><td>${h(c.cnh||'Não exige',c.her.cnh)}</td><td>${h(n(c.expMeses)?fmtMeses(n(c.expMeses)):'Não exige',c.her.expMeses)}</td><td class="c">${(c.treinos||[]).length}</td><td class="c">${procs.filter(p=>p.cargoId===c.id).length}</td></tr>`).join(''):'<tr><td colspan="8" class="muted" style="padding:16px;">Nenhum cargo cadastrado.</td></tr>'}
+    </tbody></table></div></div>
+    <div class="note">O catálogo define o que cada cargo exige. Ao avaliar alguém para um cargo, a descrição, os pré-requisitos e os treinamentos obrigatórios vêm daqui. Para montar uma carreira (Jr → Pleno → Sênior), escolha em "Herda os requisitos de" o cargo anterior e cadastre só o que muda.</div>`;
+  if($('cg-novo'))$('cg-novo').onclick=()=>abrirCargo(null);
+  root.querySelectorAll('[data-cg]').forEach(tr=>tr.onclick=()=>abrirCargo(tr.dataset.cg));
+}
+function abrirCargo(id,draft){
+  const c=draft||(id?clone(avaCargo(id)||{}):{nivel:'Júnior',ativo:true,resp:[],conh:{},treinos:[]});
+  const adm=avaIsAdmin(),dis=adm?'':' disabled',cursos=avaCursosInternos();
+  const b=c.base?avaCargoEfetivo(c.base):null;
+  const outros=avaLive('cargos').filter(x=>x.id!==id&&!(id&&avaDescendeDe(x.id,id))).sort((x,y)=>x.nome.localeCompare(y.nome,'pt-BR'));
+  const deps=uniq([...(state.config.listas.departamentos||[]),...live('pessoas').map(p=>p.departamento)]);
+  const lib=uniqKeep(avaRespBiblioteca().concat((c.resp||[]).filter(Boolean)));
+  const herResp=b?(b.resp||[]).filter(Boolean):[];
+  const ownResp=(c.resp||[]).filter(x=>x&&!herResp.includes(x));
+  const respOpts=v=>`<option value="">Selecione uma responsabilidade…</option>${lib.filter(x=>!herResp.includes(x)).map(x=>`<option value="${esc(x)}"${x===v?' selected':''}>${esc(x)}</option>`).join('')}<option value="__nova">+ Nova responsabilidade…</option>`;
+  const respRow=v=>`<div class="cg-resp-row"><select class="cg-resp" aria-label="Responsabilidade"${dis}>${respOpts(v)}</select>${adm?'<button class="btn danger tiny cg-resp-rem" type="button" aria-label="Remover responsabilidade">✕</button>':''}</div>`;
+  const herdado=v=>v?'Herdar: '+v:'Não exige';
+  const html=`<div class="grid">
+      ${fld('cg-nome','Nome do cargo *',c.nome,{full:true})}
+      ${fld('cg-nivel','Nível',null,{type:'select',options:opts(NIVEIS_CARGO,c.nivel)})}
+      ${fld('cg-dep','Departamento',c.departamento,{list:'dl-cg-deps'})}
+      ${fld('cg-base','Herda os requisitos de',null,{type:'select',options:opts(outros.map(x=>({v:x.id,l:x.nome})),c.base||'','Nenhum (cargo de entrada)')})}
+    </div>
+    ${b?`<div class="note">Herda de <b>${esc(b.nome)}</b>${b.cadeia.length?' (que herda de '+esc(b.cadeia.slice().reverse().join(' ← '))+')':''}: responsabilidades, treinamentos e conhecimentos são somados aos deste cargo; escolaridade, CNH e experiência valem as do cargo anterior quando ficam em branco aqui. Cadastre só o que muda.</div>`:''}
+    <div class="grid" style="margin-top:12px;">${fld('cg-obj','Objetivo da função',c.objetivo,{type:'textarea',full:true})}</div>
+    <div class="lbl-sec" style="margin-top:16px;">Principais responsabilidades</div>
+    ${herResp.length?`<div class="cg-her"><b>Herdadas de ${esc(b.nome)}</b><ul>${herResp.map(x=>`<li>${esc(x)}</li>`).join('')}</ul></div>`:''}
+    <div id="cg-resp-list">${(ownResp.length?ownResp:['']).map(respRow).join('')}</div>
+    ${adm?'<button class="btn ghost small" id="cg-resp-add" type="button" style="margin-top:6px;">+ Responsabilidade</button>':''}
+    <div class="lbl-sec" style="margin-top:16px;">Pré-requisitos</div>
+    <div class="grid">
+      ${fld('cg-esc','Escolaridade mínima',null,{type:'select',options:opts(ESCOLARIDADES,c.escolaridade||'',herdado(b&&b.escolaridade))})}
+      ${fld('cg-cnh','CNH exigida',null,{type:'select',options:opts(CNH_CATS,c.cnh||'',herdado(b&&b.cnh))})}
+      ${fld('cg-exp','Experiência mínima (meses)',c.expMeses||'',{type:'number',ph:b&&n(b.expMeses)?'Herdar: '+fmtMeses(n(b.expMeses)):'0 = não exige'})}
+    </div>
+    <div class="lbl-sec" style="margin-top:16px;">Conhecimentos exigidos <span style="text-transform:none;font-weight:400;">(aparecem para o avaliador como referência)</span></div>
+    <div class="grid">${AVA_CONH.map(x=>fld('cg-'+x[0],x[1],(c.conh||{})[x[0]]||'',{ph:b&&normTxt((b.conh||{})[x[0]])?'Herdado: '+b.conh[x[0]]:''})).join('')}</div>
+    <div class="lbl-sec" style="margin-top:16px;">Treinamentos obrigatórios para o cargo</div>
+    ${cursos.length?`<div class="grid">${cursos.map(cu=>{const her=b&&(b.treinos||[]).includes(cu.id),on=her||(c.treinos||[]).includes(cu.id);return `<label class="chk${on?' on':''}"><input type="checkbox" class="cg-tr" value="${esc(cu.id)}"${on?' checked':''}${her?' disabled data-her="1"':dis}>${esc(cu.nome)}${her?' <span class="muted">· herdado</span>':''}</label>`;}).join('')}</div>`:'<div class="muted">Nenhum treinamento interno no catálogo de treinamentos.</div>'}
+    <label class="chk" style="margin-top:14px;display:inline-flex;"><input type="checkbox" id="cg-ativo"${c.ativo!==false?' checked':''}${dis}>Cargo ativo (aparece para novas avaliações)</label>
+    ${dl('dl-cg-deps',deps)}`;
+  const emUso=id?avaLive('processos').filter(p=>p.cargoId===id).length:0;
+  const filhos=id?avaLive('cargos').filter(x=>x.base===id).length:0;
+  const coletar=()=>({nome:val('cg-nome'),nivel:$('cg-nivel').value,departamento:val('cg-dep').toUpperCase(),base:$('cg-base').value,objetivo:$('cg-obj').value.trim(),
+    resp:uniqKeep(Array.from(document.querySelectorAll('#modal-b .cg-resp')).map(s=>s.value).filter(v=>v&&v!=='__nova')),
+    escolaridade:$('cg-esc').value,cnh:$('cg-cnh').value,expMeses:Math.max(0,Math.round(n($('cg-exp').value))),
+    conh:Object.fromEntries(AVA_CONH.map(x=>[x[0],val('cg-'+x[0])])),
+    treinos:Array.from(document.querySelectorAll('#modal-b .cg-tr:checked')).filter(x=>!x.dataset.her).map(x=>x.value),ativo:$('cg-ativo').checked});
+  modal(id?(c.nome||'Cargo'):'Novo cargo',html,[
+    id&&adm?{t:'Excluir',cls:'danger',left:true,fn:()=>{if(emUso){toast(`Este cargo tem ${emUso} avaliação(ões). Desmarque "Cargo ativo" em vez de excluir.`);return;}if(filhos){toast(`${filhos} cargo(s) herdam deste. Troque a herança deles antes de excluir.`);return;}if(!confirm('Excluir o cargo '+c.nome+'?'))return;avaDel('cargos',id);fecharModal();renderCargos();toast('Cargo excluído.');}}:null,
+    {t:adm?'Cancelar':'Fechar',cls:'ghost',fn:fecharModal},
+    adm?{t:'Salvar',cls:'primary',fn:()=>{
+      const d=coletar();if(!d.nome){toast('Informe o nome do cargo.');return;}
+      const dup=avaLive('cargos').find(x=>x.id!==id&&chave(x.nome)===chave(d.nome));if(dup){toast('Já existe um cargo com esse nome.');return;}
+      const nid=id||('cg_'+slug(d.nome)+(avaGet('cargos','cg_'+slug(d.nome))?'-'+Date.now().toString(36):''));
+      if(d.base&&(d.base===nid||avaDescendeDe(d.base,nid))){toast('Herança circular: escolha outro cargo anterior.');return;}
+      const base=id?clone(ava.cargos[id]):{criadoEm:new Date().toISOString()};
+      Object.assign(base,d);
+      const novas=d.resp.filter(x=>!(ava.config.respLista||[]).includes(x));
+      if(novas.length){ava.config.respLista=uniqKeep((ava.config.respLista||[]).concat(novas));avaMeta('config');}
+      avaPut('cargos',nid,base);fecharModal();renderCargos();toast('Cargo salvo.');
+    }}:null
+  ]);
+  if(!adm){document.querySelectorAll('#modal-b input,#modal-b select,#modal-b textarea').forEach(x=>x.disabled=true);return;}
+  $('cg-base').onchange=()=>{const d=coletar();abrirCargo(id,d);};
+  const listaEl=$('cg-resp-list');
+  $('cg-resp-add').onclick=()=>{listaEl.insertAdjacentHTML('beforeend',respRow(''));const s=listaEl.querySelectorAll('.cg-resp');s[s.length-1].focus();};
+  listaEl.addEventListener('click',e=>{const bt=e.target.closest('.cg-resp-rem');if(!bt)return;const rows=listaEl.querySelectorAll('.cg-resp-row');if(rows.length>1)bt.closest('.cg-resp-row').remove();else rows[0].querySelector('select').value='';});
+  listaEl.addEventListener('change',e=>{
+    const s=e.target.closest('.cg-resp');if(!s||s.value!=='__nova')return;
+    const t=normTxt(prompt('Nova responsabilidade:')||'');
+    if(!t){s.value='';return;}
+    if(!lib.includes(t))lib.push(t);
+    listaEl.querySelectorAll('.cg-resp').forEach(x=>{if(!Array.from(x.options).some(o=>o.value===t)){const o=document.createElement('option');o.value=t;o.textContent=t;x.insertBefore(o,x.querySelector('option[value="__nova"]'));}});
+    s.value=t;
+  });
+}
+
+/* ---------- acessos e regras ---------- */
+function renderAvaConfig(){
+  const root=$('avacfg-root');if(!root)return;
+  if(!avaIsAdmin()){root.innerHTML='<div class="card"><p class="muted">Somente administradores das avaliações.</p></div>';return;}
+  const a=ava.acesso,f=ava.config.faixas;
+  const linha=(em,grp,fixo)=>`<div class="ava-user"><span>👤 ${esc(em)}</span>${fixo?'<span class="reg R1">ADMIN · FIXO</span>':`<span class="reg ${grp==='admins'?'R1':grp==='avaliadores'?'R2':'R3'}">${grp==='admins'?'ADMIN':grp==='avaliadores'?'AVALIADOR':'LEITURA'}</span><button class="btn danger tiny" data-rem="${esc(grp)}|${esc(em)}" type="button">remover</button>`}</div>`;
+  root.innerHTML=`<div class="card"><h3>Quem acessa as avaliações</h3>
+      ${a.admins.map(em=>linha(em,'admins')).join('')}
+      ${a.avaliadores.map(em=>linha(em,'avaliadores')).join('')}
+      ${a.leitura.map(em=>linha(em,'leitura')).join('')}
+      <div class="flt" style="margin-top:12px;">
+        <input type="email" id="avc-email" placeholder="email@mcpoirrigacao.com.br" style="flex:1;min-width:220px;" aria-label="E-mail">
+        <select id="avc-papel" aria-label="Papel">${opts([{v:'avaliadores',l:'Avaliador'},{v:'leitura',l:'Leitura (diretoria)'},{v:'admins',l:'Administrador'}],'avaliadores')}</select>
+        <button class="btn primary small" id="avc-add" type="button">+ Adicionar</button>
+      </div>
+      <div class="note"><b>Administrador:</b> tudo, inclusive catálogo, acessos e reabrir avaliações. <b>Avaliador:</b> cria e preenche as próprias avaliações. <b>Leitura:</b> vê as avaliações concluídas e o PDF.</div>
+      <div class="note"><b>Importante:</b> para o sigilo valer de verdade, a pasta <b>${esc(SP_PASTA)} › ${esc(AVA_DIR)}</b> no SharePoint precisa ter permissão exclusiva (parar de herdar permissões e liberar só para as pessoas desta lista). Quem não lê a pasta não vê o módulo.</div>
+    </div>
+    <div class="card"><h3>Regras do parecer <span class="h3-side">notas de 1 a 10</span></h3>
+      <div class="grid">
+        ${fld('avf-apto','Apto: média geral a partir de',f.apto,{type:'number',step:'0.1'})}
+        ${fld('avf-itemApto','Apto: nenhuma nota abaixo de',f.itemApto,{type:'number'})}
+        ${fld('avf-plano','Apto com plano: média a partir de',f.plano,{type:'number',step:'0.1'})}
+        ${fld('avf-itemPlano','Apto com plano: nenhuma nota abaixo de',f.itemPlano,{type:'number'})}
+        ${fld('avf-capac','Necessita capacitação: média a partir de',f.capac,{type:'number',step:'0.1'})}
+        ${fld('avf-evid','Evidência obrigatória para notas até',f.evid,{type:'number'})}
+      </div>
+      <div class="note">Abaixo da média de "Necessita capacitação", o parecer é "Não atende neste momento". Requisito não atendido ou conhecimento que não atende limitam o parecer a "Necessita capacitação". Treinamento obrigatório pendente ou conhecimento parcial limitam a "Apto com plano". Nota 10 também pede evidência.</div>
+      <button class="btn primary small" id="avf-salvar" type="button">Salvar regras</button>
+    </div>`;
+  root.querySelectorAll('[data-rem]').forEach(b=>b.onclick=()=>{const [g,em]=b.dataset.rem.split('|');if(g==='admins'&&ava.acesso.admins.length<=1){toast('É preciso manter pelo menos um administrador.');return;}if(em===emailAtual()&&g==='admins'&&!confirm('Remover o seu próprio acesso de administrador? Você deixa de ver esta tela.'))return;ava.acesso[g]=ava.acesso[g].filter(x=>x!==em);avaMeta('acesso');renderAvaConfig();toast('Acesso removido.');});
+  $('avc-add').onclick=()=>{const em=$('avc-email').value.trim().toLowerCase(),g=$('avc-papel').value;if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(em)){toast('Informe um e-mail válido.');return;}if(g!=='admins'&&ava.acesso.admins.includes(em)&&ava.acesso.admins.length<=1){toast('Este é o único administrador. Adicione outro antes de mudar o papel dele.');return;}['admins','avaliadores','leitura'].forEach(k=>ava.acesso[k]=ava.acesso[k].filter(x=>x!==em));ava.acesso[g].push(em);avaMeta('acesso');renderAvaConfig();toast('Acesso liberado.');};
+  $('avf-salvar').onclick=()=>{const nf={};['apto','itemApto','plano','itemPlano','capac','evid'].forEach(k=>nf[k]=n($('avf-'+k).value));if(!(nf.apto>=nf.plano&&nf.plano>=nf.capac)){toast('As médias precisam ficar em ordem: apto ≥ plano ≥ capacitação.');return;}if(nf.itemApto<nf.itemPlano){toast('A nota mínima do apto não pode ser menor que a do apto com plano.');return;}ava.config.faixas=nf;avaMeta('config');toast('Regras salvas.');};
+}
+
+/* ---------- relatório (PDF via impressão) ---------- */
+function avaPdf(id){
+  const pr=avaGet('processos',id);if(!pr)return;
+  const ctx=avaCtx(pr),calc=avaCalc(pr,ctx),r=avaResp(pr),p=ctx.p,c=ctx.c,conc=pr.status==='concluida';
+  const w=window.open('','_blank');if(!w){toast('Permita pop-ups para gerar o relatório.');return;}
+  const par=conc?pr.parecerFinal:(r.parecer||calc.parecer);
+  const cor=['#1f8c33','#1f8c33','#c99a12','#a3312a','#8a8f86'][avaParecerIdx(par)]||'#8a8f86';
+  const lider=NIVEIS_LIDER.includes(c.nivel);
+  const linhaNota=x=>{const v=n((r.notas||{})[x[0]]);const ev=normTxt((r.evid||{})[x[0]]);return `<tr><td>${esc(x[1])}${ev?`<div class="ev">${esc(ev)}</div>`:''}</td><td class="nt"><span class="bar"><i style="width:${v*10}%;background:${v<=4?'#a3312a':v<=6?'#c99a12':'#1f8c33'}"></i></span><b>${v||'—'}</b></td></tr>`;};
+  const plano=avaPlano(pr,ctx),cod=(hashStr(id)+hashStr(pr.concluidoEm||'')).toUpperCase().slice(0,10);
+  const html=`<!DOCTYPE html><html lang="pt-BR"><head><meta charset="utf-8"><title>Avaliação de cargo - ${esc(p.nome||'')}</title><style>
+@page{size:A4;margin:14mm 14mm 16mm;}*{box-sizing:border-box;}body{margin:0;font-family:-apple-system,'Segoe UI',Roboto,Arial,sans-serif;color:#1e2b22;font-size:10.5pt;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+.top{display:flex;justify-content:space-between;align-items:flex-end;border-bottom:3px solid #03590f;padding-bottom:8px;margin-bottom:12px;}
+.top small{font-size:8pt;letter-spacing:1.5px;color:#1f8c33;font-weight:700;}.top h1{margin:2px 0 0;font-family:Georgia,serif;font-size:18pt;color:#03590f;}
+.hero{display:flex;justify-content:space-between;gap:12px;background:#f4efe6;border-radius:6px;padding:10px 12px;margin-bottom:12px;}
+.hero b{font-size:13pt;}.hero .par{color:#fff;background:${cor};border-radius:14px;padding:5px 12px;font-weight:700;font-size:10pt;align-self:center;white-space:nowrap;}
+h2{font-size:9pt;text-transform:uppercase;letter-spacing:1px;color:#fff;background:#03590f;padding:5px 8px;margin:14px 0 6px;border-radius:3px;break-after:avoid;}
+table{width:100%;border-collapse:collapse;break-inside:auto;}td,th{padding:5px 6px;border-bottom:1px solid #e8dfd0;text-align:left;vertical-align:top;}th{font-size:8pt;color:#5f6e62;text-transform:uppercase;}
+tr{break-inside:avoid;}.kv{display:grid;grid-template-columns:repeat(3,1fr);gap:6px 14px;}.kv span{display:block;font-size:7.5pt;color:#5f6e62;text-transform:uppercase;}
+.nt{width:170px;white-space:nowrap;}.bar{display:inline-block;width:110px;height:7px;background:#ecebe6;border-radius:4px;margin-right:8px;vertical-align:middle;overflow:hidden;}.bar i{display:block;height:100%;}
+.ev{font-size:8.5pt;color:#5f6e62;margin-top:2px;}.ok{color:#1f8c33;font-weight:700;}.no{color:#a3312a;font-weight:700;}.pa{color:#8a6a07;font-weight:700;}
+.med{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:8px 0;}.med div{background:#03590f;color:#fff;border-radius:5px;padding:7px 9px;}.med span{display:block;font-size:7pt;text-transform:uppercase;color:#a9cfb2;}.med b{font-size:13pt;}
+ul{margin:4px 0;padding-left:18px;}.sig{border:1.5px solid #1f8c33;border-left:6px solid #03590f;border-radius:4px;padding:10px 12px;margin-top:14px;break-inside:avoid;}
+.foot{margin-top:10px;font-size:7.5pt;color:#8a8f86;}.draft{color:#a3312a;font-weight:700;}
+</style></head><body>
+<div class="top"><div><small>MAQCAMPO IRRIGAÇÃO</small><h1>Avaliação de cargo e pré-requisitos</h1></div><div style="text-align:right;font-size:8.5pt;color:#5f6e62;">${esc(pr.tipo||'')}<br>${fmtD(pr.data)}</div></div>
+${conc?'':'<p class="draft">RASCUNHO — avaliação ainda não concluída.</p>'}
+<div class="hero"><div><b>${esc(p.nome||'—')}</b><br>${esc(p.cargo||'—')} → <b>${esc(c.nome||'—')}</b></div>${par?`<div class="par">${esc(par)}</div>`:''}</div>
+<h2>1 · Identificação</h2><div class="kv"><div><span>Departamento</span>${esc(p.departamento||'—')}</div><div><span>Gestor direto</span>${esc(p.gestor||'—')}</div><div><span>Admissão</span>${p.admissao?fmtD(p.admissao):'—'}</div><div><span>Vínculo</span>${esc(p.vinculo||'—')}</div><div><span>Matrícula</span>${esc(p.matricula||'—')}</div><div><span>Responsável</span>${esc(pr.responsavelNome||pr.responsavel||'—')}</div></div>
+<h2>2 · Descrição do cargo</h2><div class="kv" style="margin-bottom:6px;"><div><span>Nível</span>${esc(c.nivel||'—')}</div><div><span>Departamento</span>${esc(c.departamento||'—')}</div>${c.her&&c.her.de?`<div><span>Herda requisitos de</span>${esc(c.her.de)}</div>`:''}</div>${c.objetivo?`<p style="margin:4px 0;">${esc(c.objetivo)}</p>`:''}${(c.resp||[]).filter(Boolean).length?`<ol style="margin:4px 0;padding-left:18px;">${c.resp.filter(Boolean).map(x=>`<li>${esc(x)}</li>`).join('')}</ol>`:''}
+<h2>3 · Pré-requisitos</h2><table><tr><th>Requisito</th><th>Exigido</th><th>Colaborador</th><th>Situação</th></tr>${ctx.reqs.map(x=>`<tr><td>${esc(x.l)}</td><td>${esc(x.exig)}</td><td>${esc(x.tem)}</td><td class="${x.final==='Atende'?'ok':x.final==='Não atende'?'no':''}">${esc(x.final||'—')}${x.manual&&x.final?' (confirmado)':''}</td></tr>`).join('')}</table>
+<h2>4 · Treinamentos obrigatórios</h2>${ctx.treinos.length?`<table><tr><th>Treinamento</th><th>Última conclusão</th><th>Vencimento</th><th>Situação</th></tr>${ctx.treinos.map(t=>`<tr><td>${esc(t.nome)}</td><td>${fmtD(t.ult)}</td><td>${fmtD(t.venc)}</td><td class="${t.st==='Possui'?'ok':t.st==='Vencido'?'pa':'no'}">${esc(t.st)}</td></tr>`).join('')}</table>`:'<p>Nenhum treinamento obrigatório definido para o cargo.</p>'}
+<h2>5 · Conhecimentos técnicos</h2><table>${AVA_CONH.map(x=>{const s=(r.conh||{})[x[0]]||'—';return `<tr><td>${esc(x[1])}${(c.conh||{})[x[0]]?`<div class="ev">Exigido: ${esc(c.conh[x[0]])}</div>`:''}</td><td class="${s==='Atende'?'ok':s==='Não atende'?'no':s==='Atende parcialmente'?'pa':''}" style="width:170px;">${esc(s)}</td></tr>`;}).join('')}</table>
+<h2>6 · Competências comportamentais (1 a 10)</h2><table>${AVA_COMP.map(linhaNota).join('')}</table>
+<h2>7 · Desempenho e maturidade (1 a 10)</h2><table>${AVA_DES.map(linhaNota).join('')}</table>${(r.tags||[]).length?`<p style="margin:6px 0 0;"><b>Evidências observadas:</b> ${r.tags.map(esc).join(' · ')}</p>`:''}
+${lider?`<h2>8 · Critérios de liderança</h2><table>${AVA_LID.map(x=>`<tr><td>${esc(x[1])}</td><td style="width:90px;" class="${(r.lid||{})[x[0]]?'ok':'no'}">${(r.lid||{})[x[0]]?'Cumpre':'Não marcado'}</td></tr>`).join('')}</table>`:''}
+<h2>${lider?'9':'8'} · Resultado</h2>
+<div class="med"><div><span>Competências</span><b>${fmtNota(calc.mComp)}</b></div><div><span>Desempenho</span><b>${fmtNota(calc.mDes)}</b></div><div><span>Média geral</span><b>${fmtNota(calc.mGeral)}</b></div><div><span>Menor nota</span><b>${calc.min==null?'—':calc.min}</b></div></div>
+<table><tr><td style="width:190px;"><b>Parecer calculado</b></td><td>${esc(calc.parecer||'—')}${calc.mot.length?`<div class="ev">${calc.mot.map(esc).join(' · ')}</div>`:''}</td></tr>
+<tr><td><b>Parecer final</b></td><td style="color:${cor};font-weight:700;">${esc(par||'—')}${par===PARECER_REAV&&r.reavaliarDias?' — em '+r.reavaliarDias+' dias':''}</td></tr>
+${normTxt(r.justificativa)?`<tr><td><b>Justificativa</b></td><td>${esc(r.justificativa)}</td></tr>`:''}
+<tr><td><b>Pontos fortes</b></td><td>${avaFortes(pr).map(esc).join(' · ')||'—'}</td></tr>
+<tr><td><b>A desenvolver</b></td><td>${avaDev(pr).map(esc).join(' · ')||'—'}</td></tr>
+<tr><td><b>Plano de desenvolvimento</b></td><td>${plano.length?`<ul>${plano.map(x=>`<li>${esc(x.nome)} <span class="ev">(${esc(x.motivo)})</span></li>`).join('')}</ul>`:'Nenhum treinamento pendente.'}</td></tr>
+${normTxt(r.comentarios)?`<tr><td><b>Comentários</b></td><td>${esc(r.comentarios)}</td></tr>`:''}</table>
+<div class="sig">${conc?`<b>Avaliação concluída eletronicamente</b><br>por ${esc(pr.concluidoNome||pr.concluidoPor)} (${esc(pr.concluidoPor)}) em ${fmtDH(pr.concluidoEm)}, com autenticação Microsoft 365.<br><span style="font-size:8pt;color:#5f6e62;">Código de registro: ${cod}</span>`:'<b>Avaliação não concluída</b> — este documento é apenas um rascunho.'}</div>
+<div class="foot">MAQCAMPO Irrigação · Treinamentos MCPO › Avaliações · documento confidencial · gerado em ${fmtDH(new Date().toISOString())}</div>
+<script>window.onload=()=>setTimeout(()=>window.print(),300);<\/script></body></html>`;
+  w.document.open();w.document.write(html);w.document.close();
+}
+
 /* ==================== LOGIN / INIT ==================== */
 async function initAuth(){
   try{
@@ -1563,12 +2271,12 @@ async function initAuth(){
     const accs=msalInstance.getAllAccounts();if(accs.length){msAccount=accs[0];if(!CONF)await sincronizarNuvem(true);}
     if(CONF){updateLoginUI();iniciarConfirm();return;}
     updateLoginUI();applyAccess();
-  }catch(e){msalReady=false;$('ms-login-label').textContent='🔑 Entrar com Microsoft';const info=$('ms-user-info');info.textContent='(modo local — login indisponível)';info.style.display='block';if(CONF){iniciarConfirm();return;}applyAccess();}
+  }catch(e){msalReady=false;$('ms-login-label').textContent='🔑 Entrar com Microsoft';const info=$('ms-user-info');info.textContent='(modo local — login indisponível)';info.style.display='block';if(CONF){iniciarConfirm();return;}await avaCarregar();applyAccess();renderAll();}
 }
 function updateLoginUI(){const lbl=$('ms-login-label'),info=$('ms-user-info');if(msAccount){lbl.textContent='✓ '+(msAccount.name||msAccount.username);info.textContent='SharePoint › '+SP_PASTA;info.style.display='block';}else{lbl.textContent='🔑 Entrar com Microsoft';info.style.display='none';}}
 $('btn-ms-login').addEventListener('click',async()=>{
   if(!msalInstance){toast('Autenticação inicializando — tente de novo.');return;}
-  if(msAccount){if(confirm('Sair de '+msAccount.username+'?')){try{await msalInstance.logoutPopup({account:msAccount});}catch(e){}msAccount=null;updateLoginUI();applyAccess();}return;}
+  if(msAccount){if(confirm('Sair de '+msAccount.username+'?')){try{await msalInstance.logoutPopup({account:msAccount});}catch(e){}msAccount=null;ava=avaDefault();avaOk=false;avaEtag=null;AVA_ABERTA=null;updateLoginUI();applyAccess();}return;}
   try{$('ms-login-label').textContent='⏳ Abrindo login...';const resp=await msalInstance.loginPopup({scopes:GRAPH_SCOPES});msAccount=resp.account;updateLoginUI();await sincronizarNuvem(true);applyAccess();renderAll();toast('Logado como '+msAccount.username);}
   catch(e){$('ms-login-label').textContent='🔑 Entrar com Microsoft';toast('Erro no login: '+(e.errorCode||e.message||'desconhecido'));}
 });

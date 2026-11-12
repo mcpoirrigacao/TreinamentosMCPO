@@ -172,6 +172,21 @@ body:not([data-mod="cli"]) .so-cli{display:none !important;}
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
 .lbl-sec{font-size:.72rem;text-transform:uppercase;letter-spacing:.5px;color:var(--texto-suave);font-weight:700;margin:14px 0 6px;}
 /* ---- Avaliações ---- */
+.cls-scale{display:grid;grid-template-columns:repeat(10,minmax(0,1fr));gap:2px;margin:4px 0 8px;}
+.cls-scale span{text-align:center;font-size:.7rem;font-weight:700;padding:3px 0;color:#fff;border-radius:3px;font-family:var(--fonte-dado);}
+.cls-scale .good{background:var(--ok);}.cls-scale .warn{background:var(--amarelo);}.cls-scale .bad{background:var(--vermelho);}
+.cls-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;}
+@media (max-width:780px){.cls-grid{grid-template-columns:minmax(0,1fr);}}
+.cls-col{border-radius:8px;padding:10px;border:1px solid;min-width:0;}
+.cls-col.good{background:#eef6ef;border-color:#bfdcc4;}.cls-col.warn{background:#fdf7e3;border-color:#ecd99a;}.cls-col.bad{background:#fbecea;border-color:#e9bdb8;}
+.cls-h{display:flex;gap:4px 8px;align-items:baseline;flex-wrap:wrap;margin-bottom:8px;font-size:.84rem;}
+.cls-h em{font-style:normal;font-weight:700;font-family:var(--fonte-dado);margin-left:auto;}.cls-h span{flex-basis:100%;font-size:.7rem;color:var(--texto-suave);}
+.cls-col.good .cls-h b{color:var(--ok);}.cls-col.warn .cls-h b{color:#8a6a07;}.cls-col.bad .cls-h b{color:var(--vermelho);}
+.cls-i{display:flex;gap:8px;align-items:baseline;width:100%;text-align:left;border:1px solid transparent;border-left:4px solid;background:#fff;border-radius:4px;padding:6px 8px;margin-bottom:5px;font-size:.8rem;cursor:pointer;color:var(--texto);font-family:var(--fonte-corpo);}
+.cls-i:hover:not(:disabled){border-color:var(--borda);}.cls-i:disabled{cursor:default;}
+.cls-i.man{border-style:dashed;border-left-style:solid;border-color:var(--borda);}
+.cls-i.good{border-left-color:var(--ok);}.cls-i.warn{border-left-color:var(--amarelo);}.cls-i.bad{border-left-color:var(--vermelho);}
+.cls-n{font-family:var(--fonte-dado);font-weight:700;min-width:26px;flex:none;}.cls-t{min-width:0;}.cls-t small{display:block;color:var(--texto-suave);font-size:.7rem;}
 .avl-page{position:fixed;inset:0;z-index:1200;overflow:auto;background:var(--areia);}
 .avl-top{background:linear-gradient(135deg,var(--azul-escuro),var(--azul));color:#fff;padding:14px 18px;display:flex;gap:14px;align-items:center;position:sticky;top:0;z-index:2;box-shadow:0 2px 10px rgba(0,0,0,.2);}
 .avl-top img{height:38px;width:auto;}.avl-top span{font-size:.75rem;text-transform:uppercase;letter-spacing:1.5px;color:#bcdec2;}
@@ -1635,7 +1650,7 @@ $('btn-sync').addEventListener('click',()=>{if(!msAccount){toast('Entre com o Mi
 const AVA_DIR='Avaliacoes',AVA_FILE='avaliacoes_dados.json',AVA_LS='maqcampo-avaliacoes-local-v1';
 // Administradores iniciais: usados só para criar a base das avaliações; depois são editáveis em Acessos & regras.
 const AVA_ADMINS_INICIAIS=['felipe.fantoni@mcpoirrigacao.com.br','thais.teixeira@mcpoirrigacao.com.br'];
-const AVA_FAIXAS={apto:8,plano:7,capac:6,itemApto:6,itemPlano:4,evid:4};
+const AVA_FAIXAS={apto:8,plano:7,capac:6,itemApto:6,itemPlano:4,evid:4,clsVerde:8,clsAmarelo:6};
 const ESCOLARIDADES=['Fundamental incompleto','Fundamental completo','Médio incompleto','Médio completo','Técnico','Superior incompleto','Superior completo','Pós-graduação'];
 const CNH_CATS=['A','B','AB','C','D','E','AC','AD','AE'];
 const CNH_COBRE={A:'A',B:'B',AB:'AB',C:'BC',D:'BCD',E:'BCDE',AC:'ABC',AD:'ABCD',AE:'ABCDE'};
@@ -1906,8 +1921,33 @@ function avaFormPend(r,evid){
 function avaSugest(pr,cons){cons=cons||avaConsol(pr);const nt=cons.notas;
   return {fortes:AVA_NOTAS.filter(x=>nt[x[0]]>=9).map(x=>x[1]),
     dev:AVA_NOTAS.filter(x=>nt[x[0]]&&nt[x[0]]<=6).map(x=>x[1]).concat(AVA_CONH.filter(x=>['Não atende','Atende parcialmente'].includes(cons.conh[x[0]])).map(x=>x[1]))};}
-function avaFortes(pr,cons){const r=avaRes(pr);return Array.isArray(r.fortes)?r.fortes:avaSugest(pr,cons).fortes;}
-function avaDev(pr,cons){const r=avaRes(pr);return Array.isArray(r.dev)?r.dev:avaSugest(pr,cons).dev;}
+/* Classificação única por cores, pela escala de notas:
+   verde = pontos fortes (nota ≥ clsVerde ou "Atende"), amarelo = atende parcialmente (entre clsAmarelo e clsVerde),
+   vermelho = não atende / a desenvolver (abaixo de clsAmarelo ou "Não atende"). Clique reclassifica manualmente. */
+const CLS_TONS=['good','warn','bad'];
+const CLS_NOME={good:'Pontos fortes',warn:'Atende parcialmente',bad:'Não atende · a desenvolver'};
+function avaLimites(){const f=ava.config.faixas||{};return {vd:n(f.clsVerde)||8,am:n(f.clsAmarelo)||6};}
+function avaClassif(pr,cons){
+  if(pr.status==='concluida'&&Array.isArray(avaRes(pr).classifFinal))return avaRes(pr).classifFinal;
+  cons=cons||avaConsol(pr);const {vd,am}=avaLimites(),man=avaRes(pr).classif||{},out=[];
+  AVA_NOTAS.forEach(x=>{const v=cons.notas[x[0]];if(v==null)return;const auto=v>=vd?'good':v>=am?'warn':'bad';out.push({k:x[0],l:x[1],v,txt:fmtNota(v),auto,tom:man[x[0]]||auto,manual:!!man[x[0]],tipo:'nota'});});
+  AVA_CONH.forEach(x=>{const s=cons.conh[x[0]];if(!s||s==='Não se aplica')return;const auto={'Atende':'good','Atende parcialmente':'warn','Não atende':'bad'}[s];out.push({k:x[0],l:x[1],v:null,txt:s,auto,tom:man[x[0]]||auto,manual:!!man[x[0]],tipo:'conh'});});
+  return out;
+}
+function avaClsOrd(a,b){if(a.tipo!==b.tipo)return a.tipo==='nota'?-1:1;return (b.v||0)-(a.v||0)||a.l.localeCompare(b.l,'pt-BR');}
+function avaClsLista(pr,cons,tom){return avaClassif(pr,cons).filter(i=>i.tom===tom).sort(avaClsOrd);}
+function avaFortes(pr,cons){return avaClsLista(pr,cons,'good').map(i=>i.l);}
+function avaDev(pr,cons){return avaClsLista(pr,cons,'bad').map(i=>i.l);}
+function avaClassifHtml(pr,cons,ed){
+  const {vd,am}=avaLimites(),dis=ed?'':' disabled',its=avaClassif(pr,cons);
+  if(!its.length)return '<div class="lbl-sec">Classificação das competências</div><div class="muted">Aparece quando houver notas.</div>';
+  const faixa={bad:'notas abaixo de '+fmtNota(am)+' · não atende',warn:'notas de '+fmtNota(am)+' a '+fmtNota(Math.round((vd-0.1)*10)/10)+' · parcial',good:'notas a partir de '+fmtNota(vd)+' · atende'};
+  const col=tom=>{const l=its.filter(i=>i.tom===tom).sort(avaClsOrd);return `<div class="cls-col ${tom}"><div class="cls-h"><b>${CLS_NOME[tom]}</b><em>${l.length}</em><span>${faixa[tom]}</span></div>${l.map(i=>`<button type="button" class="cls-i ${tom}${i.manual?' man':''}" data-cls="${i.k}" title="${ed?'Clique para mudar a cor':''}"${dis}><span class="cls-n">${i.tipo==='nota'?esc(i.txt):'◆'}</span><span class="cls-t">${esc(i.l)}${i.tipo==='conh'?`<small>${esc(i.txt)}</small>`:''}${i.manual?'<small>✎ ajustado · era '+esc(CLS_NOME[i.auto].split(' ·')[0].toLowerCase())+'</small>':''}</span></button>`).join('')||'<div class="muted" style="padding:4px 2px;">—</div>'}</div>`;};
+  return `<div class="lbl-sec">Classificação das competências <span style="text-transform:none;font-weight:400;">(pela escala de notas consolidadas${ed?'; clique num item para mudar a cor':''})</span></div>
+    <div class="cls-scale" aria-hidden="true">${[1,2,3,4,5,6,7,8,9,10].map(i=>`<span class="${i>=vd?'good':i>=am?'warn':'bad'}">${i}</span>`).join('')}</div>
+    <div class="cls-grid">${col('bad')}${col('warn')}${col('good')}</div>
+    <div class="muted" style="margin-top:6px;">◆ = conhecimento técnico, classificado pela situação consolidada.</div>`;
+}
 function avaPlano(pr,ctx){const r=avaRes(pr);const auto=ctx.treinos.filter(t=>t.st!=='Possui').map(t=>({nome:t.nome,motivo:t.st==='Vencido'?'Reciclagem (vencido)':'Obrigatório do cargo'}));const extra=(r.planoCursos||[]).map(cid=>({cid,nome:nomeCurso(cid),motivo:'Indicado na avaliação'}));return auto.concat(extra);}
 
 /* ---------- componentes ---------- */
@@ -2128,10 +2168,7 @@ function avaEditorHtml(id,pr){
     <div class="ava-chips ava-stack">${PARECERES.concat([PARECER_REAV]).map((o,i)=>`<button type="button" class="ava-c${parecerSel===o?' on '+['good','good','warn','bad','mute'][i]:''}" data-parecer="${esc(o)}"${dis}>${esc(o)}${o===calc.parecer?' <small>· calculado</small>':''}</button>`).join('')}</div>
     ${parecerSel===PARECER_REAV?`<div class="lbl-sec">Reavaliar em</div>${avaChips('reav','x',['30','60','90'],String(res.reavaliarDias||''),dis).replace(/>(30|60|90)</g,'>$1 dias<')}`:''}
     ${(res.parecer&&res.parecer!==calc.parecer)||normTxt(res.justificativa)?`<div class="field" style="margin-top:10px;"><label for="ava-justif">Justificativa${res.parecer&&res.parecer!==calc.parecer?' (obrigatória: parecer diferente do calculado)':''}</label><textarea id="ava-justif" rows="3"${dis}>${esc(res.justificativa||'')}</textarea></div>`:''}
-    <div class="lbl-sec">Principais pontos fortes <span style="text-transform:none;font-weight:400;">${Array.isArray(res.fortes)?'':'(sugeridos pelas notas consolidadas a partir de 9)'}</span></div>
-    ${avaMulti('fortes',AVA_NOTAS.map(x=>x[1]),fortes,dis)}
-    <div class="lbl-sec">Competências a desenvolver <span style="text-transform:none;font-weight:400;">${Array.isArray(res.dev)?'':'(sugeridas pelas notas até 6 e conhecimentos parciais)'}</span></div>
-    ${avaMulti('dev',AVA_NOTAS.map(x=>x[1]).concat(AVA_CONH.map(x=>x[1])),dev,dis)}
+    ${avaClassifHtml(pr,cons,ed)}
     <div class="lbl-sec">Plano de desenvolvimento</div>
     ${plano.length?`<div class="tablewrap"><table class="dt"><thead><tr><th>Treinamento</th><th>Motivo</th><th></th></tr></thead><tbody>${plano.map(x=>`<tr><td>${esc(x.nome)}</td><td>${esc(x.motivo)}</td><td class="nw">${x.cid&&ed?`<button class="btn danger tiny" data-plano-rem="${esc(x.cid)}" type="button">remover</button>`:''}</td></tr>`).join('')}</tbody></table></div>`:'<div class="muted">Nenhum treinamento pendente.</div>'}
     ${ed?`<div class="flt" style="margin-top:8px;"><select id="ava-plano-add" aria-label="Adicionar treinamento ao plano">${opts(avaCursosInternos().filter(cu=>!(res.planoCursos||[]).includes(cu.id)).map(cu=>({v:cu.id,l:cu.nome})),'','+ Indicar treinamento do catálogo…')}</select></div>`:''}
@@ -2185,7 +2222,7 @@ function avaMutMeu(fn,rerender){
     if(id==='ava-meu-enviar'){avaMeuEnviar();return;}
     if(id==='ava-meu-editar'){const pr=avaGet('processos',AVA_ABERTA);if(!pr||pr.status==='concluida')return;const c=clone(pr),meu=avaMeuAv(c);if(!meu)return;meu.status='pendente';avaPut('processos',AVA_ABERTA,c);renderAvaliacoes();return;}
     if(d.avact){avaAvAcao(d.avact,d.av);return;}
-    if(d.multi==='fortes'||d.multi==='dev'){avaMut(c=>{const r=avaRes(c),cons=avaConsol(c);if(d.multi==='fortes')r.fortes=avaToggle(Array.isArray(r.fortes)?r.fortes:avaSugest(c,cons).fortes,d.v);else r.dev=avaToggle(Array.isArray(r.dev)?r.dev:avaSugest(c,cons).dev,d.v);});return;}
+    if(d.cls){avaMut(c=>{const r=avaRes(c),it=avaClassif(c).find(x=>x.k===d.cls);if(!it)return false;const nx=CLS_TONS[(CLS_TONS.indexOf(it.tom)+1)%3];r.classif=r.classif||{};if(nx===it.auto)delete r.classif[d.cls];else r.classif[d.cls]=nx;});return;}
     if(d.parecer){avaMut(c=>{const calc=avaCalc(c);avaRes(c).parecer=d.parecer===calc.parecer?'':d.parecer;});return;}
     if(d.reav){avaMut(c=>{avaRes(c).reavaliarDias=+d.v;});return;}
     if(d.planoRem){avaMut(c=>{const r=avaRes(c);r.planoCursos=(r.planoCursos||[]).filter(x=>x!==d.planoRem);});return;}
@@ -2222,7 +2259,7 @@ function avaConcluir(){
   if(!confirm('Concluir a avaliação? Ela fica registrada com o seu login e não pode mais ser editada (um administrador pode reabrir).'))return;
   const c=clone(pr),r=avaRes(c),p=ctx.p;
   c.snap={pessoa:{nome:p.nome,cargo:p.cargo,departamento:p.departamento,filial:p.filial,gestor:p.gestor,admissao:p.admissao,vinculo:p.vinculo,matricula:p.matricula,escolaridade:p.escolaridade,cnh:p.cnh,cnhValidade:p.cnhValidade},cargo:clone(ctx.c),reqs:clone(ctx.reqs),treinos:clone(ctx.treinos)};
-  r.parecerCalc=calc.parecer;r.fortes=avaFortes(pr,cons);r.dev=avaDev(pr,cons);r.consenso=cons.consenso;
+  r.parecerCalc=calc.parecer;r.classifFinal=avaClassif(pr,cons).map(i=>({k:i.k,l:i.l,v:i.v,txt:i.txt,auto:i.auto,tom:i.tom,manual:i.manual,tipo:i.tipo}));r.fortes=avaFortes(c,cons);r.dev=avaDev(c,cons);r.consenso=cons.consenso;
   c.parecerFinal=r.parecer||calc.parecer;c.media=calc.mGeral;
   c.status='concluida';c.concluidoPor=emailAtual()||'local';c.concluidoNome=msAccount?(msAccount.name||''):'Modo local';c.concluidoEm=new Date().toISOString();
   avaPut('processos',AVA_ABERTA,c);renderAvaliacoes();window.scrollTo({top:0});toast('Avaliação concluída.');
@@ -2534,13 +2571,15 @@ function renderAvaConfig(){
         ${fld('avf-itemPlano','Apto com plano: nenhuma nota abaixo de',f.itemPlano,{type:'number'})}
         ${fld('avf-capac','Necessita capacitação: média a partir de',f.capac,{type:'number',step:'0.1'})}
         ${fld('avf-evid','Evidência obrigatória para notas até',f.evid,{type:'number'})}
+        ${fld('avf-clsVerde','Classificação verde (ponto forte): nota a partir de',f.clsVerde,{type:'number',step:'0.1'})}
+        ${fld('avf-clsAmarelo','Classificação amarela (parcial): nota a partir de',f.clsAmarelo,{type:'number',step:'0.1'})}
       </div>
       <div class="note">Abaixo da média de "Necessita capacitação", o parecer é "Não atende neste momento". Requisito não atendido ou conhecimento que não atende limitam o parecer a "Necessita capacitação". Treinamento obrigatório pendente ou conhecimento parcial limitam a "Apto com plano". Nota 10 também pede evidência.</div>
       <button class="btn primary small" id="avf-salvar" type="button">Salvar regras</button>
     </div>`;
   root.querySelectorAll('[data-rem]').forEach(b=>b.onclick=()=>{const [g,em]=b.dataset.rem.split('|');if(g==='admins'&&ava.acesso.admins.length<=1){toast('É preciso manter pelo menos um administrador.');return;}if(em===emailAtual()&&g==='admins'&&!confirm('Remover o seu próprio acesso de administrador? Você deixa de ver esta tela.'))return;ava.acesso[g]=ava.acesso[g].filter(x=>x!==em);avaMeta('acesso');renderAvaConfig();toast('Acesso removido.');});
   $('avc-add').onclick=()=>{const em=$('avc-email').value.trim().toLowerCase(),g=$('avc-papel').value;if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(em)){toast('Informe um e-mail válido.');return;}if(g!=='admins'&&ava.acesso.admins.includes(em)&&ava.acesso.admins.length<=1){toast('Este é o único administrador. Adicione outro antes de mudar o papel dele.');return;}['admins','avaliadores','leitura'].forEach(k=>ava.acesso[k]=ava.acesso[k].filter(x=>x!==em));ava.acesso[g].push(em);avaMeta('acesso');renderAvaConfig();toast('Acesso liberado.');};
-  $('avf-salvar').onclick=()=>{const nf={};['apto','itemApto','plano','itemPlano','capac','evid'].forEach(k=>nf[k]=n($('avf-'+k).value));if(!(nf.apto>=nf.plano&&nf.plano>=nf.capac)){toast('As médias precisam ficar em ordem: apto ≥ plano ≥ capacitação.');return;}if(nf.itemApto<nf.itemPlano){toast('A nota mínima do apto não pode ser menor que a do apto com plano.');return;}ava.config.faixas=nf;avaMeta('config');toast('Regras salvas.');};
+  $('avf-salvar').onclick=()=>{const nf={};['apto','itemApto','plano','itemPlano','capac','evid','clsVerde','clsAmarelo'].forEach(k=>nf[k]=n($('avf-'+k).value));if(!(nf.clsVerde>nf.clsAmarelo)){toast('A nota do verde precisa ser maior que a do amarelo.');return;}if(!(nf.apto>=nf.plano&&nf.plano>=nf.capac)){toast('As médias precisam ficar em ordem: apto ≥ plano ≥ capacitação.');return;}if(nf.itemApto<nf.itemPlano){toast('A nota mínima do apto não pode ser menor que a do apto com plano.');return;}ava.config.faixas=nf;avaMeta('config');toast('Regras salvas.');};
 }
 
 /* ---------- relatório (PDF via impressão) ---------- */
@@ -2591,8 +2630,7 @@ ${lider?`<h2>9 · Critérios de liderança</h2><table>${AVA_LID.map(x=>`<tr><td>
 <tr><td><b>Parecer final</b></td><td style="color:${cor};font-weight:700;">${esc(par||'—')}${par===PARECER_REAV&&res.reavaliarDias?' — em '+res.reavaliarDias+' dias':''}</td></tr>
 ${normTxt(res.justificativa)?`<tr><td><b>Justificativa</b></td><td>${esc(res.justificativa)}</td></tr>`:''}
 ${normTxt(res.calibTexto)?`<tr><td><b>Calibração</b></td><td>${esc(res.calibTexto)}</td></tr>`:''}
-<tr><td><b>Pontos fortes</b></td><td>${avaFortes(pr,cons).map(esc).join(' · ')||'—'}</td></tr>
-<tr><td><b>A desenvolver</b></td><td>${avaDev(pr,cons).map(esc).join(' · ')||'—'}</td></tr>
+${['good','warn','bad'].map(t=>{const l=avaClsLista(pr,cons,t);return `<tr><td><b style="color:${{good:'#1f8c33',warn:'#a87f0b',bad:'#a3312a'}[t]}">● ${CLS_NOME[t]}</b></td><td>${l.length?l.map(i=>esc(i.l)+' <span class="ev" style="display:inline;">('+esc(i.txt)+(i.manual?', ajustado':'')+')</span>').join(' · '):'—'}</td></tr>`;}).join('')}
 <tr><td><b>Plano de desenvolvimento</b></td><td>${plano.length?`<ul>${plano.map(x=>`<li>${esc(x.nome)} <span class="ev">(${esc(x.motivo)})</span></li>`).join('')}</ul>`:'Nenhum treinamento pendente.'}</td></tr>
 ${avs.filter(a=>normTxt(avaRespDe(pr,a.id).comentario)).map(a=>`<tr><td><b>Comentário de ${nm(a)}</b></td><td>${esc(avaRespDe(pr,a.id).comentario)}</td></tr>`).join('')}
 ${normTxt(res.comentarios)?`<tr><td><b>Comentários finais</b></td><td>${esc(res.comentarios)}</td></tr>`:''}</table>

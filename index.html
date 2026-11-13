@@ -887,7 +887,11 @@ let _modalClose=null;
 function modal(titulo,corpo,botoes,onClose){$('modal-t').textContent=titulo;$('modal-b').innerHTML=corpo;const f=$('modal-f');f.innerHTML='';(botoes||[]).forEach(b=>{if(!b)return;const el=document.createElement('button');el.type='button';el.className='btn '+(b.cls||'ghost')+(b.admin?' somente-admin':'');el.textContent=b.t;el.onclick=b.fn;if(b.left)el.style.marginRight='auto';f.appendChild(el);});_modalClose=onClose||null;$('modal-bg').classList.add('show');$('modal-bg').scrollTop=0;}
 function fecharModal(){$('modal-bg').classList.remove('show');const c=_modalClose;_modalClose=null;if(c)c();}
 $('modal-x').onclick=fecharModal;
-$('modal-bg').addEventListener('mousedown',e=>{if(e.target===$('modal-bg'))fecharModal();});
+/* Fecha só com clique completo no fundo escuro — nunca ao usar a barra de rolagem ou ao arrastar de dentro do formulário para fora */
+(function(){const bg=$('modal-bg');let ini=false;
+  const naBarra=e=>e.offsetX>=bg.clientWidth||e.offsetY>=bg.clientHeight;
+  bg.addEventListener('mousedown',e=>{ini=e.target===bg&&!naBarra(e);});
+  bg.addEventListener('click',e=>{const ok=ini&&e.target===bg&&!naBarra(e);ini=false;if(ok)fecharModal();});})();
 document.addEventListener('keydown',e=>{if(e.key==='Escape'&&$('modal-bg').classList.contains('show'))fecharModal();});
 function fld(id,lb,val,o){o=o||{};const full=o.full?' full':'';if(o.type==='select')return `<div class="field${full}"><label for="${id}">${lb}</label><select id="${id}">${o.options}</select></div>`;if(o.type==='textarea')return `<div class="field${full}"><label for="${id}">${lb}</label><textarea id="${id}">${esc(val)}</textarea></div>`;return `<div class="field${full}"><label for="${id}">${lb}</label><input type="${o.type||'text'}" id="${id}" value="${esc(val==null?'':val)}"${o.list?` list="${o.list}"`:''}${o.step?` step="${o.step}"`:''}${o.ph?` placeholder="${esc(o.ph)}"`:''}></div>`;}
 function dl(id,list){return `<datalist id="${id}">${list.map(v=>`<option value="${esc(v)}">`).join('')}</datalist>`;}
